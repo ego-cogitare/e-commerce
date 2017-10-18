@@ -1,0 +1,12 @@
+{
+    "repositories": [
+        {
+            "url": "https://github.com/execrot/mongostar7.git",
+            "type": "git"
+        }
+    ],
+    "require": {
+        "slim/slim": "3.7",
+        "mongostar/php7": "master-dev"
+    }
+}
