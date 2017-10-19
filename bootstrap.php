@@ -10,13 +10,8 @@
      * Include all models, controllers, etc...
      */
     $includes = [
-        __DIR__ . '/src/models/store/*.php',
-        __DIR__ . '/src/models/admin/*.php',
-        
+        __DIR__ . '/src/models/*.php',
         __DIR__ . '/src/controllers/*.php',
-        __DIR__ . '/src/controllers/store/*.php',
-        __DIR__ . '/src/controllers/admin/*.php',
-        
         __DIR__ . '/src/services/*.php',
     ];
     foreach ($includes as $pattern) {
@@ -63,12 +58,13 @@
     require_once __DIR__ . '/src/routes.php';
     
     $app->add(new TokenAuthentication([
-        'path' => '/admin',
+        'path' => '',
+        'passthrough' => ['/login', '/logout'],
         'secure' => false,
         'regex' => '/^(.*)$/',
         'parameter' => 'token',
         'authenticator' => function($request, TokenAuthentication $tokenAuth) {
-            return (new \Services\Auth)->isLoggedIn();
+            return (new \Services\AuthService)->isLoggedIn();
         }
     ]));
 

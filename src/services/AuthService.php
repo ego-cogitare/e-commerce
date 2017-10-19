@@ -1,7 +1,7 @@
 <?php
     namespace Services;
     
-    class Auth 
+    class AuthService
     {
         private $user = null;
         
@@ -10,7 +10,7 @@
         }
         
         public function loginAttempt($username, $password) {
-            $user = \Admin\Models\User::fetchOne([
+            $user = \Models\User::fetchOne([
                 'username' => $username,
             ]);
             

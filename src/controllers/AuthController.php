@@ -6,7 +6,7 @@
         private $auth = null;
         
         public function __construct() {
-            $this->auth = new \Services\Auth();
+            $this->auth = new \Services\AuthService();
         }
         
         public function __invoke($request, $response, $args) 

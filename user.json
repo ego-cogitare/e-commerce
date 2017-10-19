@@ -1,0 +1,10 @@
+{
+    "firstname" : "Alexander",
+    "lastname" : "Bogish",
+    "username" : "ego.cogitare@gmail.com",
+    "password" : "$2y$10$UtMFLB6SlgSBU7QayEEL.OT3wqiH8a195IxdoIGB7FShIwpHVtwKG",
+    "roleId" : ObjectId("59e78a9128942c33a17209c4"),
+    "isActive" : true,
+    "isDeleted" : false,
+    "createdAt" : 0
+}

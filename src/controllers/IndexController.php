@@ -1,5 +1,5 @@
 <?php
-    namespace Admin\Controllers;
+    namespace Controllers;
 
     class IndexController
     {
@@ -9,7 +9,7 @@
             $params = $request->getParams();
             
             return $response->withStatus(200)->write(
-                json_encode(\Admin\Models\User::fetchAll()->toArray())
+                json_encode(\Models\User::fetchAll()->toArray())
             );
         }
     }
