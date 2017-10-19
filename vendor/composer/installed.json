@@ -330,5 +330,775 @@
                 "email": "execrot@gmail.com"
             }
         ]
+    },
+    {
+        "name": "oscarotero/psr7-middlewares",
+        "version": "v3.21.1",
+        "version_normalized": "3.21.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/oscarotero/psr7-middlewares.git",
+            "reference": "639c87ddf9647224b9d3f93899276cc25a7a1aa9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/oscarotero/psr7-middlewares/zipball/639c87ddf9647224b9d3f93899276cc25a7a1aa9",
+            "reference": "639c87ddf9647224b9d3f93899276cc25a7a1aa9",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.0"
+        },
+        "require-dev": {
+            "aura/router": "^3.0",
+            "aura/session": "2.*",
+            "ext-mcrypt": "*",
+            "filp/whoops": "2.*",
+            "friendsofphp/php-cs-fixer": "^1.12",
+            "google/recaptcha": "^1.1",
+            "imagecow/imagecow": "^2.0",
+            "justinrainbow/json-schema": ">=3.0",
+            "league/route": "^2.0",
+            "m6web/firewall": "~1.0",
+            "matthiasmullie/scrapbook": "^1.0.1",
+            "maximebf/debugbar": "~1.11",
+            "micheh/psr7-cache": "^0.5.0",
+            "mikey179/vfsstream": "^1.6",
+            "mobiledetect/mobiledetectlib": "^2.8",
+            "monolog/monolog": "^1.17",
+            "mrclay/minify": "^2.2",
+            "neomerx/cors-psr7": "^1.0",
+            "nikic/fast-route": "^0.7",
+            "paragonie/csp-builder": "^1.3",
+            "phpunit/phpunit": ">=4.8",
+            "piwik/referrer-spam-blacklist": "^1.0",
+            "ramsey/uuid": "^3.1",
+            "relay/relay": "1.*",
+            "willdurand/geocoder": "^3.2",
+            "willdurand/negotiation": "~2.0",
+            "zendframework/zend-diactoros": "1.*"
+        },
+        "suggest": {
+            "aura/router": "To use AuraRouter",
+            "aura/session": "To use AuraSession",
+            "filp/whoops": "To use Whoops",
+            "google/recaptcha": "To use Recaptcha",
+            "imagecow/imagecow": "To use ImageTransformer",
+            "justinrainbow/json-schema": "To validate JSON with route-matched schemas.",
+            "league/route": "To use LeagueRoute",
+            "m6web/firewall": "To use Firewall",
+            "maximebf/debugbar": "To use DebugBar",
+            "micheh/psr7-cache": "To use Cache",
+            "mobiledetect/mobiledetectlib": "To use DetectDevice",
+            "mrclay/minify": "To use Minify",
+            "neomerx/cors-psr7": "To use Cors",
+            "nikic/fast-route": "To use FastRoute",
+            "paragonie/csp-builder": "To use Csp",
+            "piwik/referrer-spam-blacklist": "To use BlockSpam",
+            "psr/cache-implementation": "To use Cache",
+            "psr/log-implementation": "To use AccessLog",
+            "ramsey/uuid": "To use Uuid",
+            "willdurand/geocoder": "To use Geolocate",
+            "willdurand/negotiation": "To use FormatNegotiator, LanguageNegotiator and EncodingNegotiator"
+        },
+        "time": "2017-09-28 21:21:24",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Psr7Middlewares\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Oscar Otero",
+                "email": "oom@oscarotero.com",
+                "homepage": "http://oscarotero.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "Collection of HTTP middlewares compatible with PSR-7",
+        "homepage": "https://github.com/oscarotero/psr7-middlewares",
+        "keywords": [
+            "http",
+            "middlewares",
+            "psr-7",
+            "psr-messages"
+        ]
+    },
+    {
+        "name": "tuupola/slim-basic-auth",
+        "version": "2.3.0",
+        "version_normalized": "2.3.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/tuupola/slim-basic-auth.git",
+            "reference": "0015eb872edf4796c71feaa127b3886884bb7ca6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/tuupola/slim-basic-auth/zipball/0015eb872edf4796c71feaa127b3886884bb7ca6",
+            "reference": "0015eb872edf4796c71feaa127b3886884bb7ca6",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5 || ^7.0",
+            "psr/http-message": "^1.0"
+        },
+        "require-dev": {
+            "overtrue/phplint": "^0.2.4",
+            "phpunit/phpunit": "^4.3",
+            "squizlabs/php_codesniffer": "^2.3",
+            "zendframework/zend-diactoros": "^1.3"
+        },
+        "time": "2017-09-19 12:46:08",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Slim\\Middleware\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Mika Tuupola",
+                "email": "tuupola@appelsiini.net",
+                "homepage": "http://www.appelsiini.net/"
+            }
+        ],
+        "description": "PSR-7 HTTP Basic Authentication Middleware",
+        "homepage": "http://www.appelsiini.net/projects/slim-basic-auth",
+        "keywords": [
+            "auth",
+            "middleware",
+            "psr-7"
+        ]
+    },
+    {
+        "name": "zendframework/zend-stdlib",
+        "version": "2.7.7",
+        "version_normalized": "2.7.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-stdlib.git",
+            "reference": "0e44eb46788f65e09e077eb7f44d2659143bcc1f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/0e44eb46788f65e09e077eb7f44d2659143bcc1f",
+            "reference": "0e44eb46788f65e09e077eb7f44d2659143bcc1f",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5 || ^7.0",
+            "zendframework/zend-hydrator": "~1.1"
+        },
+        "require-dev": {
+            "athletic/athletic": "~0.1",
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "zendframework/zend-config": "~2.5",
+            "zendframework/zend-eventmanager": "~2.5",
+            "zendframework/zend-filter": "~2.5",
+            "zendframework/zend-inputfilter": "~2.5",
+            "zendframework/zend-serializer": "~2.5",
+            "zendframework/zend-servicemanager": "~2.5"
+        },
+        "suggest": {
+            "zendframework/zend-eventmanager": "To support aggregate hydrator usage",
+            "zendframework/zend-filter": "To support naming strategy hydrator usage",
+            "zendframework/zend-serializer": "Zend\\Serializer component",
+            "zendframework/zend-servicemanager": "To support hydrator plugin manager usage"
+        },
+        "time": "2016-04-12 21:17:31",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-release-2.7": "2.7-dev",
+                "dev-master": "3.0-dev",
+                "dev-develop": "3.1-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Stdlib\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "homepage": "https://github.com/zendframework/zend-stdlib",
+        "keywords": [
+            "stdlib",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-hydrator",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-hydrator.git",
+            "reference": "22652e1661a5a10b3f564cf7824a2206cf5a4a65"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendframework/zend-hydrator/zipball/22652e1661a5a10b3f564cf7824a2206cf5a4a65",
+            "reference": "22652e1661a5a10b3f564cf7824a2206cf5a4a65",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5 || ^7.0",
+            "zendframework/zend-stdlib": "^2.7 || ^3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.0",
+            "squizlabs/php_codesniffer": "^2.0@dev",
+            "zendframework/zend-eventmanager": "^2.6.2 || ^3.0",
+            "zendframework/zend-filter": "^2.6",
+            "zendframework/zend-inputfilter": "^2.6",
+            "zendframework/zend-serializer": "^2.6.1",
+            "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3"
+        },
+        "suggest": {
+            "zendframework/zend-eventmanager": "^2.6.2 || ^3.0, to support aggregate hydrator usage",
+            "zendframework/zend-filter": "^2.6, to support naming strategy hydrator usage",
+            "zendframework/zend-serializer": "^2.6.1, to use the SerializableStrategy",
+            "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3, to support hydrator plugin manager usage"
+        },
+        "time": "2016-02-18 22:38:26",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-release-1.0": "1.0-dev",
+                "dev-release-1.1": "1.1-dev",
+                "dev-master": "2.0-dev",
+                "dev-develop": "2.1-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Hydrator\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "homepage": "https://github.com/zendframework/zend-hydrator",
+        "keywords": [
+            "hydrator",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-eventmanager",
+        "version": "2.6.3",
+        "version_normalized": "2.6.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-eventmanager.git",
+            "reference": "3d41b6129fb4916d483671cea9f77e4f90ae85d3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/3d41b6129fb4916d483671cea9f77e4f90ae85d3",
+            "reference": "3d41b6129fb4916d483671cea9f77e4f90ae85d3",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5 || ^7.0",
+            "zendframework/zend-stdlib": "^2.7"
+        },
+        "require-dev": {
+            "athletic/athletic": "dev-master",
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0"
+        },
+        "time": "2016-02-18 20:49:05",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-release-2.6": "2.6-dev",
+                "dev-master": "3.0-dev",
+                "dev-develop": "3.1-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\EventManager\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "homepage": "https://github.com/zendframework/zend-eventmanager",
+        "keywords": [
+            "eventmanager",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-session",
+        "version": "2.5.1",
+        "version_normalized": "2.5.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-session.git",
+            "reference": "986b1507b9f13ea3dc16e3cb44a4d7f9c882de80"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendframework/zend-session/zipball/986b1507b9f13ea3dc16e3cb44a4d7f9c882de80",
+            "reference": "986b1507b9f13ea3dc16e3cb44a4d7f9c882de80",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.23",
+            "zendframework/zend-eventmanager": "~2.5",
+            "zendframework/zend-stdlib": "~2.5"
+        },
+        "require-dev": {
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "zendframework/zend-cache": "~2.5",
+            "zendframework/zend-db": "~2.5",
+            "zendframework/zend-http": "~2.5",
+            "zendframework/zend-servicemanager": "~2.5",
+            "zendframework/zend-validator": "~2.5"
+        },
+        "suggest": {
+            "zendframework/zend-cache": "Zend\\Cache component",
+            "zendframework/zend-db": "Zend\\Db component",
+            "zendframework/zend-eventmanager": "Zend\\EventManager component",
+            "zendframework/zend-http": "Zend\\Http component",
+            "zendframework/zend-servicemanager": "Zend\\ServiceManager component",
+            "zendframework/zend-validator": "Zend\\Validator component"
+        },
+        "time": "2015-06-03 15:32:03",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.5-dev",
+                "dev-develop": "2.6-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Session\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "manage and preserve session data, a logical complement of cookie data, across multiple page requests by the same client",
+        "homepage": "https://github.com/zendframework/zend-session",
+        "keywords": [
+            "session",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-permissions-acl",
+        "version": "2.5.1",
+        "version_normalized": "2.5.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-permissions-acl.git",
+            "reference": "7f1aac3bf99d0be8f71fe4ae79981338be8a08dc"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendframework/zend-permissions-acl/zipball/7f1aac3bf99d0be8f71fe4ae79981338be8a08dc",
+            "reference": "7f1aac3bf99d0be8f71fe4ae79981338be8a08dc",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.23"
+        },
+        "require-dev": {
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "zendframework/zend-di": "~2.5",
+            "zendframework/zend-servicemanager": "~2.5"
+        },
+        "suggest": {
+            "zendframework/zend-servicemanager": "To support Zend\\Permissions\\Acl\\Assertion\\AssertionManager plugin manager usage"
+        },
+        "time": "2015-06-03 15:32:02",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.5-dev",
+                "dev-develop": "2.6-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Permissions\\Acl\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "provides a lightweight and flexible access control list (ACL) implementation for privileges management",
+        "homepage": "https://github.com/zendframework/zend-permissions-acl",
+        "keywords": [
+            "acl",
+            "zf2"
+        ]
+    },
+    {
+        "name": "zendframework/zend-authentication",
+        "version": "2.5.1",
+        "version_normalized": "2.5.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zendframework/zend-authentication.git",
+            "reference": "7078362a412d5c4ef0e961551f97027eb9aa3152"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/zendframework/zend-authentication/zipball/7078362a412d5c4ef0e961551f97027eb9aa3152",
+            "reference": "7078362a412d5c4ef0e961551f97027eb9aa3152",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.23",
+            "zendframework/zend-stdlib": "~2.5"
+        },
+        "require-dev": {
+            "fabpot/php-cs-fixer": "1.7.*",
+            "phpunit/phpunit": "~4.0",
+            "zendframework/zend-crypt": "~2.5",
+            "zendframework/zend-db": "~2.5",
+            "zendframework/zend-http": "~2.5",
+            "zendframework/zend-ldap": "~2.5",
+            "zendframework/zend-session": "~2.5",
+            "zendframework/zend-uri": "~2.5",
+            "zendframework/zend-validator": "~2.5"
+        },
+        "suggest": {
+            "zendframework/zend-crypt": "Zend\\Crypt component",
+            "zendframework/zend-db": "Zend\\Db component",
+            "zendframework/zend-http": "Zend\\Http component",
+            "zendframework/zend-ldap": "Zend\\Ldap component",
+            "zendframework/zend-session": "Zend\\Session component",
+            "zendframework/zend-uri": "Zend\\Uri component",
+            "zendframework/zend-validator": "Zend\\Validator component"
+        },
+        "time": "2015-06-03 15:31:59",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.5-dev",
+                "dev-develop": "2.6-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Zend\\Authentication\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "provides an API for authentication and includes concrete authentication adapters for common use case scenarios",
+        "homepage": "https://github.com/zendframework/zend-authentication",
+        "keywords": [
+            "Authentication",
+            "zf2"
+        ]
+    },
+    {
+        "name": "wp-cli/php-cli-tools",
+        "version": "v0.10.5",
+        "version_normalized": "0.10.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wp-cli/php-cli-tools.git",
+            "reference": "037a010441a5c220cd1df26cdc9b20ad73408356"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wp-cli/php-cli-tools/zipball/037a010441a5c220cd1df26cdc9b20ad73408356",
+            "reference": "037a010441a5c220cd1df26cdc9b20ad73408356",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">= 5.3.0"
+        },
+        "time": "2015-08-10 12:46:19",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "cli": "lib/"
+            },
+            "files": [
+                "lib/cli/cli.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "James Logsdon",
+                "email": "jlogsdon@php.net",
+                "role": "Developer"
+            },
+            {
+                "name": "Daniel Bachhuber",
+                "email": "daniel@handbuilt.co",
+                "role": "Maintainer"
+            }
+        ],
+        "description": "Console utilities for PHP",
+        "homepage": "http://github.com/wp-cli/php-cli-tools",
+        "keywords": [
+            "cli",
+            "console"
+        ]
+    },
+    {
+        "name": "ircmaxell/password-compat",
+        "version": "v1.0.4",
+        "version_normalized": "1.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ircmaxell/password_compat.git",
+            "reference": "5c5cde8822a69545767f7c7f3058cb15ff84614c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ircmaxell/password_compat/zipball/5c5cde8822a69545767f7c7f3058cb15ff84614c",
+            "reference": "5c5cde8822a69545767f7c7f3058cb15ff84614c",
+            "shasum": ""
+        },
+        "require-dev": {
+            "phpunit/phpunit": "4.*"
+        },
+        "time": "2014-11-20 16:49:30",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "lib/password.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Anthony Ferrara",
+                "email": "ircmaxell@php.net",
+                "homepage": "http://blog.ircmaxell.com"
+            }
+        ],
+        "description": "A compatibility library for the proposed simplified password hashing algorithm: https://wiki.php.net/rfc/password_hash",
+        "homepage": "https://github.com/ircmaxell/password_compat",
+        "keywords": [
+            "hashing",
+            "password"
+        ]
+    },
+    {
+        "name": "jeremykendall/password-validator",
+        "version": "3.0.4",
+        "version_normalized": "3.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jeremykendall/password-validator.git",
+            "reference": "d587cda384a4e272ae979c1271eb74559b02f401"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/jeremykendall/password-validator/zipball/d587cda384a4e272ae979c1271eb74559b02f401",
+            "reference": "d587cda384a4e272ae979c1271eb74559b02f401",
+            "shasum": ""
+        },
+        "require": {
+            "ircmaxell/password-compat": "1.*",
+            "php": ">=5.3.7",
+            "wp-cli/php-cli-tools": "0.10.*"
+        },
+        "require-dev": {
+            "league/phpunit-coverage-listener": "~1.1",
+            "phpunit/phpunit": "4.*"
+        },
+        "time": "2016-01-26 11:36:57",
+        "bin": [
+            "bin/cost-check",
+            "bin/version-check"
+        ],
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "JeremyKendall\\Password\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jeremy Kendall",
+                "homepage": "http://about.me/jeremykendall",
+                "role": "Developer"
+            }
+        ],
+        "description": "Password Validator validates password_hash generated passwords, rehashes passwords as necessary, and will upgrade legacy passwords.",
+        "homepage": "https://github.com/jeremykendall/password-validator",
+        "keywords": [
+            "password",
+            "password validation",
+            "password validator",
+            "password_hash",
+            "passwords",
+            "security"
+        ]
+    },
+    {
+        "name": "jeremykendall/slim-auth",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jeremykendall/slim-auth.git",
+            "reference": "53d80c4236621b3dd79a4a3302b91a6e102fa1eb"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/jeremykendall/slim-auth/zipball/53d80c4236621b3dd79a4a3302b91a6e102fa1eb",
+            "reference": "53d80c4236621b3dd79a4a3302b91a6e102fa1eb",
+            "shasum": ""
+        },
+        "require": {
+            "jeremykendall/password-validator": "3.*",
+            "php": ">=5.3.7",
+            "zendframework/zend-authentication": "2.5.1",
+            "zendframework/zend-permissions-acl": "2.5.1",
+            "zendframework/zend-session": "2.5.1"
+        },
+        "require-dev": {
+            "jeremykendall/debug-die": "0.0.1.*",
+            "league/phpunit-coverage-listener": "~1.1",
+            "phpunit/phpunit": "4.*",
+            "slim/slim": "^2.4.2"
+        },
+        "suggest": {
+            "zendframework/zend-db": "For the Zend\\Authentication\\Adapter\\DbTable adapters."
+        },
+        "time": "2016-01-18 16:55:36",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "JeremyKendall\\Slim\\Auth\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jeremy Kendall",
+                "homepage": "http://about.me/jeremykendall",
+                "role": "Developer"
+            }
+        ],
+        "description": "Authorization and authentication for the Slim Framework using ZF2 Authentication and Acl components",
+        "homepage": "https://github.com/jeremykendall/slim-auth",
+        "keywords": [
+            "Authentication",
+            "Zend Framework",
+            "auth",
+            "authorization",
+            "slim",
+            "slim framework",
+            "zend",
+            "zf2"
+        ]
+    },
+    {
+        "name": "dyorg/slim-token-authentication",
+        "version": "0.3.3",
+        "version_normalized": "0.3.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/dyorg/slim-token-authentication.git",
+            "reference": "08847d3ce38e47c422d46389886d0bd8bf4a9cb2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/dyorg/slim-token-authentication/zipball/08847d3ce38e47c422d46389886d0bd8bf4a9cb2",
+            "reference": "08847d3ce38e47c422d46389886d0bd8bf4a9cb2",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.6",
+            "squizlabs/php_codesniffer": "~2.3",
+            "zendframework/zend-diactoros": "^1.3"
+        },
+        "time": "2016-12-23 21:14:24",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Slim\\Middleware\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Dyorg Almeida",
+                "email": "dyorg@rabbiit.com",
+                "homepage": "https://rabbiit.com/",
+                "role": "Developer"
+            }
+        ],
+        "description": "Slim 3.0+ Token Authentication Middleware",
+        "homepage": "https://github.com/dyorg/slim-token-authentication",
+        "keywords": [
+            "Authentication",
+            "auth",
+            "authorization",
+            "middleware",
+            "slim",
+            "token"
+        ]
     }
 ]

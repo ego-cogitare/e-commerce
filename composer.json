@@ -7,6 +7,8 @@
     ],
     "require": {
         "slim/slim": "3.7",
-        "mongostar/php7": "master-dev"
+        "mongostar/php7": "master-dev",
+        "oscarotero/psr7-middlewares": "^3.21",
+        "dyorg/slim-token-authentication": "^0.3.3"
     }
 }

@@ -1,22 +1,30 @@
-<?php    
+<?php
+    use Psr7Middlewares\Middleware\TrailingSlash;
+    use Slim\Middleware\TokenAuthentication;
+    
     require_once 'vendor/autoload.php';
     
-    /**
-     * Include all models
-     */
-    $models = glob(__DIR__ . '/src/models/*.php');
-    foreach ($models as $model) {
-        require_once $model;   
-    }
+    session_start();
     
     /**
-     * Include all controllers
+     * Include all models, controllers, etc...
      */
-    $controllers = glob(__DIR__ . '/src/controllers/*.php');
-    foreach ($controllers as $controller) {
-        require_once $controller;   
+    $includes = [
+        __DIR__ . '/src/models/store/*.php',
+        __DIR__ . '/src/models/admin/*.php',
+        
+        __DIR__ . '/src/controllers/*.php',
+        __DIR__ . '/src/controllers/store/*.php',
+        __DIR__ . '/src/controllers/admin/*.php',
+        
+        __DIR__ . '/src/services/*.php',
+    ];
+    foreach ($includes as $pattern) {
+        foreach (glob($pattern) as $script) {
+            require_once $script;
+        }
     }
-    
+
     $config = [
 	'settings' => [
             'displayErrorDetails' => true,
@@ -35,22 +43,36 @@
             'mongo' => [
                 'driver' => 'mongodb',
                 'servers' => [
-                    ['host' => '192.168.0.2', 'port' => '27017'],
+                    [
+                        'host' => 'mongodb.loc', 
+                        'port' => '27017'
+                    ],
                 ],
                 'db' => 'e_commerce',
             ],
 	],
     ];
-    
+
     MongoStar\Config::setConfig($config['settings']['mongo']);
-    
+
     $app = new \Slim\App($config);
+    
+    // Remove trailing slashes to all routes
+    $app->add(new TrailingSlash(false));
     
     require_once __DIR__ . '/src/routes.php';
     
+    $app->add(new TokenAuthentication([
+        'path' => '/admin',
+        'secure' => false,
+        'regex' => '/^(.*)$/',
+        'parameter' => 'token',
+        'authenticator' => function($request, TokenAuthentication $tokenAuth) {
+            return (new \Services\Auth)->isLoggedIn();
+        }
+    ]));
+
     /**
      * Instantiate app
      */
-    return $app;    
-    
-
+    return $app;

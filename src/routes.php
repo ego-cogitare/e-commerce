@@ -1,3 +1,6 @@
 <?php
-    $app->get('/home/', 'HomeController::index');
+    $app->post('/{_:logout|login}', '\Controllers\AuthController');
+    
+    $app->get('/admin', 'Admin\Controllers\IndexController::index');
+    
 
