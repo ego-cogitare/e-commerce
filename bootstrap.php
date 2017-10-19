@@ -67,6 +67,11 @@
             return (new \Services\AuthService)->isLoggedIn();
         }
     ]));
+    
+    $app->add(function($request, $response, $next) {
+        $response = $next($request, $response);
+        return $response->withHeader('Content-Type', 'application/json');
+    });
 
     /**
      * Instantiate app

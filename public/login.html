@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('FORM').on('submit', function(e) {
+                    e.preventDefault();
+                    
+                    $.post('/login', $(this).serialize(), function() {
+                        console.log('Logged in');
+                    });
+                });
+                
+                $('.logout').on('click', function() {
+                    $.post('/logout', {}, function() {
+                        console.log('Logged out');
+                    });
+                });
+                
+                $('.fetch').on('click', function() {
+                    $.get('/', {}, function(response) {
+                        console.log(response);
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div>Login</div>
+        <form action="/login">
+            <input type="text" name="username"/>
+            <br/>
+            <input type="text" name="password" />
+            <br/>
+            <button type="submit">Login</button>
+            <a href="#" class="logout">Logout</a>
+        </form>
+        <br/>
+        <a href="#" class="fetch">Fetch data</a>
+        <br/>
+    </body>
+</html>

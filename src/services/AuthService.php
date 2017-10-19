@@ -21,7 +21,7 @@
             if (password_verify($password, $user->password)) {
                 $this->login($user->toArray());
                 
-                return true;
+                return $user->toArray();
             }
             
             return false;
