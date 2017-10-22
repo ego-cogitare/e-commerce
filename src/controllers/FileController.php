@@ -21,18 +21,34 @@
             
             $uploadedFiles = $request->getUploadedFiles();
             $uploadedFile = $uploadedFiles['uploadFile'];
-            
+
             if ($uploadedFile->getError() === UPLOAD_ERR_OK) 
             {
-                $filename = $this->moveUploadedFile($directory, $uploadedFile);
+                // Create file record
+                $media = $this->addMediaRecord([
+                    'name' => $this->moveUploadedFile($directory, $uploadedFile),
+                    'path' => $path,
+                    'size' => $uploadedFile->getSize(),
+                    'type' => $uploadedFile->getClientMediaType(),
+                ]);
                 
                 return $response->write(
-                    json_encode([
-                        'name' => $filename,
-                        'path' => $path
-                    ])
+                    json_encode($media->toArray())
                 );
             }
+        }
+        
+        private function addMediaRecord(array $file) 
+        {
+            $media = new \Models\Media();
+            $media->name = $file['name'];
+            $media->path = $file['path'];
+            $media->type = $file['type'];
+            $media->size = $file['size'];
+            $media->isDeleted = false;
+            $media->save();
+            
+            return $media;
         }
         
         private function moveUploadedFile($directory, \Slim\Http\UploadedFile $uploadedFile)
