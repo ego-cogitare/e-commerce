@@ -59,7 +59,7 @@
     
     $app->add(new TokenAuthentication([
         'path' => '',
-        'passthrough' => ['/login', '/logout'],
+        'passthrough' => ['/login', '/logout', '/file'],
         'secure' => false,
         'regex' => '/^(.*)$/',
         'parameter' => 'token',
