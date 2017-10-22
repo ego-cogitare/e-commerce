@@ -13,17 +13,65 @@
             );
         }
         
+        public function get($request, $response, $args) 
+        {
+            $brand = \Models\Brand::fetchOne([
+                'id' => $args['id']
+            ]);
+            
+            if (empty($brand)) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Брэнд не найден'
+                    ])
+                );
+            }
+            
+            $pictures = $brand->pictures ?? [];
+            
+            $pictures = array_map(function($id) {
+                return \Models\Media::fetchOne([ 'id' => $id ])->toArray();
+            }, $pictures);
+            
+            $brand->pictures = $pictures;
+            
+            return $response->write(
+                json_encode($brand->toArray())
+            );
+        }
+        
         public function add($request, $response) 
         {
             $params = $request->getParams();
             
-//            if (empty($params['title'])) {
-//                return $response->withStatus(400)->write(
-//                    json_encode([
-//                        'error' => 'Пустое название брэнда недопустимо'
-//                    ])
-//                );
-//            }
+            if (empty($params['title']) && empty($params['pictures'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнено одно из обязательных полей'
+                    ])
+                );
+            }
+            
+            $brand = new \Models\Brand();
+            $brand->title = $params['title'];
+            $brand->save();
+            
+            return $response->write(
+                json_encode($brand->toArray())
+            );
+        }
+        
+        public function update($request, $response) 
+        {
+            $params = $request->getParams();
+            
+            if (empty($params['title']) && empty($params['pictures'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнено одно из обязательных полей'
+                    ])
+                );
+            }
             
             $brand = new \Models\Brand();
             $brand->title = $params['title'];
@@ -43,11 +91,7 @@
             ]);
             
             if (empty($brand)) {
-                return $response->withStatus(400)->write(
-                    json_encode([
-                        'error' => 'Брэнд не найден'
-                    ])
-                );
+                $brand = new \Models\Brand();
             }
             
             if (empty($params['pictureId'])) {
@@ -62,6 +106,10 @@
             $pictures[] = $params['pictureId'];
             $brand->pictures = $pictures;
             $brand->save();
+            
+            $brand->pictures = array_map(function($id) {
+                return \Models\Media::fetchOne([ 'id' => $id ])->toArray();
+            }, $pictures);
             
             return $response->write(
                 json_encode($brand->toArray())
