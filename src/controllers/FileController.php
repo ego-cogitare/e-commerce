@@ -3,9 +3,41 @@
 
     class FileController
     {
-        public function moveUploadedFile($directory, \Slim\Http\UploadedFile $uploadedFile)
+        private $settings;
+        
+        public function __construct($rdb) {
+            $this->settings = $rdb->get('settings');
+        }
+        
+        public function __invoke($request, $response, $args)
         {
-            if (true) 
+            // Get upload path
+            $path = $request->getParam('path');
+            
+            // Server store directory
+            $directory = '/' 
+                . trim($this->settings['files']['upload']['directory'] 
+                . '/' . trim($path, '/'), '/');
+            
+            $uploadedFiles = $request->getUploadedFiles();
+            $uploadedFile = $uploadedFiles['uploadFile'];
+            
+            if ($uploadedFile->getError() === UPLOAD_ERR_OK) 
+            {
+                $filename = $this->moveUploadedFile($directory, $uploadedFile);
+                
+                return $response->write(
+                    json_encode([
+                        'name' => $filename,
+                        'path' => $path
+                    ])
+                );
+            }
+        }
+        
+        private function moveUploadedFile($directory, \Slim\Http\UploadedFile $uploadedFile)
+        {
+            if (!empty($this->settings['files']['upload']['keepNames']))
             {
                 $filename = $uploadedFile->getClientFilename();
             }
@@ -19,23 +51,5 @@
             $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
 
             return $filename;
-        }
-        
-        public function __invoke($request, $response, $args)
-        {
-            $directory = __DIR__ . '/../../public/uploads';
-            $uploadedFiles = $request->getUploadedFiles();
-            $uploadedFile = $uploadedFiles['uploadFile'];
-            
-            if ($uploadedFile->getError() === UPLOAD_ERR_OK) 
-            {
-                $filename = $this->moveUploadedFile($directory, $uploadedFile);
-                
-                return $response->write(
-                    json_encode([
-                        'file' => $filename
-                    ])
-                );
-            }
         }
     }

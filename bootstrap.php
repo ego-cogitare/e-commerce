@@ -24,17 +24,6 @@
 	'settings' => [
             'displayErrorDetails' => true,
             'determineRouteBeforeAppMiddleware' => false,
-            'mysql' => [
-                'driver' => 'mysql',
-                'host' => '192.168.0.2',
-                'port' => '3306',
-                'database' => 'e_commerce',
-                'username' => 'root',
-                'password' => '12345',
-                'charset' => 'utf8',
-                'collation' => 'utf8_unicode_ci',
-                'prefix' => ''
-            ],
             'mongo' => [
                 'driver' => 'mongodb',
                 'servers' => [
@@ -45,6 +34,15 @@
                 ],
                 'db' => 'e_commerce',
             ],
+            'files' => [
+                'upload' => [
+                    // Keep original file names
+                    'keepNames' => true,
+                    
+                    // Destination directory to upload files
+                    'directory' => __DIR__ . '/public'
+                ]
+            ]
 	],
     ];
 
