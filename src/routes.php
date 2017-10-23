@@ -6,10 +6,10 @@
     $app->get('/users', '\Controllers\UsersController::index');
     
     $app->get('/brand/list', '\Controllers\BrandController::index');
+    $app->get('/brand/get/{id}', '\Controllers\BrandController::get');
     $app->post('/brand/add', '\Controllers\BrandController::add');
     $app->post('/brand/add-picture', '\Controllers\BrandController::addPicture');
-    $app->get('/brand/get/{id}', '\Controllers\BrandController::get');
     $app->post('/brand/update/{id}', '\Controllers\BrandController::update');
-    $app->delete('/brand/delete/{id}', '\Controllers\BrandController::delete');
+    $app->post('/brand/remove/{id}', '\Controllers\BrandController::remove');
     
     $app->post('/file/upload', '\Controllers\FileController');

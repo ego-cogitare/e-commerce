@@ -10,7 +10,7 @@ namespace Models;
  *
  * @property string     $id       
  * @property string     $title
- * @property array      $pictureId
+ * @property string     $pictureId
  * @property array      $pictures
  * @property boolean    $isDeleted
  *
