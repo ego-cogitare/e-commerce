@@ -32,7 +32,7 @@
             ]);
             
             if (empty($brand)) {
-                return $response->withStatus(400)->write(
+                return $response->withStatus(404)->write(
                     json_encode([
                         'error' => 'Брэнд не найден'
                     ])

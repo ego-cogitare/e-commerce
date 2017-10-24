@@ -29,3 +29,13 @@
      */
     $app->get('/settings/{action}', '\Controllers\SettingsController');
     $app->post('/settings/update/{action}', '\Controllers\SettingsController');
+    
+    /**
+     * Product routes
+     */
+    $app->get('/product/{action}[/{id}]', '\Controllers\ProductController');
+    
+    /**
+     * Category routes
+     */
+    $app->get('/category/{action}[/{id}]', '\Controllers\CategoryController');
