@@ -10,6 +10,7 @@ namespace Models;
  *
  * @property string     $id       
  * @property string     $title
+ * @property string     $description
  * @property boolean    $isDeleted
  * @property array      $settings
  *
