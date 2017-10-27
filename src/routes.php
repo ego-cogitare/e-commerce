@@ -43,4 +43,5 @@
     $app->get('/category/list', '\Controllers\CategoryController::index');
     $app->get('/category/get/{id}', '\Controllers\CategoryController::get');
     $app->post('/category/add', '\Controllers\CategoryController::add');
-    $app->post('/category/{action:update|delete}/{id}', '\Controllers\CategoryController');
+    $app->post('/category/update/{id}', '\Controllers\CategoryController::update');
+    $app->post('/category/remove/{id}', '\Controllers\CategoryController::remove');

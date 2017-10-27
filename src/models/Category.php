@@ -8,11 +8,14 @@ namespace Models;
  *
  * @primary id
  *
- * @property string     $id       
+ * @property string     $id
+ * @property string     $parrentId
  * @property string     $title
  * @property string     $description
  * @property boolean    $isDeleted
- * @property array      $settings
+ * @property boolean    $isHidden
+ * @property float      $discount
+ * @property string     $discountType
  *
  * @method void save()
  */
