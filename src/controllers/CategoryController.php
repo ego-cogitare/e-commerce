@@ -4,21 +4,23 @@
     class CategoryController
     {
         private $categoryTree = [];
+        private $keyPrefix = 'categories-container::';
         
         private function _fetchBranch($categories) 
         {
+            
             foreach ($categories as $category) 
             {
                 if (empty($category['parrentId'])) 
                 {
                     $this->categoryTree[] = array_merge($category, [
-                        'categories' => '_' . $category['id']
+                        'categories' => $this->keyPrefix . $category['id']
                     ]);
                 }
                 else 
                 {
-                    array_walk_recursive($this->categoryTree, function(&$value) use ($categories) {
-                        if ($value === '_' . $categories[0]['parrentId']) {
+                    array_walk_recursive($this->categoryTree, function(&$value) use ($categories, $category) {
+                        if ($value === $this->keyPrefix . $category['parrentId']) {
                             $value = $categories;
                         }
                     });
@@ -38,7 +40,7 @@
                 $categories = array_map(function($category) {
                    return array_merge(
                        $category, 
-                       ['categories' => '_' . $category['id']]
+                       ['categories' => $this->keyPrefix . $category['id']]
                    );
                 }, $categories->toArray());
 
@@ -76,6 +78,12 @@
                     foreach ($categories as $category) {
                         $this->_fetchBranch([$category->toArray()]);
                     }
+                    
+                    array_walk_recursive($this->categoryTree, function(&$value) {
+                        if (preg_match("/^{$this->keyPrefix}\w+$/", $value)) {
+                            $value = [];
+                        }
+                    });
                     
                     return $response->write(
                         json_encode($this->categoryTree)
