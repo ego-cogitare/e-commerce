@@ -3,6 +3,49 @@
     
     class CategoryController
     {
+        private $categoryTree = [];
+        
+        private function _fetchBranch($categories) 
+        {
+            foreach ($categories as $category) 
+            {
+                if (empty($category['parrentId'])) 
+                {
+                    $this->categoryTree[] = array_merge($category, [
+                        'categories' => '_' . $category['id']
+                    ]);
+                }
+                else 
+                {
+                    array_walk_recursive($this->categoryTree, function(&$value) use ($categories) {
+                        if ($value === '_' . $categories[0]['parrentId']) {
+                            $value = $categories;
+                        }
+                    });
+                    //break;
+                }
+                
+               /**
+                * Looking for children categories
+                */
+                $categories = \Models\Category::fetchAll([
+                   'isDeleted' => [
+                       '$ne' => true
+                   ],
+                   'parrentId' => $category['id']
+                ]);
+
+                $categories = array_map(function($category) {
+                   return array_merge(
+                       $category, 
+                       ['categories' => '_' . $category['id']]
+                   );
+                }, $categories->toArray());
+
+                $this->_fetchBranch($categories);
+            }
+        }
+        
         public function index($request, $response)
         {
             $limit = $request->getParam('limit');
@@ -17,6 +60,28 @@
             return $response->write(
                 json_encode($categories->toArray())
             );
+        }
+        
+        public function __invoke($request, $response, $args) 
+        {
+            switch ($args['action']) {
+                case 'tree':
+                    $categories = \Models\Category::fetchAll([
+                        'isDeleted' => [
+                            '$ne' => true
+                        ],
+                        'parrentId' => ''
+                    ]);
+
+                    foreach ($categories as $category) {
+                        $this->_fetchBranch([$category->toArray()]);
+                    }
+                    
+                    return $response->write(
+                        json_encode($this->categoryTree)
+                    );
+                break;
+            }
         }
         
         public function get($request, $response, $args)

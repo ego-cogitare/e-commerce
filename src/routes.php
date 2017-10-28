@@ -39,8 +39,8 @@
      * Category routes
      */
 //    $app->map(['GET', 'POST'], '/category/{action}[/{id}]', '\Controllers\CategoryController');
-    
     $app->get('/category/list', '\Controllers\CategoryController::index');
+    $app->get('/category/{action}', '\Controllers\CategoryController');
     $app->get('/category/get/{id}', '\Controllers\CategoryController::get');
     $app->post('/category/add', '\Controllers\CategoryController::add');
     $app->post('/category/update/{id}', '\Controllers\CategoryController::update');
