@@ -12,13 +12,15 @@ namespace Models;
  * @property string     $title
  * @property array      $categories
  * @property array      $pictures
+ * @property string     $pictureId
  * @property string     $description
+ * @property array      $relatedProducts
  * @property boolean    $isNew
  * @property boolean    $isAction
- * @property array      $discount
+ * @property float      $discount
+ * @property string     $discountType
  * @property boolean    $isAvailable
  * @property int        $availableAmount
- * @property string     $currency
  * @property boolean    $isDeleted
  * @property int        $dateCreated
  *
