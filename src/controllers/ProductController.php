@@ -3,47 +3,97 @@
     
     class ProductController
     {
-        public function __invoke($request, $response, $args) 
+        private static function expandModel($model) 
         {
-            switch ($args['action']) {
-                case 'list':
-                    $products = \Models\Product::fetchAll([
-                        'isDeleted' => [
-                            '$ne' => true
-                        ]
-                    ]);
-                    
-                    return $response->write(
-                        json_encode($products->toArray())
-                    );
-                break;
-            
-                case 'get':
-                    $product = \Models\Product::fetchOne([
-                        'id' => $args['id'],
-                        'isDeleted' => [ 
-                            '$ne' => true 
-                        ]
-                    ]);
-
-                    if (empty($product)) {
-                        return $response->withStatus(404)->write(
-                            json_encode([
-                                'error' => 'Продукт не найден'
-                            ])
-                        );
-                    }
-                     
-                    return $response->write(
-                        json_encode($product->toArray())
-                    );
-                break;
-            
-                default:
-                    return $response->withStatus(404)->write(
-                        json_encode(['error' => 'Action not allowed'])
-                    );
-                break;
+             // Expand with related products
+            $relatedProducts = [];
+            if (count($model->relatedProducts) > 0) {
+                foreach ($model->relatedProducts as $relatedProductId) {
+                    $relatedProducts[] = \Models\Product::fetchOne([ 
+                        'id' => $relatedProductId 
+                    ])->toArray();
+                }
             }
+            $model->relatedProducts = $relatedProducts;
+            
+            // Expand with pictures
+            $pictures = [];
+            if (count($model->pictures) > 0) {
+                foreach ($model->pictures as $pictureId) {
+                    $pictures[] = \Models\Media::fetchOne([ 
+                        'id' => $pictureId 
+                    ])->toArray();
+                }
+            }
+            $model->pictures = $pictures;
+            
+            return $model;
+        }
+        
+        public function bootstrap($request, $response) 
+        {
+            $bootstrap = \Models\Product::fetchOne([
+                'isDeleted' => [
+                    '$ne' => true,
+                ],
+                'type' => 'bootstrap'
+            ]);
+            
+            if (empty($bootstrap)) {
+                $bootstrap = \Models\Product::getBootstrap();
+                $bootstrap->save();
+            }
+
+            return $response->write(
+                json_encode(self::expandModel($bootstrap)->toArray())
+            );
+        }
+        
+        public function update($request, $response, $args) 
+        {
+            $params = $request->getParams();
+            
+            if (empty($params['title']) || empty($params['pictures']) || empty($params['categories'])) 
+            {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнено одно из обязательных полей: название, описание, категории'
+                    ])
+                );
+            }
+            
+            $product = \Models\Product::fetchOne([ 
+                'id' => $args['id'],
+                'isDeleted' => [
+                    '$ne' => true 
+                ]
+            ]);
+            
+            if (empty($product)) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Продукт не найден'
+                    ])
+                );
+            }
+            
+            $product->type = 'final';
+            $product->title = $params['title'];
+            $product->description = $params['description'];
+            $product->isAvailable = filter_var($params['isAvailable'], FILTER_VALIDATE_BOOLEAN);
+            $product->isAuction = filter_var($params['isAuction'], FILTER_VALIDATE_BOOLEAN);
+            $product->isNovelty = filter_var($params['isNovelty'], FILTER_VALIDATE_BOOLEAN);
+            $product->categories = $params['categories'];
+            $product->relatedProducts = $params['relatedProducts'];
+            $product->pictures = $params['pictures'];
+            $product->discount = filter_var($params['discount'], FILTER_VALIDATE_FLOAT);
+            $product->discountType = $params['discountType'];
+            $product->isDeleted = false;
+            $product->dateCreated = time();
+            $product->save();
+            
+            return $response->write(
+                json_encode(self::expandModel($brand)->toArray())
+            );
         }
     }

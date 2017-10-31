@@ -31,17 +31,17 @@
     $app->post('/settings/update/{action}', '\Controllers\SettingsController');
     
     /**
-     * Product routes
-     */
-    $app->get('/product/{action}[/{id}]', '\Controllers\ProductController');
-    
-    /**
      * Category routes
      */
-//    $app->map(['GET', 'POST'], '/category/{action}[/{id}]', '\Controllers\CategoryController');
     $app->get('/category/list', '\Controllers\CategoryController::index');
     $app->get('/category/{action}', '\Controllers\CategoryController');
     $app->get('/category/get/{id}', '\Controllers\CategoryController::get');
     $app->post('/category/add', '\Controllers\CategoryController::add');
     $app->post('/category/update/{id}', '\Controllers\CategoryController::update');
     $app->post('/category/remove/{id}', '\Controllers\CategoryController::remove');
+    
+    /**
+     * Product routes
+     */
+    $app->get('/product/bootstrap', '\Controllers\ProductController::bootstrap');
+    $app->post('/product/update/{id}', '\Controllers\ProductController::update');
