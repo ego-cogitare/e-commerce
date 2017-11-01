@@ -42,6 +42,7 @@ class Product extends \MongoStar\Model {
         $bootstrap->categories = [];
         $bootstrap->relatedProducts = [];
         $bootstrap->pictures = [];
+        $bootstrap->pictureId = null;
         $bootstrap->discount = 0;
         $bootstrap->discountType = '';
         $bootstrap->dateCreated = time();
