@@ -43,6 +43,7 @@
     /**
      * Product routes
      */
+    $app->get('/product/list', '\Controllers\ProductController::index');
     $app->get('/product/bootstrap', '\Controllers\ProductController::bootstrap');
     $app->get('/product/get/{id}', '\Controllers\ProductController::get');
     $app->post('/product/update/{id}', '\Controllers\ProductController::update');

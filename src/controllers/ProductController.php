@@ -30,6 +30,29 @@
             return $model;
         }
         
+        public function index($request, $response)
+        {
+            $limit = $request->getParam('limit');
+            $offset = $request->getParam('offset');
+            
+            $products = \Models\Product::fetchAll([
+                'isDeleted' => [
+                    '$ne' => true
+                ],
+                'type' => 'final'
+            ]);
+            
+            $productsExpanded = [];
+            
+            foreach ($products as $product) {
+                $productsExpanded[] = self::expandModel($product)->toArray();
+            }
+            
+            return $response->write(
+                json_encode($productsExpanded)
+            );
+        }
+        
         public function bootstrap($request, $response) 
         {
             $bootstrap = \Models\Product::fetchOne([
@@ -75,7 +98,8 @@
         {
             $params = $request->getParams();
             
-            if (empty($params['title']) || empty($params['description']) /*|| empty($params['pictures'])*/ || empty($params['categories'])) 
+            if (empty($params['title']) || empty($params['description']) || 
+                empty($params['pictures']) || empty($params['categories'])) 
             {
                 return $response->withStatus(400)->write(
                     json_encode([
