@@ -32,15 +32,20 @@
         
         public function index($request, $response)
         {
-            $limit = $request->getParam('limit');
-            $offset = $request->getParam('offset');
+            $params = $request->getParams();
             
-            $products = \Models\Product::fetchAll([
+            $query = [
                 'isDeleted' => [
                     '$ne' => true
                 ],
                 'type' => 'final'
-            ]);
+            ];
+            
+            if (isset($params['filter'])) {
+                $query = array_merge($query, $params['filter']);
+            }
+            
+            $products = \Models\Product::fetchAll($query);
             
             $productsExpanded = [];
             
@@ -137,6 +142,70 @@
             $product->discountType = $params['discountType'];
             $product->isDeleted = false;
             $product->dateCreated = time();
+            $product->save();
+            
+            return $response->write(
+                json_encode(self::expandModel($product)->toArray())
+            );
+        }
+        
+        public function remove($request, $response, $args) 
+        {
+            $product = \Models\Product::fetchOne([ 
+                'id' => $args['id'],
+                'isDeleted' => [ 
+                    '$ne' => true 
+                ]
+            ]);
+            
+            if (empty($product)) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Продукт не найден'
+                    ])
+                );
+            }
+            
+            $product->isDeleted = true;
+            $product->save();
+            
+            return $response->write(
+                json_encode([
+                    'success' => true
+                ])
+            );
+        }
+        
+        public function addPicture($request, $response, $args) 
+        {
+            $params = $request->getParams();
+            
+            $product = \Models\Product::fetchOne([
+                'id' => $args['id'],
+                'isDeleted' => [ 
+                    '$ne' => true 
+                ]
+            ]);
+            
+            if (empty($product)) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Продукт не найден'
+                    ])
+                );
+            }
+            
+            if (empty($params['picture']['id'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Изображение не задано'
+                    ])
+                );
+            }
+            
+            $pictures = $product->pictures ?? [];
+            $pictures[] = $params['picture']['id'];
+            $product->pictures = $pictures;
             $product->save();
             
             return $response->write(
