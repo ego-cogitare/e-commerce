@@ -57,11 +57,12 @@
     
     $app->add(new TokenAuthentication([
         'path' => '',
-        'passthrough' => ['/login', '/logout', '/file'],
+        'passthrough' => ['/login', '/file'],
         'secure' => false,
         'regex' => '/^(.*)$/',
         'parameter' => 'token',
         'authenticator' => function($request, TokenAuthentication $tokenAuth) {
+            // $tokenAuth->findToken($request);
             return (new \Services\AuthService)->isLoggedIn();
         }
     ]));
