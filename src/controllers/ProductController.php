@@ -108,6 +108,7 @@
             $product->categories = $params['categories'] ?? [];
             $product->relatedProducts = $params['relatedProducts'] ?? [];
             $product->pictures = $params['pictures'] ?? [];
+            $product->pictureId = $params['pictureId'];
             $product->discount = filter_var($params['discount'], FILTER_VALIDATE_FLOAT);
             $product->discountType = $params['discountType'];
             $product->isDeleted = false;
