@@ -49,3 +49,12 @@
     $app->post('/product/update/{id}', '\Controllers\ProductController::update');
     $app->post('/product/remove/{id}', '\Controllers\ProductController::remove');
     $app->post('/product/add-picture/{id}', '\Controllers\ProductController::addPicture');
+    
+    /**
+     * Static pages routes
+     */
+    $app->get('/page/list', '\Controllers\PageController::index');
+    $app->get('/page/get/{id}', '\Controllers\PageController::get');
+    $app->post('/page/add', '\Controllers\PageController::add');
+    $app->post('/page/update/{id}', '\Controllers\PageController::update');
+    $app->post('/page/remove/{id}', '\Controllers\PageController::remove');
