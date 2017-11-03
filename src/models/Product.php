@@ -49,4 +49,48 @@ class Product extends \MongoStar\Model {
         
         return $bootstrap;
     }
+    
+    public function expand() 
+    {
+         // Expand with related products
+        $relatedProducts = [];
+        
+        if (count($this->relatedProducts) > 0) {
+            foreach ($this->relatedProducts as $relatedProductId) {
+                $relatedProducts[] = self::fetchOne([ 
+                    'id' => $relatedProductId 
+                ])->toArray();
+            }
+        }
+
+        if (count($relatedProducts) > 0) {
+            foreach ($relatedProducts as $key=>$product) {
+                $pictures = [];
+
+                if (count($product['pictures']) > 0) {
+                    foreach ($product['pictures'] as $pictureId) {
+                        $pictures[] = \Models\Media::fetchOne([ 
+                            'id' => $pictureId 
+                        ])->toArray();
+                    }
+                }
+                $relatedProducts[$key]['pictures'] = $pictures;
+            }
+        }
+
+        $this->relatedProducts = $relatedProducts;
+
+        // Expand with pictures
+        $pictures = [];
+        if (count($this->pictures) > 0) {
+            foreach ($this->pictures as $pictureId) {
+                $pictures[] = \Models\Media::fetchOne([ 
+                    'id' => $pictureId 
+                ])->toArray();
+            }
+        }
+        $this->pictures = $pictures;
+
+        return $this;
+    }
 }

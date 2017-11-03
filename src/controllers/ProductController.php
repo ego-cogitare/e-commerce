@@ -3,33 +3,6 @@
     
     class ProductController
     {
-        private static function expandModel($model) 
-        {
-             // Expand with related products
-            $relatedProducts = [];
-            if (count($model->relatedProducts) > 0) {
-                foreach ($model->relatedProducts as $relatedProductId) {
-                    $relatedProducts[] = \Models\Product::fetchOne([ 
-                        'id' => $relatedProductId 
-                    ])->toArray();
-                }
-            }
-            $model->relatedProducts = $relatedProducts;
-            
-            // Expand with pictures
-            $pictures = [];
-            if (count($model->pictures) > 0) {
-                foreach ($model->pictures as $pictureId) {
-                    $pictures[] = \Models\Media::fetchOne([ 
-                        'id' => $pictureId 
-                    ])->toArray();
-                }
-            }
-            $model->pictures = $pictures;
-            
-            return $model;
-        }
-        
         public function index($request, $response)
         {
             $params = $request->getParams();
@@ -45,16 +18,20 @@
                 $query = array_merge($query, $params['filter']);
             }
             
-            $products = \Models\Product::fetchAll($query);
+            $sort = null;
             
-            $productsExpanded = [];
+            if (isset($params['sort'])) {
+                $sort = array_map('intval', $params['sort']);
+            }
             
-            foreach ($products as $product) {
-                $productsExpanded[] = self::expandModel($product)->toArray();
+            $products = [];
+            
+            foreach (\Models\Product::fetchAll($query, $sort) as $product) {
+                $products[] = $product->expand()->toArray();
             }
             
             return $response->write(
-                json_encode($productsExpanded)
+                json_encode($products)
             );
         }
         
@@ -73,7 +50,7 @@
             }
 
             return $response->write(
-                json_encode(self::expandModel($bootstrap)->toArray())
+                json_encode($bootstrap->expand()->toArray())
             );
         }
         
@@ -95,7 +72,7 @@
             }
 
             return $response->write(
-                json_encode(self::expandModel($product)->toArray())
+                json_encode($product->expand()->toArray())
             );
         }
         
@@ -145,7 +122,7 @@
             $product->save();
             
             return $response->write(
-                json_encode(self::expandModel($product)->toArray())
+                json_encode($product->expand()->toArray())
             );
         }
         
@@ -209,7 +186,7 @@
             $product->save();
             
             return $response->write(
-                json_encode(self::expandModel($product)->toArray())
+                json_encode($product->expand()->toArray())
             );
         }
     }
