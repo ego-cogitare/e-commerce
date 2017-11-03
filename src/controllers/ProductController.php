@@ -111,6 +111,7 @@
             $product->isAvailable = filter_var($params['isAvailable'], FILTER_VALIDATE_BOOLEAN);
             $product->isAuction = filter_var($params['isAuction'], FILTER_VALIDATE_BOOLEAN);
             $product->isNovelty = filter_var($params['isNovelty'], FILTER_VALIDATE_BOOLEAN);
+            $product->isBestseller = filter_var($params['isBestseller'], FILTER_VALIDATE_BOOLEAN);
             $product->categories = $params['categories'] ?? [];
             $product->relatedProducts = $params['relatedProducts'] ?? [];
             $product->pictures = $params['pictures'] ?? [];
