@@ -1,41 +1,41 @@
 <?php
     namespace Controllers;
-    
+
     class ProductController
     {
         public function index($request, $response)
         {
             $params = $request->getParams();
-            
+
             $query = [
                 'isDeleted' => [
                     '$ne' => true
                 ],
                 'type' => 'final'
             ];
-            
+
             if (isset($params['filter'])) {
                 $query = array_merge($query, $params['filter']);
             }
-            
+
             $sort = null;
-            
+
             if (isset($params['sort'])) {
                 $sort = array_map('intval', $params['sort']);
             }
-            
+
             $products = [];
-            
+
             foreach (\Models\Product::fetchAll($query, $sort) as $product) {
                 $products[] = $product->expand()->toArray();
             }
-            
+
             return $response->write(
                 json_encode($products)
             );
         }
-        
-        public function bootstrap($request, $response) 
+
+        public function bootstrap($request, $response)
         {
             $bootstrap = \Models\Product::fetchOne([
                 'isDeleted' => [
@@ -43,7 +43,7 @@
                 ],
                 'type' => 'bootstrap'
             ]);
-            
+
             if (empty($bootstrap)) {
                 $bootstrap = \Models\Product::getBootstrap();
                 $bootstrap->save();
@@ -53,13 +53,13 @@
                 json_encode($bootstrap->expand()->toArray())
             );
         }
-        
+
         public function get($request, $response, $args)
         {
             $product = \Models\Product::fetchOne([
                 'id' => $args['id'],
                 'isDeleted' => [
-                    '$ne' => true 
+                    '$ne' => true
                 ]
             ]);
 
@@ -75,28 +75,29 @@
                 json_encode($product->expand()->toArray())
             );
         }
-        
-        public function update($request, $response, $args) 
+
+        public function update($request, $response, $args)
         {
             $params = $request->getParams();
-            
-            if (empty($params['title']) || empty($params['description']) || 
-                empty($params['pictures']) || empty($params['categories'])) 
+
+            if (empty($params['title']) || empty($params['description']) ||
+                empty($params['pictures']) || empty($params['categoryId']) ||
+                empty($params['brandId']))
             {
                 return $response->withStatus(400)->write(
                     json_encode([
-                        'error' => 'Не заполнено одно из обязательных полей: название, описание, категории, изображение.'
+                        'error' => 'Не заполнено одно из обязательных полей: название, описание, категория, брэнд, изображение.'
                     ])
                 );
             }
-            
-            $product = \Models\Product::fetchOne([ 
+
+            $product = \Models\Product::fetchOne([
                 'id' => $args['id'],
                 'isDeleted' => [
-                    '$ne' => true 
+                    '$ne' => true
                 ]
             ]);
-            
+
             if (empty($product)) {
                 return $response->withStatus(400)->write(
                     json_encode([
@@ -104,7 +105,7 @@
                     ])
                 );
             }
-            
+
             $product->type = 'final';
             $product->title = $params['title'];
             $product->description = $params['description'];
@@ -112,7 +113,8 @@
             $product->isAuction = filter_var($params['isAuction'], FILTER_VALIDATE_BOOLEAN);
             $product->isNovelty = filter_var($params['isNovelty'], FILTER_VALIDATE_BOOLEAN);
             $product->isBestseller = filter_var($params['isBestseller'], FILTER_VALIDATE_BOOLEAN);
-            $product->categories = $params['categories'] ?? [];
+            $product->categoryId = $params['categoryId'];
+            $product->brandId = $params['brandId'];
             $product->relatedProducts = $params['relatedProducts'] ?? [];
             $product->pictures = $params['pictures'] ?? [];
             $product->pictureId = $params['pictureId'];
@@ -121,21 +123,21 @@
             $product->isDeleted = false;
             $product->dateCreated = time();
             $product->save();
-            
+
             return $response->write(
                 json_encode($product->expand()->toArray())
             );
         }
-        
-        public function remove($request, $response, $args) 
+
+        public function remove($request, $response, $args)
         {
-            $product = \Models\Product::fetchOne([ 
+            $product = \Models\Product::fetchOne([
                 'id' => $args['id'],
-                'isDeleted' => [ 
-                    '$ne' => true 
+                'isDeleted' => [
+                    '$ne' => true
                 ]
             ]);
-            
+
             if (empty($product)) {
                 return $response->withStatus(400)->write(
                     json_encode([
@@ -143,28 +145,28 @@
                     ])
                 );
             }
-            
+
             $product->isDeleted = true;
             $product->save();
-            
+
             return $response->write(
                 json_encode([
                     'success' => true
                 ])
             );
         }
-        
-        public function addPicture($request, $response, $args) 
+
+        public function addPicture($request, $response, $args)
         {
             $params = $request->getParams();
-            
+
             $product = \Models\Product::fetchOne([
                 'id' => $args['id'],
-                'isDeleted' => [ 
-                    '$ne' => true 
+                'isDeleted' => [
+                    '$ne' => true
                 ]
             ]);
-            
+
             if (empty($product)) {
                 return $response->withStatus(400)->write(
                     json_encode([
@@ -172,7 +174,7 @@
                     ])
                 );
             }
-            
+
             if (empty($params['picture']['id'])) {
                 return $response->withStatus(400)->write(
                     json_encode([
@@ -180,12 +182,12 @@
                     ])
                 );
             }
-            
+
             $pictures = $product->pictures ?? [];
             $pictures[] = $params['picture']['id'];
             $product->pictures = $pictures;
             $product->save();
-            
+
             return $response->write(
                 json_encode($product->expand()->toArray())
             );

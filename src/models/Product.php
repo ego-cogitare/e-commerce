@@ -8,9 +8,10 @@ namespace Models;
  *
  * @primary id
  *
- * @property string     $id       
+ * @property string     $id
  * @property string     $title
- * @property array      $categories
+ * @property string     $categoryId
+ * @property string     $brandId
  * @property array      $pictures
  * @property string     $pictureId
  * @property string     $description
@@ -29,8 +30,8 @@ namespace Models;
  * @method void save()
  */
 class Product extends \MongoStar\Model {
-    
-    public static function getBootstrap() 
+
+    public static function getBootstrap()
     {
         $bootstrap = new self();
         $bootstrap->type = 'bootstrap';
@@ -41,26 +42,27 @@ class Product extends \MongoStar\Model {
         $bootstrap->isNovelty = false;
         $bootstrap->title = '';
         $bootstrap->description = '';
-        $bootstrap->categories = [];
+        $bootstrap->brandId = '';
+        $bootstrap->categoryId = '';
         $bootstrap->relatedProducts = [];
         $bootstrap->pictures = [];
         $bootstrap->pictureId = null;
         $bootstrap->discount = 0;
         $bootstrap->discountType = '';
         $bootstrap->dateCreated = time();
-        
+
         return $bootstrap;
     }
-    
-    public function expand() 
+
+    public function expand()
     {
          // Expand with related products
         $relatedProducts = [];
-        
+
         if (count($this->relatedProducts) > 0) {
             foreach ($this->relatedProducts as $relatedProductId) {
-                $relatedProducts[] = self::fetchOne([ 
-                    'id' => $relatedProductId 
+                $relatedProducts[] = self::fetchOne([
+                    'id' => $relatedProductId
                 ])->toArray();
             }
         }
@@ -71,8 +73,8 @@ class Product extends \MongoStar\Model {
 
                 if (count($product['pictures']) > 0) {
                     foreach ($product['pictures'] as $pictureId) {
-                        $pictures[] = \Models\Media::fetchOne([ 
-                            'id' => $pictureId 
+                        $pictures[] = \Models\Media::fetchOne([
+                            'id' => $pictureId
                         ])->toArray();
                     }
                 }
@@ -86,8 +88,8 @@ class Product extends \MongoStar\Model {
         $pictures = [];
         if (count($this->pictures) > 0) {
             foreach ($this->pictures as $pictureId) {
-                $pictures[] = \Models\Media::fetchOne([ 
-                    'id' => $pictureId 
+                $pictures[] = \Models\Media::fetchOne([
+                    'id' => $pictureId
                 ])->toArray();
             }
         }
