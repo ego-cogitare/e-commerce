@@ -87,7 +87,7 @@
             $params = $request->getParams();
 
             if (empty($params['firstName']) || empty($params['lastName']) ||
-                empty($params['phone']))
+                empty($params['phone']) || empty($params['products']))
             {
                 return $response->withStatus(400)->write(
                     json_encode([ 'error' => self::$REQIURED_FIELD_NOT_SET_MSG ])
