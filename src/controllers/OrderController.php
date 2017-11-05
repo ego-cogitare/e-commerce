@@ -31,6 +31,25 @@
                 );
             }
 
+            if (count($order->products) > 0) {
+              $order->products = array_map(
+                function($item) {
+                  $product = \Models\Product::fetchOne([
+                      'id' => $item['id'],
+                      'isDeleted' => [
+                          '$ne' => true
+                      ]
+                  ]);
+
+                  return array_merge(
+                    $product->expand()->toArray(),
+                    ['count' => (int)$item['count']]
+                  );
+                },
+                $order->products
+              );
+            }
+
             return $response->write(
                 json_encode($order->toArray())
             );
@@ -41,7 +60,7 @@
             $params = $request->getParams();
 
             if (empty($params['firstName']) || empty($params['lastName']) ||
-                empty($params['phone']))
+                empty($params['phone']) || empty($params['products']))
             {
                 return $response->withStatus(400)->write(
                     json_encode([ 'error' => self::$REQIURED_FIELD_NOT_SET_MSG ])
@@ -49,6 +68,7 @@
             }
 
             $order = new \Models\Order();
+            $order->products = $params['products'];
             $order->firstName = $params['firstName'];
             $order->lastName = $params['lastName'];
             $order->email = $params['email'];
@@ -87,6 +107,7 @@
                 );
             }
 
+            $order->products = $params['products'];
             $order->firstName = $params['firstName'];
             $order->lastName = $params['lastName'];
             $order->email = $params['email'];

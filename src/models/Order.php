@@ -9,6 +9,7 @@ namespace Models;
  * @primary id
  *
  * @property string     $id
+ * @property array      $products
  * @property string     $firstName
  * @property string     $lastName
  * @property string     $email
