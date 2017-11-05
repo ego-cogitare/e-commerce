@@ -8,11 +8,18 @@
 
         public function index($request, $response)
         {
-            $orders = \Models\Order::fetchAll([ 'isDeleted' => [ '$ne' => true ] ])
-                ->toArray();
+            $result = [];
+
+            $orders = \Models\Order::fetchAll([
+              'isDeleted' => [ '$ne' => true ]
+            ]);
+
+            foreach ($orders as $order) {
+              $result[] = $order->expand()->toArray();
+            }
 
             return $response->write(
-                json_encode($orders)
+                json_encode($result)
             );
         }
 
@@ -31,27 +38,8 @@
                 );
             }
 
-            if (count($order->products) > 0) {
-              $order->products = array_map(
-                function($item) {
-                  $product = \Models\Product::fetchOne([
-                      'id' => $item['id'],
-                      'isDeleted' => [
-                          '$ne' => true
-                      ]
-                  ]);
-
-                  return array_merge(
-                    $product->expand()->toArray(),
-                    ['count' => (int)$item['count']]
-                  );
-                },
-                $order->products
-              );
-            }
-
             return $response->write(
-                json_encode($order->toArray())
+                json_encode($order->expand()->toArray())
             );
         }
 
@@ -69,9 +57,11 @@
 
             $order = new \Models\Order();
             $order->products = $params['products'];
+            $order->stateId = $params['stateId'];
             $order->firstName = $params['firstName'];
             $order->lastName = $params['lastName'];
             $order->email = $params['email'];
+            $order->comment = $params['comment'];
             $order->phone = $params['phone'];
             $order->dateCreated = time();
             $order->isDeleted = false;
@@ -108,9 +98,11 @@
             }
 
             $order->products = $params['products'];
+            $order->stateId = $params['stateId'];
             $order->firstName = $params['firstName'];
             $order->lastName = $params['lastName'];
             $order->email = $params['email'];
+            $order->comment = $params['comment'];
             $order->phone = $params['phone'];
             $order->save();
 
