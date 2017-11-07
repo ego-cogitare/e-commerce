@@ -16,7 +16,7 @@
     $app->get('/brand/get/{id}', '\Controllers\BrandController::get');
     $app->post('/brand/add', '\Controllers\BrandController::add');
     $app->post('/brand/add-picture', '\Controllers\BrandController::addPicture');
-    $app->post('/brand/delete-picture', '\Controllers\BrandController');
+    $app->post('/brand/delete-picture', '\Controllers\BrandController::deletePicture');
     $app->post('/brand/update/{id}', '\Controllers\BrandController::update');
     $app->post('/brand/remove/{id}', '\Controllers\BrandController::remove');
 
@@ -47,9 +47,10 @@
     $app->get('/product/list', '\Controllers\ProductController::index');
     $app->get('/product/bootstrap', '\Controllers\ProductController::bootstrap');
     $app->get('/product/get/{id}', '\Controllers\ProductController::get');
+    $app->post('/product/add-picture/{id}', '\Controllers\ProductController::addPicture');
+    $app->post('/product/delete-picture', '\Controllers\ProductController');
     $app->post('/product/update/{id}', '\Controllers\ProductController::update');
     $app->post('/product/remove/{id}', '\Controllers\ProductController::remove');
-    $app->post('/product/add-picture/{id}', '\Controllers\ProductController::addPicture');
 
     /**
      * Static pages routes

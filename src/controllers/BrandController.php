@@ -3,13 +3,6 @@
 
     class BrandController
     {
-        private $settings;
-
-        public function __construct($rdb)
-        {
-            $this->settings = $rdb->get('settings');
-        }
-
         public function index($request, $response)
         {
             $limit = $request->getParam('limit');
@@ -128,6 +121,8 @@
 
         public function remove($request, $response, $args)
         {
+            global $app;
+
             $brand = \Models\Brand::fetchOne([
                 'id' => $args['id'],
                 'isDeleted' => [
@@ -140,6 +135,34 @@
                     json_encode([
                         'error' => 'Брэнд не найден'
                     ])
+                );
+            }
+
+            // Delete all brand images
+            if (count($brand->pictures) > 0)
+            {
+                array_walk(
+                    $brand->pictures,
+                    function ($pictureId) use ($app)
+                    {
+                        $picture = \Models\Media::fetchOne([
+                            'id' => $pictureId
+                        ]);
+
+                        if (!empty($picture))
+                        {
+                            // Set picture state to "deleted" in database
+                            $picture->isDeleted = true;
+                            $picture->save();
+
+                            // Get picture path
+                            $picturePath = $app->getContainer()->settings['files']['upload']['directory'] . '/'
+                              . $picture->path . '/' . $picture->name;
+
+                            // Delete picture
+                            unlink($picturePath);
+                        }
+                    }
                 );
             }
 
@@ -191,81 +214,75 @@
             );
         }
 
-        public function __invoke($request, $response, $args)
+        public function deletePicture($request, $response, $args)
         {
+            global $app;
+
             $params = $request->getParams();
 
-            // Get controller action
-            $path = explode('/', trim($request->getUri()->getPath(), '/'));
+            $brand = \Models\Brand::fetchOne([
+                'id' => $params['brandId'],
+                'isDeleted' => [
+                    '$ne' => true
+                ]
+            ]);
 
-            switch (array_pop($path))
+            if (empty($brand)) {
+                return $response->withStatus(400)->write(
+                    json_encode([ 'error' => 'Брэнд не найден' ])
+                );
+            }
+
+            $picture = \Models\Media::fetchOne([
+                'id' => $params['id'],
+                /*'isDeleted' => [
+                    '$ne' => true
+                ]*/
+            ]);
+
+            if (empty($picture)) {
+                return $response->withStatus(400)->write(
+                    json_encode([ 'error' => 'Изображение не найдено' ])
+                );
+            }
+
+            // Mark picture as deleted
+            $picture->isDeleted = true;
+            $picture->save();
+
+            // Remove pictureId from brand pictures list
+            $brand->pictures = array_values(array_filter(
+                $brand->pictures,
+                function($pictureId) use ($picture) {
+                    return $pictureId !== $picture->id;
+                }
+            ));
+
+            // If active brand picture deleted
+            if ($brand->pictureId === $picture->id)
             {
-                case 'delete-picture':
-                    $brand = \Models\Brand::fetchOne([
-                        'id' => $params['brandId'],
-                        'isDeleted' => [
-                            '$ne' => true
-                        ]
-                    ]);
+                $brand->pictureId = '';
+            }
 
-                    if (empty($brand)) {
-                        return $response->withStatus(400)->write(
-                            json_encode([ 'error' => 'Брэнд не найден' ])
-                        );
-                    }
+            // Update brand settings
+            $brand->save();
 
-                    $picture = \Models\Media::fetchOne([
-                        'id' => $params['id'],
-                        /*'isDeleted' => [
-                            '$ne' => true
-                        ]*/
-                    ]);
+            // Get picture path
+            $picturePath = $app->getContainer()->settings['files']['upload']['directory'] . '/'
+              . $picture->path . '/' . $picture->name;
 
-                    if (empty($picture)) {
-                        return $response->withStatus(400)->write(
-                            json_encode([ 'error' => 'Изображение не найдено' ])
-                        );
-                    }
-
-                    // Mark picture as deleted
-                    $picture->isDeleted = true;
-                    $picture->save();
-
-                    // Remove pictureId from brand pictures list
-                    $brand->pictures = array_values(array_filter(
-                        $brand->pictures,
-                        function($pictureId) use ($picture) {
-                            return $pictureId !== $picture->id;
-                        }
-                    ));
-
-                    // If active brand picture deleted
-                    if ($brand->pictureId === $picture->id)
-                    {
-                        $brand->pictureId = '';
-                    }
-
-                    // Update brand settings
-                    $brand->save();
-
-                    // Get picture path
-                    $picturePath = $this->settings['files']['upload']['directory'] . '/'
-                      . $picture->path . '/' . $picture->name;
-
-                    // Delete picture
-                    if (unlink($picturePath))
-                    {
-                        return $response->write(
-                            json_encode([ 'success' => true ])
-                        );
-                    }
-                    else
-                    {
-                        return $response->withStatus(400)->write(
-                            json_encode([ 'error' => 'Изображение не найдено' ])
-                        );
-                    }
-                break;
+            // Delete picture
+            if (unlink($picturePath))
+            {
+                return $response->write(
+                    json_encode([ 'success' => true ])
+                );
+            }
+            else
+            {
+                return $response->withStatus(400)->write(
+                    json_encode([ 'error' => 'Изображение не найдено' ])
+                );
             }
         }
     }
