@@ -256,7 +256,7 @@
                     if (unlink($picturePath))
                     {
                         return $response->write(
-                            json_encode([ 'success' => true, 'message' => 'Изображение удалено' ])
+                            json_encode([ 'success' => true ])
                         );
                     }
                     else
