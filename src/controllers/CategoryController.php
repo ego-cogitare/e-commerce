@@ -39,7 +39,7 @@
                        '$ne' => true
                    ],
                    'parrentId' => $category['id']
-                ]);
+                ], [ 'order' => 1 ]);
 
                 $categories = array_map(function($category) {
                    return array_merge(
@@ -64,7 +64,7 @@
                 'isDeleted' => [
                     '$ne' => true
                 ]
-            ]);
+            ], [ 'order' => 1 ]);
 
             return $response->write(
                 json_encode($categories->toArray())
@@ -80,7 +80,7 @@
                   '$ne' => true
               ],
               'parrentId' => ''
-          ]);
+          ], [ 'order' => 1 ]);
 
           foreach ($categories as $category) {
               $this->_fetchBranch([$category->toArray()]);
@@ -128,6 +128,7 @@
                           if (!empty($branch))
                           {
                             $branch->parrentId = $children['parrentId'];
+                            $branch->order = $children['order'];
                             $branch->save();
                           }
 
@@ -187,6 +188,7 @@
             $category->isHidden = filter_var($params['isHidden'], FILTER_VALIDATE_BOOLEAN);
             $category->discount = $params['discount'];
             $category->discountType = $params['discountType'];
+            $category->order = 999;
             $category->save();
 
             return $response->write(

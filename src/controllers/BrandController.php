@@ -3,34 +3,45 @@
 
     class BrandController
     {
+        private $settings;
+
+        public function __construct($rdb)
+        {
+            $this->settings = $rdb->get('settings');
+        }
+
         public function index($request, $response)
         {
             $limit = $request->getParam('limit');
             $offset = $request->getParam('offset');
-            
-            $brands = array_map(function($brand) {
-                $brand['pictures'] = array_map(function($pictureId) {
-                    return \Models\Media::fetchOne(['id' => $pictureId])->toArray();
-                }, $brand['pictures']);
-                return $brand;
-            }, \Models\Brand::fetchAll([
-                'isDeleted' => [ '$ne' => true ]
-            ])->toArray());
-            
+
+            $brands = array_map(
+                function($brand) {
+                    $brand['pictures'] = array_map(
+                        function($pictureId) {
+                            return \Models\Media::fetchOne(['id' => $pictureId])->toArray();
+                        },
+                        $brand['pictures']
+                    );
+                    return $brand;
+                },
+                \Models\Brand::fetchAll([ 'isDeleted' => [ '$ne' => true ] ])->toArray()
+            );
+
             return $response->withStatus(200)->write(
                 json_encode($brands)
             );
         }
-        
-        public function get($request, $response, $args) 
+
+        public function get($request, $response, $args)
         {
             $brand = \Models\Brand::fetchOne([
                 'id' => $args['id'],
-                'isDeleted' => [ 
-                    '$ne' => true 
+                'isDeleted' => [
+                    '$ne' => true
                 ]
             ]);
-            
+
             if (empty($brand)) {
                 return $response->withStatus(404)->write(
                     json_encode([
@@ -38,22 +49,22 @@
                     ])
                 );
             }
-            
+
             $pictures = $brand->pictures ?? [];
             $pictures = array_map(function($id) {
                 return \Models\Media::fetchOne([ 'id' => $id ])->toArray();
             }, $pictures);
             $brand->pictures = $pictures;
-            
+
             return $response->write(
                 json_encode($brand->toArray())
             );
         }
-        
-        public function add($request, $response) 
+
+        public function add($request, $response)
         {
             $params = $request->getParams();
-            
+
             if (empty($params['title']) && empty($params['pictures'])) {
                 return $response->withStatus(400)->write(
                     json_encode([
@@ -61,20 +72,20 @@
                     ])
                 );
             }
-            
+
             $brand = new \Models\Brand();
             $brand->title = $params['title'];
             $brand->save();
-            
+
             return $response->write(
                 json_encode($brand->toArray())
             );
         }
-        
-        public function update($request, $response, $args) 
+
+        public function update($request, $response, $args)
         {
             $params = $request->getParams();
-            
+
             if (empty($params['title']) || empty($params['pictures'])) {
                 return $response->withStatus(400)->write(
                     json_encode([
@@ -82,14 +93,14 @@
                     ])
                 );
             }
-            
-            $brand = \Models\Brand::fetchOne([ 
+
+            $brand = \Models\Brand::fetchOne([
                 'id' => $args['id'],
-                'isDeleted' => [ 
-                    '$ne' => true 
+                'isDeleted' => [
+                    '$ne' => true
                 ]
             ]);
-            
+
             if (empty($brand)) {
                 return $response->withStatus(400)->write(
                     json_encode([
@@ -97,33 +108,33 @@
                     ])
                 );
             }
-            
+
             $brand->title = $params['title'];
             $pictures = $brand->pictures;
             $brand->pictures = array_map(function($picture) { return $picture['id']; }, $params['pictures']);
             $brand->pictureId = $params['pictureId'];
             $brand->isDeleted = filter_var($params['isDeleted'], FILTER_VALIDATE_BOOLEAN);
             $brand->save();
-            
+
             return $response->write(
                 json_encode(
                     array_merge(
-                        $brand->toArray(), 
+                        $brand->toArray(),
                         [ 'pictures' => $pictures ]
                     )
                 )
             );
         }
-        
-        public function remove($request, $response, $args) 
+
+        public function remove($request, $response, $args)
         {
-            $brand = \Models\Brand::fetchOne([ 
+            $brand = \Models\Brand::fetchOne([
                 'id' => $args['id'],
-                'isDeleted' => [ 
-                    '$ne' => true 
+                'isDeleted' => [
+                    '$ne' => true
                 ]
             ]);
-            
+
             if (empty($brand)) {
                 return $response->withStatus(400)->write(
                     json_encode([
@@ -131,32 +142,32 @@
                     ])
                 );
             }
-            
+
             $brand->isDeleted = true;
             $brand->save();
-            
+
             return $response->write(
                 json_encode([
                     'success' => true
                 ])
             );
         }
-        
-        public function addPicture($request, $response) 
+
+        public function addPicture($request, $response)
         {
             $params = $request->getParams();
-            
+
             $brand = \Models\Brand::fetchOne([
                 'id' => $params['brand']['id'],
-                'isDeleted' => [ 
-                    '$ne' => true 
+                'isDeleted' => [
+                    '$ne' => true
                 ]
             ]);
-            
+
             if (empty($brand)) {
                 $brand = new \Models\Brand();
             }
-            
+
             if (empty($params['picture']['id'])) {
                 return $response->withStatus(400)->write(
                     json_encode([
@@ -164,19 +175,97 @@
                     ])
                 );
             }
-            
+
             $brand->title = $params['brand']['title'];
             $pictures = $brand->pictures ?? [];
             $pictures[] = $params['picture']['id'];
             $brand->pictures = $pictures;
             $brand->save();
-            
+
             $brand->pictures = array_map(function($id) {
                 return \Models\Media::fetchOne([ 'id' => $id ])->toArray();
             }, $pictures);
-            
+
             return $response->write(
                 json_encode($brand->toArray())
             );
+        }
+
+        public function __invoke($request, $response, $args)
+        {
+            $params = $request->getParams();
+
+            // Get controller action
+            $path = explode('/', trim($request->getUri()->getPath(), '/'));
+
+            switch (array_pop($path))
+            {
+                case 'delete-picture':
+                    $brand = \Models\Brand::fetchOne([
+                        'id' => $params['brandId'],
+                        'isDeleted' => [
+                            '$ne' => true
+                        ]
+                    ]);
+
+                    if (empty($brand)) {
+                        return $response->withStatus(400)->write(
+                            json_encode([ 'error' => 'Брэнд не найден' ])
+                        );
+                    }
+
+                    $picture = \Models\Media::fetchOne([
+                        'id' => $params['id'],
+                        /*'isDeleted' => [
+                            '$ne' => true
+                        ]*/
+                    ]);
+
+                    if (empty($picture)) {
+                        return $response->withStatus(400)->write(
+                            json_encode([ 'error' => 'Изображение не найдено' ])
+                        );
+                    }
+
+                    // Mark picture as deleted
+                    $picture->isDeleted = true;
+                    $picture->save();
+
+                    // Remove pictureId from brand pictures list
+                    $brand->pictures = array_values(array_filter(
+                        $brand->pictures,
+                        function($pictureId) use ($picture) {
+                            return $pictureId !== $picture->id;
+                        }
+                    ));
+
+                    // If active brand picture deleted
+                    if ($brand->pictureId === $picture->id)
+                    {
+                        $brand->pictureId = '';
+                    }
+
+                    // Update brand settings
+                    $brand->save();
+
+                    // Get picture path
+                    $picturePath = $this->settings['files']['upload']['directory'] . '/'
+                      . $picture->path . '/' . $picture->name;
+
+                    // Delete picture
+                    if (unlink($picturePath))
+                    {
+                        return $response->write(
+                            json_encode([ 'success' => true, 'message' => 'Изображение удалено' ])
+                        );
+                    }
+                    else
+                    {
+                        return $response->withStatus(400)->write(
+                            json_encode([ 'error' => 'Изображение не найдено' ])
+                        );
+                    }
+                break;
+            }
         }
     }

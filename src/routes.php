@@ -16,6 +16,7 @@
     $app->get('/brand/get/{id}', '\Controllers\BrandController::get');
     $app->post('/brand/add', '\Controllers\BrandController::add');
     $app->post('/brand/add-picture', '\Controllers\BrandController::addPicture');
+    $app->post('/brand/delete-picture', '\Controllers\BrandController');
     $app->post('/brand/update/{id}', '\Controllers\BrandController::update');
     $app->post('/brand/remove/{id}', '\Controllers\BrandController::remove');
 

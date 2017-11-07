@@ -12,10 +12,11 @@ namespace Models;
  * @property string     $parrentId
  * @property string     $title
  * @property string     $description
- * @property boolean    $isDeleted
- * @property boolean    $isHidden
  * @property float      $discount
  * @property string     $discountType
+ * @property boolean    $isDeleted
+ * @property boolean    $isHidden
+ * @property int        $order
  *
  * @method void save()
  */

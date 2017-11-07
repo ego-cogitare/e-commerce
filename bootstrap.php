@@ -1,11 +1,11 @@
 <?php
     use Psr7Middlewares\Middleware\TrailingSlash;
     use Slim\Middleware\TokenAuthentication;
-    
+
     require_once 'vendor/autoload.php';
-    
+
     session_start();
-    
+
     /**
      * Include all models, controllers, etc...
      */
@@ -21,14 +21,14 @@
     }
 
     $config = [
-	'settings' => [
+	     'settings' => [
             'displayErrorDetails' => true,
             'determineRouteBeforeAppMiddleware' => false,
             'mongo' => [
                 'driver' => 'mongodb',
                 'servers' => [
                     [
-                        'host' => 'mongodb.loc', 
+                        'host' => 'mongodb.loc',
                         'port' => '27017'
                     ],
                 ],
@@ -37,24 +37,24 @@
             'files' => [
                 'upload' => [
                     // Keep original file names
-                    'keepNames' => true,
-                    
+                    'keepNames' => false,
+
                     // Destination directory to upload files
                     'directory' => __DIR__ . '/public'
                 ]
             ]
-	],
+       ],
     ];
 
     MongoStar\Config::setConfig($config['settings']['mongo']);
 
     $app = new \Slim\App($config);
-    
+
     // Remove trailing slashes to all routes
     $app->add(new TrailingSlash(false));
-    
+
     require_once __DIR__ . '/src/routes.php';
-    
+
     $app->add(new TokenAuthentication([
         'path' => '',
         'passthrough' => ['/login', '/file'],
@@ -66,7 +66,7 @@
             return (new \Services\AuthService)->isLoggedIn();
         }
     ]));
-    
+
     $app->add(function($request, $response, $next) {
         $response = $next($request, $response);
         return $response->withHeader('Content-Type', 'application/json');
