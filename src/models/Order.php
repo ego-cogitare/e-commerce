@@ -10,7 +10,7 @@ namespace Models;
  *
  * @property string     $id
  * @property array      $products
- * @property int        $stateId
+ * @property string     $stateId
  * @property string     $firstName
  * @property string     $lastName
  * @property string     $email

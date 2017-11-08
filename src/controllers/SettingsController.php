@@ -3,7 +3,7 @@
 
     class SettingsController
     {
-        private function convertToKeyVal(array $settings) 
+        private function convertToKeyVal(array $settings)
         {
             $keyVal = [];
             foreach ($settings as $setting) {
@@ -11,7 +11,7 @@
             }
             return $keyVal;
         }
-        
+
         public function __invoke($request, $response, $args)
         {
             switch ($args['action']) {
@@ -21,11 +21,12 @@
                             '$in' => [
                                 'currencyList',
                                 'currencyCource',
-                                'currencyCode'
+                                'currencyCode',
+                                'productStates'
                             ]
                         ]
                     ])->toArray();
-                    
+
                     return $response->write(
                         json_encode($this->convertToKeyVal($settings))
                     );

@@ -165,13 +165,56 @@
         {
             $params = $request->getParams();
 
-            if (empty($params['title']) || empty($params['description']) ||
-                empty($params['pictures']) || empty($params['categoryId']) ||
-                empty($params['brandId']))
+            if (empty($params['title']))
             {
                 return $response->withStatus(400)->write(
                     json_encode([
-                        'error' => 'Не заполнено одно из обязательных полей: название, описание, категория, брэнд, изображение.'
+                        'error' => 'Не заполнено название.'
+                    ])
+                );
+            }
+
+            if (empty($params['description']))
+            {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнено описание.'
+                    ])
+                );
+            }
+
+            if (empty($params['brandId']))
+            {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнен брэнд.'
+                    ])
+                );
+            }
+
+            if (empty($params['categoryId']))
+            {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнена категория.'
+                    ])
+                );
+            }
+
+            if (empty($params['pictures']))
+            {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнено изображение.'
+                    ])
+                );
+            }
+
+            if (empty($params['price']))
+            {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнена цена.'
                     ])
                 );
             }
@@ -203,6 +246,7 @@
             $product->relatedProducts = $params['relatedProducts'] ?? [];
             $product->pictures = $params['pictures'] ?? [];
             $product->pictureId = $params['pictureId'];
+            $product->price = filter_var($params['price'], FILTER_VALIDATE_FLOAT);
             $product->discount = filter_var($params['discount'], FILTER_VALIDATE_FLOAT);
             $product->discountType = $params['discountType'];
             $product->isDeleted = false;
