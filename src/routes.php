@@ -28,7 +28,7 @@
     /**
      * Settings routes
      */
-    $app->get('/settings/{action}', '\Controllers\SettingsController');
+    $app->map(['GET', 'POST'], '/settings/{action}', '\Controllers\SettingsController');
     $app->post('/settings/update/{action}', '\Controllers\SettingsController');
 
     /**
