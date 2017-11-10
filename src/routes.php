@@ -62,6 +62,15 @@
     $app->post('/page/remove/{id}', '\Controllers\PageController::remove');
 
     /**
+     * Blog routes
+     */
+    $app->get('/blog/list', '\Controllers\BlogController::index');
+    $app->get('/blog/get/{id}', '\Controllers\BlogController::get');
+    $app->post('/blog/add', '\Controllers\BlogController::add');
+    $app->post('/blog/update/{id}', '\Controllers\BlogController::update');
+    $app->post('/blog/remove/{id}', '\Controllers\BlogController::remove');
+
+    /**
      * Orders routes
      */
     $app->get('/order/list', '\Controllers\OrderController::index');
