@@ -5,6 +5,12 @@
     {
         private $categoryTree = [];
         private $keyPrefix = 'categories-container::';
+        private $settings;
+
+        public function __construct($rdb)
+        {
+            $this->settings = $rdb->get('settings');
+        }
 
         private function _fetchBranch($categories)
         {
@@ -35,10 +41,11 @@
                 * Looking for children categories
                 */
                 $categories = \Models\Category::fetchAll([
-                   'isDeleted' => [
-                       '$ne' => true
-                   ],
-                   'parrentId' => $category['id']
+                    'isDeleted' => [
+                        '$ne' => true
+                    ],
+                    'type' => 'final',
+                    'parrentId' => $category['id']
                 ], [ 'order' => 1 ]);
 
                 $categories = array_map(function($category) {
@@ -63,11 +70,31 @@
             $categories = \Models\Category::fetchAll([
                 'isDeleted' => [
                     '$ne' => true
-                ]
+                ],
+                'type' => 'final',
             ], [ 'order' => 1 ]);
 
             return $response->write(
                 json_encode($categories->toArray())
+            );
+        }
+        
+        public function bootstrap($request, $response)
+        {
+            $bootstrap = \Models\Category::fetchOne([
+                'isDeleted' => [
+                    '$ne' => true,
+                ],
+                'type' => 'bootstrap'
+            ]);
+
+            if (empty($bootstrap)) {
+                $bootstrap = \Models\Category::getBootstrap();
+                $bootstrap->save();
+            }
+            
+            return $response->write(
+                json_encode($bootstrap->expand()->toArray())
             );
         }
 
@@ -79,11 +106,12 @@
               'isDeleted' => [
                   '$ne' => true
               ],
+              'type' => 'final',
               'parrentId' => ''
           ], [ 'order' => 1 ]);
 
           foreach ($categories as $category) {
-              $this->_fetchBranch([$category->toArray()]);
+              $this->_fetchBranch([$category->expand()->toArray()]);
           }
 
           array_walk_recursive($this->categoryTree, function(&$value) {
@@ -97,6 +125,8 @@
 
         public function __invoke($request, $response)
         {
+            $params = $request->getParams();
+            
             $path = explode('/', trim($request->getUri()->getPath(), '/'));
 
             switch (array_pop($path)) {
@@ -117,24 +147,24 @@
                     // Recursively update tree
                     function walker($root)
                     {
-                      if (count($root['children']) > 0)
-                      {
-                        foreach ($root['children'] as $children)
+                        if (count($root['children']) > 0)
                         {
-                          $branch = \Models\Category::fetchOne([
-                              'id' => $children['id']
-                          ]);
+                            foreach ($root['children'] as $children)
+                            {
+                                $branch = \Models\Category::fetchOne([
+                                    'id' => $children['id']
+                                ]);
 
-                          if (!empty($branch))
-                          {
-                            $branch->parrentId = $children['parrentId'];
-                            $branch->order = $children['order'];
-                            $branch->save();
-                          }
+                                if (!empty($branch))
+                                {
+                                    $branch->parrentId = $children['parrentId'];
+                                    $branch->order = $children['order'];
+                                    $branch->save();
+                                }
 
-                          walker($children);
+                                walker($children);
+                            }
                         }
-                      }
                     }
 
                     walker($tree);
@@ -147,7 +177,7 @@
 
                 case 'delete-picture':
                     $category = \Models\Category::fetchOne([
-                        'id' => $params['id'],
+                        'id' => $params['categoryId'],
                         'isDeleted' => [
                             '$ne' => true
                         ]
@@ -177,21 +207,21 @@
                     $picture->save();
 
                     // Remove pictureId from brand pictures list
-                    $product->pictures = array_values(array_filter(
-                        $product->pictures,
+                    $category->pictures = array_values(array_filter(
+                        $category->pictures,
                         function($pictureId) use ($picture) {
                             return $pictureId !== $picture->id;
                         }
                     ));
 
                     // If active brand picture deleted
-                    if ($product->pictureId === $picture->id)
+                    if ($category->pictureId === $picture->id)
                     {
-                        $product->pictureId = '';
+                        $category->pictureId = '';
                     }
 
-                    // Update brand settings
-                    $product->save();
+                    // Update category settings
+                    $category->save();
 
                     // Get picture path
                     $picturePath = $this->settings['files']['upload']['directory'] . '/'
@@ -218,6 +248,7 @@
         {
             $category = \Models\Category::fetchOne([
                 'id' => $args['id'],
+                'type' => 'final',
                 'isDeleted' => [
                     '$ne' => true
                 ]
@@ -230,33 +261,6 @@
                     ])
                 );
             }
-
-            return $response->write(
-                json_encode($category->toArray())
-            );
-        }
-
-        public function add($request, $response)
-        {
-            $params = $request->getParams();
-
-            if (empty($params['title'])) {
-                return $response->withStatus(400)->write(
-                    json_encode([
-                        'error' => 'Не заполнено одно из обязательных полей'
-                    ])
-                );
-            }
-
-            $category = new \Models\Category();
-            $category->parrentId = $params['parrentId'];
-            $category->title = $params['title'];
-            $category->description = $params['description'];
-            $category->isHidden = filter_var($params['isHidden'], FILTER_VALIDATE_BOOLEAN);
-            $category->discount = $params['discount'];
-            $category->discountType = $params['discountType'];
-            $category->order = 999;
-            $category->save();
 
             return $response->write(
                 json_encode($category->toArray())
@@ -289,13 +293,16 @@
                     ])
                 );
             }
-
+            
             $category->parrentId = $params['parrentId'];
             $category->title = $params['title'];
             $category->description = $params['description'];
             $category->isHidden = filter_var($params['isHidden'], FILTER_VALIDATE_BOOLEAN);
             $category->discount = $params['discount'];
             $category->discountType = $params['discountType'];
+            $category->pictures = empty($params['pictures']) ? [] : $params['pictures'];
+            $category->pictureId = $params['pictureId'];
+            $category->type = 'final';
             $category->save();
 
             return $response->write(

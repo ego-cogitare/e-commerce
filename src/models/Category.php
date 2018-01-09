@@ -19,24 +19,45 @@ namespace Models;
  * @property boolean    $isDeleted
  * @property boolean    $isHidden
  * @property int        $order
+ * @property string     $type
+ * @property int        $dateCreated
  *
  * @method void save()
  */
 class Category extends \MongoStar\Model {
+    
+    public static function getBootstrap()
+    {
+        $bootstrap = new self();
+        $bootstrap->parrentId = '';
+        $bootstrap->title = '';
+        $bootstrap->description = '';
+        $bootstrap->pictures = [];
+        $bootstrap->pictureId = '';
+        $bootstrap->discount = 0;
+        $bootstrap->discountType = '';
+        $bootstrap->isDeleted = 0;
+        $bootstrap->isHidden = 0;
+        $bootstrap->order = 9999;
+        $bootstrap->type = 'bootstrap';
+        $bootstrap->dateCreated = time();
 
-  public function expand()
-  {
-      // Expand with pictures
-      $pictures = [];
-      if (count($this->pictures) > 0) {
-          foreach ($this->pictures as $pictureId) {
-              $pictures[] = \Models\Media::fetchOne([
-                  'id' => $pictureId
-              ])->toArray();
-          }
-      }
-      $this->pictures = $pictures;
+        return $bootstrap;
+    }
 
-      return $this;
-  }
+    public function expand()
+    {
+        // Expand with pictures
+        $pictures = [];
+        if (count($this->pictures) > 0) {
+            foreach ($this->pictures as $pictureId) {
+                $pictures[] = \Models\Media::fetchOne([
+                    'id' => $pictureId
+                ])->toArray();
+            }
+        }
+        $this->pictures = $pictures;
+
+        return $this;
+    }
 }
