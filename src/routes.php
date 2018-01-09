@@ -37,6 +37,8 @@
     $app->get('/category/list', '\Controllers\CategoryController::index');
     $app->map(['GET', 'POST'], '/category/tree', '\Controllers\CategoryController');
     $app->get('/category/get/{id}', '\Controllers\CategoryController::get');
+    $app->post('/category/add-picture/{id}', '\Controllers\CategoryController::addPicture');
+    $app->post('/category/delete-picture', '\Controllers\CategoryController');
     $app->post('/category/add', '\Controllers\CategoryController::add');
     $app->post('/category/update/{id}', '\Controllers\CategoryController::update');
     $app->post('/category/remove/{id}', '\Controllers\CategoryController::remove');

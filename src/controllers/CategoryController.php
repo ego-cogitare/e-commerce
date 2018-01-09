@@ -144,6 +144,73 @@
                     );
                   }
                 break;
+
+                case 'delete-picture':
+                    $category = \Models\Category::fetchOne([
+                        'id' => $params['id'],
+                        'isDeleted' => [
+                            '$ne' => true
+                        ]
+                    ]);
+
+                    if (empty($category)) {
+                        return $response->withStatus(400)->write(
+                            json_encode([ 'error' => 'Категория не найдена' ])
+                        );
+                    }
+
+                    $picture = \Models\Media::fetchOne([
+                        'id' => $params['id'],
+                        /*'isDeleted' => [
+                            '$ne' => true
+                        ]*/
+                    ]);
+
+                    if (empty($picture)) {
+                        return $response->withStatus(400)->write(
+                            json_encode([ 'error' => 'Изображение не найдено' ])
+                        );
+                    }
+
+                    // Mark picture as deleted
+                    $picture->isDeleted = true;
+                    $picture->save();
+
+                    // Remove pictureId from brand pictures list
+                    $product->pictures = array_values(array_filter(
+                        $product->pictures,
+                        function($pictureId) use ($picture) {
+                            return $pictureId !== $picture->id;
+                        }
+                    ));
+
+                    // If active brand picture deleted
+                    if ($product->pictureId === $picture->id)
+                    {
+                        $product->pictureId = '';
+                    }
+
+                    // Update brand settings
+                    $product->save();
+
+                    // Get picture path
+                    $picturePath = $this->settings['files']['upload']['directory'] . '/'
+                      . $picture->path . '/' . $picture->name;
+
+                    // Delete picture
+                    if (unlink($picturePath))
+                    {
+                        return $response->write(
+                            json_encode([ 'success' => true ])
+                        );
+                    }
+                    else
+                    {
+                        return $response->withStatus(400)->write(
+                            json_encode([ 'error' => 'Изображение не найдено' ])
+                        );
+                    }
+                break;
             }
         }
 
@@ -260,6 +327,43 @@
                 json_encode([
                     'success' => true
                 ])
+            );
+        }
+
+        public function addPicture($request, $response, $args)
+        {
+            $params = $request->getParams();
+
+            $category = \Models\Category::fetchOne([
+                'id' => $args['id'],
+                'isDeleted' => [
+                    '$ne' => true
+                ]
+            ]);
+
+            if (empty($category)) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Категория не найдена'
+                    ])
+                );
+            }
+
+            if (empty($params['picture']['id'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Изображение не задано'
+                    ])
+                );
+            }
+
+            $pictures = $category->pictures ?? [];
+            $pictures[] = $params['picture']['id'];
+            $category->pictures = $pictures;
+            $category->save();
+
+            return $response->write(
+                json_encode($category->expand()->toArray())
             );
         }
     }
