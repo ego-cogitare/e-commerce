@@ -53,6 +53,10 @@
     $app->post('/product/delete-picture', '\Controllers\ProductController');
     $app->post('/product/update/{id}', '\Controllers\ProductController::update');
     $app->post('/product/remove/{id}', '\Controllers\ProductController::remove');
+    $app->get('/product/properties', '\Controllers\ProductController::properties');
+    $app->post('/product/add-property', '\Controllers\ProductController::addProperty');
+    $app->post('/product/update-property/{id}', '\Controllers\ProductController::updateProperty');
+    $app->post('/product/remove-property/{id}', '\Controllers\ProductController::removeProperty');
 
     /**
      * Static pages routes

@@ -321,4 +321,102 @@
                 json_encode($product->expand()->toArray())
             );
         }
+        
+        public function properties($request, $response) 
+        {
+            $properties = \Models\ProductProperty::fetchAll([
+                'isDeleted' => [
+                    '$ne' => true
+                ]
+            ]);
+
+            return $response->write(
+                json_encode($properties->toArray())
+            );
+        }
+        
+        public function addProperty($request, $response, $args) 
+        {
+            $params = $request->getParams();
+
+            if (empty($params['key']))
+            {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнено название свойства.'
+                    ])
+                );
+            }
+            
+            $property = new \Models\ProductProperty();
+            $property->key = $params['key'];
+            $property->isDeleted = false;
+            $property->save();
+
+            return $response->write(
+                json_encode($property->toArray())
+            );
+        }
+        
+        public function updateProperty($request, $response, $args) 
+        {
+            $params = $request->getParams();
+
+            if (empty($params['key'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнено одно из обязательных полей'
+                    ])
+                );
+            }
+
+            $property = \Models\ProductProperty::fetchOne([
+                'id' => $args['id'],
+                'isDeleted' => [
+                    '$ne' => true
+                ]
+            ]);
+
+            if (empty($property)) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Свойство не найдено'
+                    ])
+                );
+            }
+            
+            $property->key = $params['key'];
+            $property->save();
+
+            return $response->write(
+                json_encode($property->toArray())
+            );
+        }
+        
+        public function removeProperty($request, $response, $args) 
+        {
+            $property = \Models\ProductProperty::fetchOne([
+                'id' => $args['id'],
+                'isDeleted' => [
+                    '$ne' => true
+                ]
+            ]);
+            
+            if (empty($property)) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Свойство не найдено'
+                    ])
+                );
+            }
+
+            $property->isDeleted = true;
+            $property->save();
+
+            return $response->write(
+                json_encode([
+                    'success' => true
+                ])
+            );
+        }
     }

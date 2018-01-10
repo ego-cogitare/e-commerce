@@ -47,15 +47,20 @@
                     'type' => 'final',
                     'parrentId' => $category['id']
                 ], [ 'order' => 1 ]);
+                
+                // Expand all results with pictures models
+                foreach ($categories as $category) {
+                    $category = $category->expand();
+                }
 
                 $categories = array_map(function($category) {
-                   return array_merge(
-                       $category,
-                       [
-                         'module' => $category['title'],
-                         'children' => $this->keyPrefix . $category['id']
-                       ]
-                   );
+                    return array_merge(
+                        $category,
+                        [
+                            'module' => $category['title'],
+                            'children' => $this->keyPrefix . $category['id']
+                        ]
+                    );
                 }, $categories->toArray());
 
                 $this->_fetchBranch($categories);
@@ -131,48 +136,48 @@
 
             switch (array_pop($path)) {
                 case 'tree':
-                  // Get category tree
-                  if ($request->isGet())
-                  {
-                    return $response->write(
-                        json_encode($this->_fetchTree())
-                    );
-                  }
-
-                  // Update category tree
-                  if ($request->isPost())
-                  {
-                    $tree = json_decode($request->getParam('tree'), true);
-
-                    // Recursively update tree
-                    function walker($root)
+                    // Get category tree
+                    if ($request->isGet())
                     {
-                        if (count($root['children']) > 0)
-                        {
-                            foreach ($root['children'] as $children)
-                            {
-                                $branch = \Models\Category::fetchOne([
-                                    'id' => $children['id']
-                                ]);
-
-                                if (!empty($branch))
-                                {
-                                    $branch->parrentId = $children['parrentId'];
-                                    $branch->order = $children['order'];
-                                    $branch->save();
-                                }
-
-                                walker($children);
-                            }
-                        }
+                      return $response->write(
+                          json_encode($this->_fetchTree())
+                      );
                     }
 
-                    walker($tree);
+                    // Update category tree
+                    if ($request->isPost())
+                    {
+                        $tree = json_decode($request->getParam('tree'), true);
 
-                    return $response->write(
-                        json_encode($this->_fetchTree())
-                    );
-                  }
+                        // Recursively update tree
+                        function walker($root)
+                        {
+                            if (count($root['children']) > 0)
+                            {
+                                foreach ($root['children'] as $children)
+                                {
+                                    $branch = \Models\Category::fetchOne([
+                                        'id' => $children['id']
+                                    ]);
+
+                                    if (!empty($branch))
+                                    {
+                                        $branch->parrentId = $children['parrentId'];
+                                        $branch->order = $children['order'];
+                                        $branch->save();
+                                    }
+
+                                    walker($children);
+                                }
+                            }
+                        }
+
+                        walker($tree);
+
+                        return $response->write(
+                            json_encode($this->_fetchTree())
+                        );
+                    }
                 break;
 
                 case 'delete-picture':
