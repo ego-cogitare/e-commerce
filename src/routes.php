@@ -46,7 +46,11 @@
     /**
      * Menu routes
      */
-    $app->map(['GET', 'POST'], '/menu/get/{id}', '\Controllers\MenuController');
+    $app->get('/menu/{menuId}/get', '\Controllers\MenuController');
+    $app->post('/menu/{menuId}/update', '\Controllers\MenuController');
+    $app->post('/menu/{menuId}/item-add', '\Controllers\MenuController::itemAdd');
+    $app->post('/menu/{menuId}/item-update/{id}', '\Controllers\MenuController::itemUpdate');
+    $app->post('/menu/{menuId}/item-remove/{id}', '\Controllers\MenuController::itemRemove');
 
     /**
      * Product routes

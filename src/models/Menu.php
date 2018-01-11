@@ -11,6 +11,7 @@ namespace Models;
  * @property string     $id
  * @property string     $parrentId
  * @property string     $title
+ * @property string     $link
  * @property boolean    $isDeleted
  * @property boolean    $isHidden
  * @property int        $order

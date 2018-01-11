@@ -107,97 +107,115 @@
             
             $path = explode('/', trim($request->getUri()->getPath(), '/'));
             
+            // Get action method
+            $action = array_pop($path);
+            
             // Get menu root item id
             $rootId = array_pop($path);
 
-            switch (array_pop($path)) {
+            switch ($action) {
                 case 'get':
-                    // Get menu tree
-                    if ($request->isGet())
-                    {
-                      return $response->write(
-                          json_encode($this->_fetchTree($rootId))
-                      );
-                    }
+                    return $response->write(
+                        json_encode($this->_fetchTree($rootId))
+                    );
+                break;
+                
+                case 'update':
+                    $tree = json_decode($request->getParam('tree'), true);
 
-                    // Update category tree
-                    if ($request->isPost())
+                    // Recursively update tree
+                    function walker($root)
                     {
-                        $tree = json_decode($request->getParam('tree'), true);
-
-                        // Recursively update tree
-                        function walker($root)
+                        if (count($root['children']) > 0)
                         {
-                            if (count($root['children']) > 0)
+                            foreach ($root['children'] as $children)
                             {
-                                foreach ($root['children'] as $children)
+                                $branch = \Models\Menu::fetchOne([
+                                    'id' => $children['id']
+                                ]);
+
+                                if (!empty($branch))
                                 {
-                                    $branch = \Models\Menu::fetchOne([
-                                        'id' => $children['id']
-                                    ]);
-
-                                    if (!empty($branch))
-                                    {
-                                        $branch->parrentId = $children['parrentId'];
-                                        $branch->order = $children['order'];
-                                        $branch->save();
-                                    }
-
-                                    walker($children);
+                                    $branch->parrentId = $children['parrentId'];
+                                    $branch->order = $children['order'];
+                                    $branch->save();
                                 }
+
+                                walker($children);
                             }
                         }
-
-                        walker($tree);
-
-                        return $response->write(
-                            json_encode($this->_fetchTree($rootId))
-                        );
                     }
+
+                    walker($tree);
+
+                    return $response->write(
+                        json_encode($this->_fetchTree($rootId))
+                    );
                 break;
             }
         }
 
-        public function update($request, $response, $args)
+        public function itemAdd($request, $response, $args)
         {
             $params = $request->getParams();
 
-            if (empty($params['title'])) {
+            if (empty($params['title']) || empty($params['parrentId'])) {
                 return $response->withStatus(400)->write(
                     json_encode([
                         'error' => 'Не заполнено одно из обязательных полей'
                     ])
                 );
             }
+            
+            $item = new \Models\Menu();
+            $item->title = $params['title'];
+            $item->parrentId = $params['parrentId'];
+            $item->link = $params['link'];
+            $item->isDeleted = false;
+            $item->isHidden = false;
+            $item->dateCreated = time();
+            $item->save();
 
-            $category = \Models\Category::fetchOne([
+            return $response->write(
+                json_encode($item->toArray())
+            );
+        }
+
+        public function itemUpdate($request, $response, $args)
+        {
+            $params = $request->getParams();
+
+            if (empty($params['title']) || empty($params['parrentId'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнено одно из обязательных полей'
+                    ])
+                );
+            }
+            
+            $item = \Models\Menu::fetchOne([
                 'id' => $args['id'],
                 'isDeleted' => [
                     '$ne' => true
                 ]
             ]);
-
-            if (empty($category)) {
+            
+            if (empty($item)) {
                 return $response->withStatus(400)->write(
                     json_encode([
-                        'error' => 'Категория не найдена'
+                        'error' => 'Пункт меню не найден'
                     ])
                 );
             }
             
-            $category->parrentId = $params['parrentId'];
-            $category->title = $params['title'];
-            $category->description = $params['description'];
-            $category->isHidden = filter_var($params['isHidden'], FILTER_VALIDATE_BOOLEAN);
-            $category->discount = $params['discount'];
-            $category->discountType = $params['discountType'];
-            $category->pictures = empty($params['pictures']) ? [] : $params['pictures'];
-            $category->pictureId = $params['pictureId'];
-            $category->type = 'final';
-            $category->save();
+            $item->title = $params['title'];
+            $item->parrentId = $params['parrentId'];
+            $item->link = $params['link'];
+//            $item->isHidden = false;
+            $item->save();
 
             return $response->write(
-                json_encode($category->toArray())
+                json_encode($item->toArray())
             );
         }
 
