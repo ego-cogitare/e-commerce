@@ -4,6 +4,6 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [QSA,L]
 
 <IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin http://localhost:8080
+    Header set Access-Control-Allow-Origin http://192.168.1.219:8080
     Header set Access-Control-Allow-Credentials true
 </IfModule>

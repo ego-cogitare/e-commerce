@@ -42,6 +42,11 @@
     $app->post('/category/delete-picture', '\Controllers\CategoryController');
     $app->post('/category/update/{id}', '\Controllers\CategoryController::update');
     $app->post('/category/remove/{id}', '\Controllers\CategoryController::remove');
+    
+    /**
+     * Menu routes
+     */
+    $app->map(['GET', 'POST'], '/menu/get/{id}', '\Controllers\MenuController');
 
     /**
      * Product routes
