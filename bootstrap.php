@@ -11,7 +11,8 @@
      */
     $includes = [
         __DIR__ . '/src/models/*.php',
-        __DIR__ . '/src/controllers/*.php',
+        __DIR__ . '/src/controllers/backend/*.php',
+        __DIR__ . '/src/controllers/store/*.php',
         __DIR__ . '/src/services/*.php',
     ];
     foreach ($includes as $pattern) {
@@ -53,11 +54,12 @@
     // Remove trailing slashes to all routes
     $app->add(new TrailingSlash(false));
 
-    require_once __DIR__ . '/src/routes.php';
+    require_once __DIR__ . '/src/routes/backend.php';
+    require_once __DIR__ . '/src/routes/store.php';
 
     $app->add(new TokenAuthentication([
         'path' => '',
-        'passthrough' => ['/login', '/file'],
+        'passthrough' => ['/login', '/file', '/store'],
         'secure' => false,
         'regex' => '/^(.*)$/',
         'parameter' => 'token',
