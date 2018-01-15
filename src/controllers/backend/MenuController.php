@@ -1,5 +1,5 @@
 <?php
-    namespace Controllers;
+    namespace Controllers\Backend;
 
     class MenuController
     {
@@ -10,6 +10,34 @@
         public function __construct($rdb)
         {
             $this->settings = $rdb->get('settings');
+        }
+        
+        private function _fetchTree($rootId)
+        {
+            $this->menuTree = [];
+
+            $items = \Models\Menu::fetchAll([
+                'isDeleted' => [
+                    '$ne' => true
+                ],
+                'id' => $rootId
+            ], [ 'order' => 1 ]);
+            
+            if (count($items) === 0) {
+                throw new \Exception('Не найден корневой элемент меню: ' . $rootId);
+            }
+
+            foreach ($items as $item) {
+                $this->_fetchBranch([$item->toArray()]);
+            }
+
+            array_walk_recursive($this->menuTree, function(&$value) {
+                if (preg_match("/^{$this->keyPrefix}\w+$/", $value)) {
+                    $value = [];
+                }
+            });
+
+            return $this->menuTree;
         }
 
         private function _fetchBranch($items)
@@ -72,34 +100,6 @@
             return $response->write(
                 json_encode($items->toArray())
             );
-        }
-
-        private function _fetchTree($rootId)
-        {
-            $this->menuTree = [];
-
-            $items = \Models\Menu::fetchAll([
-                'isDeleted' => [
-                    '$ne' => true
-                ],
-                'id' => $rootId
-            ], [ 'order' => 1 ]);
-            
-            if (count($items) === 0) {
-                throw new \Exception('Не найден корневой элемент меню: ' . $rootId);
-            }
-
-            foreach ($items as $item) {
-                $this->_fetchBranch([$item->toArray()]);
-            }
-
-            array_walk_recursive($this->menuTree, function(&$value) {
-                if (preg_match("/^{$this->keyPrefix}\w+$/", $value)) {
-                    $value = [];
-                }
-            });
-
-            return $this->menuTree;
         }
 
         public function __invoke($request, $response)

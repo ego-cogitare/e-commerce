@@ -14,6 +14,7 @@
         __DIR__ . '/src/controllers/backend/*.php',
         __DIR__ . '/src/controllers/store/*.php',
         __DIR__ . '/src/services/*.php',
+        __DIR__ . '/src/components/*.php',
     ];
     foreach ($includes as $pattern) {
         foreach (glob($pattern) as $script) {
