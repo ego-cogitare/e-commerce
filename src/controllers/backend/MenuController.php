@@ -66,6 +66,7 @@
                 'isDeleted' => [
                     '$ne' => true
                 ],
+                'parrentId' => '',
             ], [ 'order' => 1 ]);
 
             return $response->write(
@@ -152,6 +153,28 @@
                         json_encode($this->_fetchTree($rootId))
                     );
                 break;
+                
+                case 'remove':
+                    $menu = \Models\Menu::fetchOne([ 
+                        'id' => $rootId,
+                        'isDeleted' => [ 
+                            '$ne' => true 
+                        ]
+                    ]);
+
+                    if (empty($menu)) {
+                        return $response->withStatus(400)->write(
+                            json_encode([ 'error' => 'Меню не найдено' ])
+                        );
+                    }
+
+                    $menu->isDeleted = true;
+                    $menu->save();
+
+                    return $response->write(
+                        json_encode([ 'success' => true ])
+                    );
+                break;
             }
         }
 
@@ -211,7 +234,6 @@
             $item->title = $params['title'];
             $item->parrentId = $params['parrentId'];
             $item->link = $params['link'];
-//            $item->isHidden = false;
             $item->save();
 
             return $response->write(
@@ -219,25 +241,25 @@
             );
         }
 
-        public function remove($request, $response, $args)
+        public function itemRemove($request, $response, $args)
         {
-            $category = \Models\Category::fetchOne([
+            $item = \Models\Menu::fetchOne([
                 'id' => $args['id'],
                 'isDeleted' => [
                     '$ne' => true
                 ]
             ]);
 
-            if (empty($category)) {
+            if (empty($item)) {
                 return $response->withStatus(400)->write(
                     json_encode([
-                        'error' => 'Категория не найдена'
+                        'error' => 'Меню не найдено'
                     ])
                 );
             }
 
-            $category->isDeleted = true;
-            $category->save();
+            $item->isDeleted = true;
+            $item->save();
 
             return $response->write(
                 json_encode([
