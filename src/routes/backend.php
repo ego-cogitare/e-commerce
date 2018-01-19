@@ -82,10 +82,13 @@
      * Blog routes
      */
     $app->get('/blog/list', '\Controllers\Backend\BlogController::index');
+    $app->get('/blog/bootstrap', '\Controllers\Backend\BlogController::bootstrap');
     $app->get('/blog/get/{id}', '\Controllers\Backend\BlogController::get');
     $app->post('/blog/add', '\Controllers\Backend\BlogController::add');
     $app->post('/blog/update/{id}', '\Controllers\Backend\BlogController::update');
     $app->post('/blog/remove/{id}', '\Controllers\Backend\BlogController::remove');
+    $app->post('/blog/add-picture/{id}', '\Controllers\Backend\BlogController::addPicture');
+    $app->post('/blog/delete-picture', '\Controllers\Backend\BlogController');
 
     /**
      * Orders routes
@@ -95,3 +98,11 @@
     $app->post('/order/add', '\Controllers\Backend\OrderController::add');
     $app->post('/order/update/{id}', '\Controllers\Backend\OrderController::update');
     $app->post('/order/remove/{id}', '\Controllers\Backend\OrderController::remove');
+
+    /**
+     * Tags routes
+     */
+    $app->get('/tag/list', '\Controllers\Backend\TagsController::index');
+    $app->get('/tag/get/{id}', '\Controllers\Backend\TagsController::get');
+    $app->post('/tag/add', '\Controllers\Backend\TagsController::add');
+    $app->post('/tag/remove/{id}', '\Controllers\Backend\TagsController::remove');

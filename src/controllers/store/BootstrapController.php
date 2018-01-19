@@ -12,15 +12,11 @@
             // Extract all menus
             $menus = \Models\Menu::fetchAll([
                 '$and' => [
-                    [
-                        'isDeleted' => [ '$ne' => true ]
-                    ],
-                    [
-                        '$or' => [
-                            ['parrentId' => '' ],
-                            ['parrentId' => [ '$exists' => false ]]
-                        ]
-                    ]
+                    [ 'isDeleted' => ['$ne' => true] ],
+                    ['$or' => [
+                        ['parrentId' => '' ],
+                        ['parrentId' => ['$exists' => false] ]
+                    ]]
                 ]
             ], [ 'order' => 1 ]);
             
