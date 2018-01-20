@@ -211,7 +211,10 @@
             $post->briefly = $params['briefly'];
             $post->body = $params['body'];
             $post->tags = $params['tags'];
+            $post->pictures = $params['pictures'];
+            $post->pictureId = $params['pictureId'];
             $post->isVisible = filter_var($params['isVisible'], FILTER_VALIDATE_BOOLEAN);
+            $post->showOnHome = filter_var($params['showOnHome'], FILTER_VALIDATE_BOOLEAN);
             $post->save();
 
             return $response->write(

@@ -241,6 +241,7 @@
             $product->isAuction = filter_var($params['isAuction'], FILTER_VALIDATE_BOOLEAN);
             $product->isNovelty = filter_var($params['isNovelty'], FILTER_VALIDATE_BOOLEAN);
             $product->isBestseller = filter_var($params['isBestseller'], FILTER_VALIDATE_BOOLEAN);
+            $product->showOnHome = filter_var($params['showOnHome'], FILTER_VALIDATE_BOOLEAN);
             $product->categoryId = $params['categoryId'];
             $product->brandId = $params['brandId'];
             $product->relatedProducts = $params['relatedProducts'] ?? [];

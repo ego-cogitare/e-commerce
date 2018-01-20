@@ -19,6 +19,7 @@ namespace Models;
  * @property boolean    $isNovelty
  * @property boolean    $isAuction
  * @property boolean    $isBestseller
+ * @property boolean    $showOnHome
  * @property float      $price
  * @property float      $discount
  * @property string     $discountType
@@ -40,6 +41,7 @@ class Product extends \MongoStar\Model {
         $bootstrap->isAvailable = true;
         $bootstrap->isAuction = false;
         $bootstrap->isBestseller = false;
+        $bootstrap->showOnHome = false;
         $bootstrap->isNovelty = false;
         $bootstrap->title = '';
         $bootstrap->description = '';

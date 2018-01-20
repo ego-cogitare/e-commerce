@@ -16,6 +16,7 @@ namespace Models;
  * @property array      $pictures
  * @property string     $pictureId
  * @property boolean    $isVisible
+ * @property boolean    $showOnHome
  * @property int        $dateCreated
  * @property string     $type
  * @property boolean    $isDeleted
@@ -30,6 +31,7 @@ class Post extends \MongoStar\Model
         $bootstrap->type = 'bootstrap';
         $bootstrap->isDeleted = false;
         $bootstrap->isVisible = true;
+        $bootstrap->showOnHome = false;
         $bootstrap->title = '';
         $bootstrap->briefly = '';
         $bootstrap->body = '';
