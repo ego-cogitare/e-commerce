@@ -55,6 +55,17 @@ class Post extends \MongoStar\Model
             }
         }
         $this->pictures = $pictures;
+        
+        // Expand with tags
+        $tags = [];
+        if (count($this->tags) > 0) {
+            foreach ($this->tags as $tagId) {
+                $tags[] = \Models\Tag::fetchOne([
+                    'id' => $tagId
+                ])->toArray();
+            }
+        }
+        $this->tags = $tags;
 
         return $this;
     }
