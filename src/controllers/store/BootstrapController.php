@@ -21,11 +21,9 @@
             ], [ 'order' => 1 ]);
             
             if (count($menus) !== 0) {
-                $data['menus'] = array_map(function($menu) {
-                    return [
-                        $menu['id'] => (new MenuComponent($menu['id']))->fetch()
-                    ];
-                }, $menus->toArray());
+                foreach ($menus->toArray() as $menu) {
+                    $data['menus'][$menu['id']] = (new MenuComponent($menu['id']))->fetch();
+                }
             }
             
             return $response->write(

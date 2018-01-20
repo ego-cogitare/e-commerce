@@ -1,7 +1,7 @@
 <?php
     namespace Controllers\Store;
 
-    class BrandController
+    class ProductController
     {
         public function index($request, $response)
         {
@@ -14,7 +14,8 @@
             $query = [ 
                 'isDeleted' => [ 
                     '$ne' => true 
-                ], 
+                ],
+                'type' => 'final'
             ];
             
             if (!empty($filter)) {
@@ -27,30 +28,43 @@
                 ? null 
                 : [ $orderBy => $ascDesc ];
             
-            $data = \Models\Brand::fetchAll(
+            $data = \Models\Product::fetchAll(
                 $query, 
                 $order, 
                 $limit, 
                 $offset
             )->toArray();
             
-            $brands = array_map(
-                function($brand) {
-                    $picture = \Models\Media::fetchOne([ 
-                        'id' => $brand['pictureId'] 
+            $products = array_map(
+                function($product) {
+                    $picture = \Models\Media::fetchOne([
+                        'id' => $product['pictureId'] 
                     ]);
-                    if (empty($picture)) {
-                        return $brand;
+                    if (!empty($picture)) {
+                        $product['picture'] = $picture->toArray();
                     }
-                    $brand['picture'] = $picture->toArray();
                     
-                    return $brand;
+                    $brand = \Models\Brand::fetchOne([
+                        'id' => $product['brandId']
+                    ]);
+                    if (!empty($brand)) {
+                        $product['brand'] = $brand->toArray();
+                    }
+                    
+                    $category = \Models\Category::fetchOne([
+                        'id' => $product['categoryId']
+                    ]);
+                    if (!empty($category)) {
+                        $product['category'] = $category->toArray();
+                    }
+                    
+                    return $product;
                 },
                 $data
             );
 
             return $response->write(
-                json_encode($brands)
+                json_encode($products)
             );
         }
     }
