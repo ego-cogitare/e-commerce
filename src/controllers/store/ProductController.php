@@ -24,6 +24,16 @@
                 );
             }
             
+            // Looking for keyword in filters
+            if (!empty($query['$and'])) {
+                foreach ($query['$and'] as &$item) {
+                    if (!empty($item['keyword'])) {
+                        $item['title'] = new \MongoDB\BSON\Regex($item['keyword'], 'i');
+                        unset($item['keyword']);
+                    }
+                }
+            }
+            
             $order = empty($orderBy) 
                 ? null 
                 : [ $orderBy => $ascDesc ];
