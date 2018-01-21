@@ -1,7 +1,7 @@
 <?php
     namespace Controllers\Store;
 
-    class BlogController
+    class TagController
     {
         public function index($request, $response)
         {
@@ -15,7 +15,6 @@
                 'isDeleted' => [ 
                     '$ne' => true 
                 ],
-                'type' => 'final'
             ];
             
             if (!empty($filter)) {
@@ -28,23 +27,15 @@
                 ? null 
                 : [ $orderBy => $ascDesc ];
             
-            $data = \Models\Post::fetchAll(
+            $tags = \Models\Tag::fetchAll(
                 $query, 
                 $order, 
                 $limit, 
                 $offset
-            );
-            
-            $posts = [];
-            
-            if (!empty($data)) {
-                foreach ($data as $post) {
-                    $posts[] = $post->expand()->toArray();
-                }
-            }
+            )->toArray();
             
             return $response->write(
-                json_encode($posts)
+                json_encode($tags)
             );
         }
     }
