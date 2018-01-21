@@ -4,3 +4,4 @@
     $app->get('/store/products', '\Controllers\Store\ProductController::index');
     $app->get('/store/blog', '\Controllers\Store\BlogController::index');
     $app->get('/store/tags', '\Controllers\Store\TagController::index');
+    $app->get('/store/categories', '\Controllers\Store\CategoryController::index');

@@ -5,11 +5,11 @@
     {
         public function index($request, $response)
         {
-            $limit   = intval($request->getParam('limit')) ?? null;
-            $offset  = intval($request->getParam('offset')) ?? null;
-            $ascDesc = intval($request->getParam('ascdesc'));
-            $orderBy = $request->getParam('orderBy');
-            $filter  = $request->getParam('filter');
+            $limit      = intval($request->getParam('limit')) ?? null;
+            $offset     = intval($request->getParam('offset')) ?? null;
+            $filter     = $request->getParam('filter');
+            $ascDesc    = intval($request->getParam('ascdesc'));
+            $orderBy    = $request->getParam('orderBy');
 
             $query = [ 
                 'isDeleted' => [ 
