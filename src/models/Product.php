@@ -55,12 +55,73 @@ class Product extends \MongoStar\Model {
 
         return $bootstrap;
     }
+    
+    public function apiModel($maxDepth = 1, $depth = 0)
+    {
+        if ($depth > $maxDepth) {
+            return null;
+        }
+        // Expand with related products
+        $relatedProducts = [];
+        if (count($this->relatedProducts) > 0) {
+            foreach ($this->relatedProducts as $relatedProductId) {
+                $relatedProducts[] = self::fetchOne(['id' => $relatedProductId]);
+            }
+        }
+        if (count($relatedProducts) > 0) {
+            foreach ($relatedProducts as $key=>$product) {
+                $relatedProducts[$key] = $product->apiModel($maxDepth, $depth + 1);
+            }
+        }
+        $this->relatedProducts = $relatedProducts;
+
+        // Expand with pictures
+        $defaultPicture = null;
+        $pictures = [];
+        if (count($this->pictures) > 0) {
+            foreach ($this->pictures as $pictureId) {
+                $picture = \Models\Media::fetchOne(['id' => $pictureId]);
+                if ($picture) {
+                    $pictures[] = $picture->toArray();
+                    if ($pictureId === $this->pictureId) {
+                        $picture = $picture->toArray();
+                    }
+                }
+            }
+        }
+        $this->pictures = $pictures;
+        
+        // If default picture not set use first available from pictures list
+        if (is_null($defaultPicture) && count($pictures) > 0) {
+            $defaultPicture = $pictures[0];
+        }
+        
+        // Product category
+        $category = null;
+        if (!empty($this->categoryId)) {
+            $category = \Models\Category::fetchOne(['id' => $this->categoryId]);
+            $category = $category ? $category->toArray() : null;
+        }
+        
+        // Product brand
+        $brand = null;
+        if (!empty($this->brandId)) {
+            $brand = \Models\Brand::fetchOne(['id' => $this->brandId]);
+            $brand = $brand ? $brand->toArray() : null;
+        }
+
+        return array_merge(
+            $this->toArray(),
+            ['picture' => $defaultPicture],
+            ['category' => $category],
+            ['brand' => $brand]
+        );
+    }
 
     public function expand()
     {
-         // Expand with related products
+        // Expand with related products
         $relatedProducts = [];
-
         if (count($this->relatedProducts) > 0) {
             foreach ($this->relatedProducts as $relatedProductId) {
                 $relatedProducts[] = self::fetchOne([
@@ -68,7 +129,6 @@ class Product extends \MongoStar\Model {
                 ])->toArray();
             }
         }
-
         if (count($relatedProducts) > 0) {
             foreach ($relatedProducts as $key=>$product) {
                 $pictures = [];
@@ -83,7 +143,6 @@ class Product extends \MongoStar\Model {
                 $relatedProducts[$key]['pictures'] = $pictures;
             }
         }
-
         $this->relatedProducts = $relatedProducts;
 
         // Expand with pictures

@@ -34,47 +34,44 @@
                 }
             }
             
-            $order = empty($orderBy) 
-                ? null 
-                : [ $orderBy => $ascDesc ];
+            $order = empty($orderBy) ? null : [ $orderBy => $ascDesc ];
             
             $data = \Models\Product::fetchAll(
                 $query, 
                 $order, 
                 $limit, 
                 $offset
-            )->toArray();
-            
-            $products = array_map(
-                function($product) {
-                    $picture = \Models\Media::fetchOne([
-                        'id' => $product['pictureId'] 
-                    ]);
-                    if (!empty($picture)) {
-                        $product['picture'] = $picture->toArray();
-                    }
-                    
-                    $brand = \Models\Brand::fetchOne([
-                        'id' => $product['brandId']
-                    ]);
-                    if (!empty($brand)) {
-                        $product['brand'] = $brand->toArray();
-                    }
-                    
-                    $category = \Models\Category::fetchOne([
-                        'id' => $product['categoryId']
-                    ]);
-                    if (!empty($category)) {
-                        $product['category'] = $category->toArray();
-                    }
-                    
-                    return $product;
-                },
-                $data
             );
+            
+            $products = [];
+            foreach ($data as $product) {
+                $products[] = $product->apiModel();
+            }
 
             return $response->write(
                 json_encode($products)
+            );
+        }
+        
+        public function get($request, $response, $args)
+        {
+            $product = \Models\Product::fetchOne([
+                'id' => $args['id'],
+                'isDeleted' => [
+                    '$ne' => true
+                ]
+            ]);
+
+            if (empty($product)) {
+                return $response->withStatus(404)->write(
+                    json_encode([
+                        'error' => 'Товар не найден'
+                    ])
+                );
+            }
+
+            return $response->write(
+                json_encode($product->apiModel())
             );
         }
     }
