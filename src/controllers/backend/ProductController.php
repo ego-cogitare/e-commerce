@@ -174,6 +174,24 @@
                 );
             }
 
+            if (empty($params['sku']))
+            {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнен артикул.'
+                    ])
+                );
+            }
+
+            if (empty($params['briefly']))
+            {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнено краткое описание.'
+                    ])
+                );
+            }
+
             if (empty($params['description']))
             {
                 return $response->withStatus(400)->write(
@@ -219,6 +237,15 @@
                 );
             }
 
+            if (!empty($params['discountTimeout']) && !preg_match('/^\d+$/', $params['discountTimeout']))
+            {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Время действия скидки задано неверно.'
+                    ])
+                );
+            }
+
             $product = \Models\Product::fetchOne([
                 'id' => $args['id'],
                 'isDeleted' => [
@@ -236,6 +263,7 @@
 
             $product->type = 'final';
             $product->title = $params['title'];
+            $product->briefly = $params['briefly'];
             $product->description = $params['description'];
             $product->isAvailable = filter_var($params['isAvailable'], FILTER_VALIDATE_BOOLEAN);
             $product->isAuction = filter_var($params['isAuction'], FILTER_VALIDATE_BOOLEAN);
@@ -249,6 +277,9 @@
             $product->price = filter_var($params['price'], FILTER_VALIDATE_FLOAT);
             $product->discount = filter_var($params['discount'], FILTER_VALIDATE_FLOAT);
             $product->discountType = $params['discountType'];
+            $product->discountTimeout = $params['discountTimeout'];
+            $product->sku = $params['sku'];
+            $product->video = $params['video'];
             $product->isDeleted = false;
             $product->dateCreated = time();
             $product->save();

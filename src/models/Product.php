@@ -14,14 +14,18 @@ namespace Models;
  * @property string     $brandId
  * @property array      $pictures
  * @property string     $pictureId
+ * @property string     $briefly
  * @property string     $description
  * @property array      $relatedProducts
  * @property boolean    $isNovelty
  * @property boolean    $isAuction
  * @property boolean    $isBestseller
  * @property float      $price
+ * @property string     $sku
+ * @property string     $video
  * @property float      $discount
  * @property string     $discountType
+ * @property int        $discountTimeout
  * @property boolean    $isAvailable
  * @property int        $availableAmount
  * @property boolean    $isDeleted
@@ -42,6 +46,7 @@ class Product extends \MongoStar\Model {
         $bootstrap->isBestseller = false;
         $bootstrap->isNovelty = false;
         $bootstrap->title = '';
+        $bootstrap->briefly = '';
         $bootstrap->description = '';
         $bootstrap->brandId = '';
         $bootstrap->categoryId = '';
@@ -49,8 +54,11 @@ class Product extends \MongoStar\Model {
         $bootstrap->pictures = [];
         $bootstrap->pictureId = null;
         $bootstrap->price = 0;
+        $bootstrap->sku = '';
+        $bootstrap->video = '';
         $bootstrap->discount = 0;
         $bootstrap->discountType = '';
+        $bootstrap->discountTimeout = '';
         $bootstrap->dateCreated = time();
 
         return $bootstrap;
