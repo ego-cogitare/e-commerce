@@ -9,6 +9,7 @@ namespace Models;
  * @primary id
  *
  * @property string     $id       
+ * @property string     $parentId       
  * @property string     $key
  * @property boolean    $isDeleted
  *

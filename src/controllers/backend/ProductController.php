@@ -277,7 +277,7 @@
             $product->price = filter_var($params['price'], FILTER_VALIDATE_FLOAT);
             $product->discount = filter_var($params['discount'], FILTER_VALIDATE_FLOAT);
             $product->discountType = $params['discountType'];
-            $product->discountTimeout = $params['discountTimeout'];
+            $product->discountTimeout = filter_var($params['discountTimeout'], FILTER_VALIDATE_INT);
             $product->sku = $params['sku'];
             $product->video = $params['video'];
             $product->isDeleted = false;
@@ -358,11 +358,28 @@
             $properties = \Models\ProductProperty::fetchAll([
                 'isDeleted' => [
                     '$ne' => true
-                ]
-            ]);
+                ],
+                'parentId' => ''
+            ])->toArray();
+            
+            // Extend property with child properties (property values)
+            if (count($properties) > 0) 
+            {
+                foreach ($properties as &$property) 
+                {
+                    $children = \Models\ProductProperty::fetchAll([
+                        'isDeleted' => [
+                            '$ne' => true
+                        ],
+                        'parentId' => $property['id']
+                    ])->toArray();
+                    
+                    $property = array_merge($property, ['children' => $children]);
+                }
+            }
 
             return $response->write(
-                json_encode($properties->toArray())
+                json_encode($properties)
             );
         }
         
@@ -379,8 +396,28 @@
                 );
             }
             
+            if (!empty($params['parentId']))
+            {
+                $parentProperty = \Models\ProductProperty::fetchOne([
+                    'id' => $params['parentId'],
+                    'isDeleted' => [
+                        '$ne' => true
+                    ]
+                ]);
+
+                if (empty($parentProperty)) 
+                {
+                    return $response->withStatus(400)->write(
+                        json_encode([
+                            'error' => 'Свойство-родитель не найдено'
+                        ])
+                    );
+                }
+            }
+            
             $property = new \Models\ProductProperty();
             $property->key = $params['key'];
+            $property->parentId = $params['parentId'];
             $property->isDeleted = false;
             $property->save();
 
@@ -396,7 +433,7 @@
             if (empty($params['key'])) {
                 return $response->withStatus(400)->write(
                     json_encode([
-                        'error' => 'Не заполнено одно из обязательных полей'
+                        'error' => 'Не заполнено название свойства.'
                     ])
                 );
             }
@@ -416,7 +453,27 @@
                 );
             }
             
+            if (!empty($params['parentId']))
+            {
+                $parentProperty = \Models\ProductProperty::fetchOne([
+                    'id' => $params['parentId'],
+                    'isDeleted' => [
+                        '$ne' => true
+                    ]
+                ]);
+
+                if (empty($parentProperty)) 
+                {
+                    return $response->withStatus(400)->write(
+                        json_encode([
+                            'error' => 'Свойство-родитель не найдено'
+                        ])
+                    );
+                }
+            }
+            
             $property->key = $params['key'];
+            $property->parentId = $params['parentId'];
             $property->save();
 
             return $response->write(
