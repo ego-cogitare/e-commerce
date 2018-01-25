@@ -274,6 +274,7 @@
             $product->relatedProducts = $params['relatedProducts'] ?? [];
             $product->pictures = $params['pictures'] ?? [];
             $product->pictureId = $params['pictureId'];
+            $product->properties = $params['properties'] ?? [];
             $product->price = filter_var($params['price'], FILTER_VALIDATE_FLOAT);
             $product->discount = filter_var($params['discount'], FILTER_VALIDATE_FLOAT);
             $product->discountType = $params['discountType'];

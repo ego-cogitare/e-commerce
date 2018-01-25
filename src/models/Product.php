@@ -85,6 +85,21 @@ class Product extends \MongoStar\Model {
         }
         $this->relatedProducts = $relatedProducts;
 
+        // Expand with properties
+        $properties = [];
+        if (count($this->properties) > 0) {
+            foreach ($this->properties as $propertyId) {
+                $propValue = \Models\ProductProperty::fetchOne(['id' => $propertyId]);
+                if ($propValue && $propLabel = \Models\ProductProperty::fetchOne(['id' => $propValue->parentId])) {
+                    $properties[] = [
+                        'label' => $propLabel->key,
+                        'value' => $propValue->key,
+                    ];
+                }
+            }
+        }
+        $this->properties = $properties;
+        
         // Expand with pictures
         $defaultPicture = null;
         $pictures = [];
