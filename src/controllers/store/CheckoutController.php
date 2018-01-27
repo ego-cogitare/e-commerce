@@ -7,6 +7,50 @@
         {
             $data = $request->getParams();
             
+            if (empty($data['userName'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнено имя.',
+                        'field' => 'userName'
+                    ])
+                );
+            }
+            
+            if (empty($data['email'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнен e-mail.',
+                        'field' => 'email'
+                    ])
+                );
+            }
+            elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Формат e-mail неверный.',
+                        'field' => 'email'
+                    ])
+                );
+            }
+            
+            if (empty($data['phone'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнен номер телефона.',
+                        'field' => 'phone'
+                    ])
+                );
+            }
+            
+            if (empty($data['address'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не заполнен адрес.',
+                        'field' => 'address'
+                    ])
+                );
+            }
+            
             if (empty($data['deliveryId'])) {
                 return $response->withStatus(400)->write(
                     json_encode([
@@ -67,50 +111,6 @@
                     json_encode([
                         'error' => 'Указан несуществующий способ оплаты.',
                         'field' => 'deliveryId'
-                    ])
-                );
-            }
-            
-            if (empty($data['userName'])) {
-                return $response->withStatus(400)->write(
-                    json_encode([
-                        'error' => 'Не заполнено имя.',
-                        'field' => 'userName'
-                    ])
-                );
-            }
-            
-            if (empty($data['email'])) {
-                return $response->withStatus(400)->write(
-                    json_encode([
-                        'error' => 'Не заполнен e-mail.',
-                        'field' => 'email'
-                    ])
-                );
-            }
-            elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-                return $response->withStatus(400)->write(
-                    json_encode([
-                        'error' => 'Формат e-mail неверный.',
-                        'field' => 'email'
-                    ])
-                );
-            }
-            
-            if (empty($data['phone'])) {
-                return $response->withStatus(400)->write(
-                    json_encode([
-                        'error' => 'Не заполнен номер телефона.',
-                        'field' => 'phone'
-                    ])
-                );
-            }
-            
-            if (empty($data['address'])) {
-                return $response->withStatus(400)->write(
-                    json_encode([
-                        'error' => 'Не заполнен адрес.',
-                        'field' => 'address'
                     ])
                 );
             }
