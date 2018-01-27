@@ -68,6 +68,12 @@
     $app->post('/product/add-property', '\Controllers\Backend\ProductController::addProperty');
     $app->post('/product/update-property/{id}', '\Controllers\Backend\ProductController::updateProperty');
     $app->post('/product/remove-property/{id}', '\Controllers\Backend\ProductController::removeProperty');
+    
+    /**
+     * Product reviews routes
+     */
+    $app->get('/reviews/{productId}', '\Controllers\Backend\ReviewsController::index');
+    $app->post('/reviews/{productId}/set-approved', '\Controllers\Backend\ReviewsController::setApproved');
 
     /**
      * Static pages routes

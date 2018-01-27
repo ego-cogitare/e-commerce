@@ -116,6 +116,15 @@ class Product extends \MongoStar\Model {
         }
         $this->pictures = $pictures;
         
+        // Expand with reviews
+        $reviews = \Models\ProductReview::fetchAll([
+            'productId' => $this->id,
+            'isDeleted' => [
+                '$ne' => true
+            ],
+            'isApproved' => true
+        ], ['dateCreated' => -1])->toArray();
+        
         // If default picture not set use first available from pictures list
         if (is_null($defaultPicture) && count($pictures) > 0) {
             $defaultPicture = $pictures[0];
@@ -139,7 +148,8 @@ class Product extends \MongoStar\Model {
             $this->toArray(),
             ['picture' => $defaultPicture],
             ['category' => $category],
-            ['brand' => $brand]
+            ['brand' => $brand],
+            ['reviews'=> $reviews]
         );
     }
 
