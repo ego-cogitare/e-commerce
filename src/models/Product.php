@@ -190,6 +190,10 @@ class Product extends \MongoStar\Model {
             }
         }
         $this->pictures = $pictures;
+        
+        if (empty($this->properties)) {
+            $this->properties = [];
+        }
 
         return $this;
     }

@@ -29,7 +29,6 @@
      * Settings routes
      */
     $app->map(['GET', 'POST'], '/settings/{action}', '\Controllers\Backend\SettingsController');
-    $app->post('/settings/update/{action}', '\Controllers\Backend\SettingsController');
 
     /**
      * Category routes
