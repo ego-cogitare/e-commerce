@@ -5,11 +5,20 @@
 
     class BootstrapController
     {
+        const KEYS = [
+            'currencyList',
+            'currencyCource',
+            'currencyCode',
+            'payment',
+            'delivery',
+        ];
+        
         private static function convertToKeyVal(array $settings)
         {
             $keyVal = [];
             foreach ($settings as $setting) {
-                $keyVal[$setting['key']] = $setting['value'];
+                $keyVal[$setting['key']] = in_array($setting['key'], ['payment', 'delivery', 'currencyList']) 
+                    ? json_decode($setting['value']) : $setting['value'];
             }
             return $keyVal;
         }
@@ -38,11 +47,7 @@
             // Get site settings
             $settings = \Models\Settings::fetchAll([
                 'key' => [
-                    '$in' => [
-                        'currencyList',
-                        'currencyCource',
-                        'currencyCode',
-                    ]
+                    '$in' => self::KEYS
                 ]
             ])->toArray();
             

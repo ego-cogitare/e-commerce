@@ -47,8 +47,9 @@
         {
             $params = $request->getParams();
 
-            if (empty($params['firstName']) || empty($params['lastName']) ||
-                empty($params['phone']) || empty($params['products']))
+            if (empty($params['userName']) || empty($params['address']) ||
+                empty($params['phone']) || empty($params['products']) ||
+                empty($params['email']) || empty($params['stateId']))
             {
                 return $response->withStatus(400)->write(
                     json_encode([ 'error' => self::$REQIURED_FIELD_NOT_SET_MSG ])
@@ -58,8 +59,8 @@
             $order = new \Models\Order();
             $order->products = $params['products'];
             $order->stateId = $params['stateId'];
-            $order->firstName = $params['firstName'];
-            $order->lastName = $params['lastName'];
+            $order->userName = $params['userName'];
+            $order->address = $params['address'];
             $order->email = $params['email'];
             $order->comment = $params['comment'];
             $order->phone = $params['phone'];
@@ -76,8 +77,9 @@
         {
             $params = $request->getParams();
 
-            if (empty($params['firstName']) || empty($params['lastName']) ||
-                empty($params['phone']) || empty($params['products']))
+            if (empty($params['userName']) || empty($params['address']) ||
+                empty($params['phone']) || empty($params['products']) ||
+                empty($params['email']) || empty($params['stateId']))
             {
                 return $response->withStatus(400)->write(
                     json_encode([ 'error' => self::$REQIURED_FIELD_NOT_SET_MSG ])
@@ -99,8 +101,8 @@
 
             $order->products = $params['products'];
             $order->stateId = $params['stateId'];
-            $order->firstName = $params['firstName'];
-            $order->lastName = $params['lastName'];
+            $order->userName = $params['userName'];
+            $order->address = $params['address'];
             $order->email = $params['email'];
             $order->comment = $params['comment'];
             $order->phone = $params['phone'];

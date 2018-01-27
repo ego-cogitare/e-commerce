@@ -8,6 +8,7 @@
      * Authorization routes
      */
     $app->post('/{_:logout|login}', '\Controllers\Backend\AuthController');
+    $app->get('/logout', '\Controllers\Backend\AuthController');
 
     /**
      * Brand CRUD routers

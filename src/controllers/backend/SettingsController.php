@@ -9,6 +9,7 @@
             'delivery',
             'payment',
             'homeSlider',
+            'productStates'
         ];
         
         private function convertToKeyVal(array $settings)
@@ -49,7 +50,7 @@
                         );
                     }
 
-                    $setting =  \Models\Settings::fetchOne([
+                    $setting = \Models\Settings::fetchOne([
                         'key' => $params['key']
                     ]);
 

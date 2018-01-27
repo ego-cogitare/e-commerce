@@ -11,8 +11,8 @@ namespace Models;
  * @property string     $id
  * @property array      $products
  * @property string     $stateId
- * @property string     $firstName
- * @property string     $lastName
+ * @property string     $userName
+ * @property string     $address
  * @property string     $email
  * @property string     $comment
  * @property string     $phone
