@@ -66,28 +66,38 @@ class Product extends \MongoStar\Model {
         return $bootstrap;
     }
     
-    public function apiModel($maxDepth = 1, $depth = 0)
+    /**
+     * 
+     * @param int $maxDepth
+     * @param int $depth
+     * @param boolean $descriptions
+     * @return array
+     */
+    public function apiModel($maxDepth = 1, $depth = 0, $skip = [])
     {
         if ($depth > $maxDepth) {
             return null;
         }
+        
         // Expand with related products
         $relatedProducts = [];
-        if (count($this->relatedProducts) > 0) {
-            foreach ($this->relatedProducts as $relatedProductId) {
-                $relatedProducts[] = self::fetchOne(['id' => $relatedProductId]);
+        if (!in_array('relatedProducts', $skip)) {
+            if (count($this->relatedProducts) > 0) {
+                foreach ($this->relatedProducts as $relatedProductId) {
+                    $relatedProducts[] = self::fetchOne(['id' => $relatedProductId]);
+                }
             }
-        }
-        if (count($relatedProducts) > 0) {
-            foreach ($relatedProducts as $key=>$product) {
-                $relatedProducts[$key] = $product->apiModel($maxDepth, $depth + 1);
+            if (count($relatedProducts) > 0) {
+                foreach ($relatedProducts as $key=>$product) {
+                    $relatedProducts[$key] = $product->apiModel($maxDepth, $depth + 1, $expandFlags);
+                }
             }
         }
         $this->relatedProducts = $relatedProducts;
 
         // Expand with properties
         $properties = [];
-        if (count($this->properties) > 0) {
+        if (!in_array('properties', $skip) && count($this->properties) > 0) {
             foreach ($this->properties as $propertyId) {
                 $propValue = \Models\ProductProperty::fetchOne(['id' => $propertyId]);
                 if ($propValue && $propLabel = \Models\ProductProperty::fetchOne(['id' => $propValue->parentId])) {
@@ -109,43 +119,56 @@ class Product extends \MongoStar\Model {
                 if ($picture) {
                     $pictures[] = $picture->toArray();
                     if ($pictureId === $this->pictureId) {
-                        $picture = $picture->toArray();
+                        $defaultPicture = $picture->toArray();
                     }
                 }
             }
         }
-        $this->pictures = $pictures;
-        
-        // Expand with reviews
-        $reviews = \Models\ProductReview::fetchAll([
-            'productId' => $this->id,
-            'isDeleted' => [
-                '$ne' => true
-            ],
-            'isApproved' => true
-        ], ['dateCreated' => -1])->toArray();
+        if (!in_array('pictures', $skip)) {
+            $this->pictures = $pictures;
+        }
         
         // If default picture not set use first available from pictures list
         if (is_null($defaultPicture) && count($pictures) > 0) {
             $defaultPicture = $pictures[0];
         }
         
+        // Expand with reviews
+        $reviews = [];
+        if (!in_array('reviews', $skip)) {
+            $reviews = \Models\ProductReview::fetchAll([
+                'productId' => $this->id,
+                'isDeleted' => [
+                    '$ne' => true
+                ],
+                'isApproved' => true
+            ], ['dateCreated' => -1])->toArray();
+        }
+        
         // Product category
         $category = null;
-        if (!empty($this->categoryId)) {
+        if (!in_array('category', $skip) && !empty($this->categoryId)) {
             $category = \Models\Category::fetchOne(['id' => $this->categoryId]);
             $category = $category ? $category->toArray() : null;
         }
         
         // Product brand
         $brand = null;
-        if (!empty($this->brandId)) {
+        if (!in_array('brand', $skip) && !empty($this->brandId)) {
             $brand = \Models\Brand::fetchOne(['id' => $this->brandId]);
             $brand = $brand ? $brand->toArray() : null;
         }
+        
+        $product = $this->toArray();
+        
+        // Remove text descriptions
+        if (in_array('descriptions', $skip)) {
+            $product['briefly'] = '';
+            $product['description'] = '';
+        }
 
         return array_merge(
-            $this->toArray(),
+            $product,
             ['picture' => $defaultPicture],
             ['category' => $category],
             ['brand' => $brand],

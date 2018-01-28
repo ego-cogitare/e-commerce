@@ -47,4 +47,49 @@
                 json_encode($categories)
             );
         }
+        
+        public function get($request, $response, $args)
+        {
+            $category = \Models\Category::fetchOne([
+                'id' => $args['id'],
+                'isDeleted' => [
+                    '$ne' => true
+                ]
+            ]);
+
+            if (empty($category)) {
+                return $response->withStatus(404)->write(
+                    json_encode([
+                        'error' => 'Категория не найдена'
+                    ])
+                );
+            }
+            
+            $selectedPicture = null;
+            $pictures = [];
+            if (count($category->pictures) > 0) {
+                foreach ($category->pictures as $pictureId) {
+                    $picture = \Models\Media::fetchOne([ 
+                        'id' => $pictureId,
+                        'isDeleted' => [
+                            '$ne' => true
+                        ]
+                    ]);
+                    if ($picture) {
+                        $pictures[] = $picture->toArray();
+                        if ($picture->id === $category->pictureId) {
+                            $selectedPicture = $picture->toArray();
+                        }
+                    }
+                }
+            }
+
+            return $response->write(
+                json_encode(array_merge(
+                    $category->toArray(),
+                    ['picture' => $selectedPicture ?? $pictures[0]],
+                    ['pictures' => $pictures]
+                ))
+            );
+        }
     }

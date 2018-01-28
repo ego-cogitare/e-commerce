@@ -34,6 +34,7 @@
                 }
             }
             
+            
             $order = empty($orderBy) ? null : [ $orderBy => $ascDesc ];
             
             $data = \Models\Product::fetchAll(
@@ -45,7 +46,7 @@
             
             $products = [];
             foreach ($data as $product) {
-                $products[] = $product->apiModel();
+                $products[] = $product->apiModel(1, 0, ['descriptions', 'relatedProducts', 'properties', 'pictures', 'category', 'reviews']);
             }
 
             return $response->write(
