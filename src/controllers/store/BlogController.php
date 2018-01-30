@@ -39,12 +39,34 @@
             
             if (!empty($data)) {
                 foreach ($data as $post) {
-                    $posts[] = $post->expand()->toArray();
+                    $posts[] = $post->apiModel(['pictures', /*'descriptions'*/]);
                 }
             }
             
             return $response->write(
                 json_encode($posts)
+            );
+        }
+        
+        public function get($request, $response, $args)
+        {
+            $post = \Models\Post::fetchOne([
+                'id' => $args['id'],
+                'isDeleted' => [
+                    '$ne' => true
+                ]
+            ]);
+
+            if (empty($post)) {
+                return $response->withStatus(404)->write(
+                    json_encode([
+                        'error' => 'Пост не найден'
+                    ])
+                );
+            }
+
+            return $response->write(
+                json_encode($post->apiModel())
             );
         }
     }

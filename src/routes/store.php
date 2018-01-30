@@ -5,6 +5,7 @@
     $app->post('/store/product/{id}/add-review', '\Controllers\Store\ProductController::addReview');
     $app->get('/store/products', '\Controllers\Store\ProductController::index');
     $app->get('/store/blog', '\Controllers\Store\BlogController::index');
+    $app->get('/store/post/{id}', '\Controllers\Store\BlogController::get');
     $app->get('/store/page/{id}', '\Controllers\Store\PageController::get');
     $app->get('/store/tags', '\Controllers\Store\TagController::index');
     $app->get('/store/category/{id}', '\Controllers\Store\CategoryController::get');

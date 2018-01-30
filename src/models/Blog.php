@@ -42,6 +42,56 @@ class Post extends \MongoStar\Model
 
         return $bootstrap;
     }
+    
+    /**
+     * Post full api model
+     */
+    public function apiModel($skip = []) 
+    {
+        // Expand with pictures
+        $defaultPicture = null;
+        $pictures = [];
+        if (count($this->pictures) > 0) {
+            foreach ($this->pictures as $pictureId) {
+                $picture = \Models\Media::fetchOne(['id' => $pictureId]);
+                if ($picture) {
+                    $pictures[] = $picture->toArray();
+                    if ($pictureId === $this->pictureId) {
+                        $defaultPicture = $picture->toArray();
+                    }
+                }
+            }
+        }
+        if (!in_array('pictures', $skip)) {
+            $this->pictures = $pictures;
+        }
+        
+        // If default picture not set use first available from pictures list
+        if (is_null($defaultPicture) && count($pictures) > 0) {
+            $defaultPicture = $pictures[0];
+        }
+        
+        $tags = [];
+        if (!in_array('tags', $skip) && count($this->tags) > 0) {
+            foreach ($this->tags as $tagId) {
+                $tags[] = \Models\Tag::fetchOne(['id' => $tagId])->toArray();
+            }
+        }
+        $this->tags = $tags;
+        
+        $post = $this->toArray();
+        
+        // Remove text descriptions
+        if (in_array('descriptions', $skip)) {
+            $post['briefly'] = '';
+            $post['body'] = '';
+        }
+        
+        return array_merge(
+            $post,
+            ['picture' => $defaultPicture]
+        );
+    }
 
     public function expand()
     {

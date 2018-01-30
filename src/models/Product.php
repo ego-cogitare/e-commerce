@@ -70,7 +70,7 @@ class Product extends \MongoStar\Model {
      * 
      * @param int $maxDepth
      * @param int $depth
-     * @param boolean $descriptions
+     * @param array $skip List of products fields to ignore for expand
      * @return array
      */
     public function apiModel($maxDepth = 1, $depth = 0, $skip = [])
