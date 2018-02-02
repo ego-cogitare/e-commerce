@@ -210,6 +210,7 @@
             $post->title = $params['title'];
             $post->briefly = $params['briefly'];
             $post->body = $params['body'];
+            $post->video = $params['video'];
             $post->tags = $params['tags'];
             $post->pictures = $params['pictures'];
             $post->pictureId = $params['pictureId'];

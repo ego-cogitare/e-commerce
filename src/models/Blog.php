@@ -12,6 +12,7 @@ namespace Models;
  * @property string     $title
  * @property string     $briefly
  * @property string     $body
+ * @property string     $video
  * @property array      $tags
  * @property array      $pictures
  * @property string     $pictureId
@@ -35,6 +36,7 @@ class Post extends \MongoStar\Model
         $bootstrap->title = '';
         $bootstrap->briefly = '';
         $bootstrap->body = '';
+        $bootstrap->video = '';
         $bootstrap->tags = [];
         $bootstrap->pictures = [];
         $bootstrap->pictureId = null;
@@ -71,6 +73,7 @@ class Post extends \MongoStar\Model
             $defaultPicture = $pictures[0];
         }
         
+        // Expand with tags
         $tags = [];
         if (!in_array('tags', $skip) && count($this->tags) > 0) {
             foreach ($this->tags as $tagId) {
@@ -78,6 +81,18 @@ class Post extends \MongoStar\Model
             }
         }
         $this->tags = $tags;
+        
+        // Expand with reviews
+        $comments = [];
+        if (!in_array('comments', $skip)) {
+            $comments = \Models\PostComment::fetchAll([
+                'postId' => $this->id,
+                'isDeleted' => [
+                    '$ne' => true
+                ],
+                'isApproved' => true
+            ], ['dateCreated' => 1], 10)->toArray();
+        }
         
         $post = $this->toArray();
         
@@ -89,6 +104,7 @@ class Post extends \MongoStar\Model
         
         return array_merge(
             $post,
+            ['comments' => $comments],
             ['picture' => $defaultPicture]
         );
     }

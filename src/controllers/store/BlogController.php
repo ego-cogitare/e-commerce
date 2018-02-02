@@ -69,4 +69,92 @@
                 json_encode($post->apiModel())
             );
         }
+        
+        public function addComment($request, $response)
+        {
+            $postId   = $request->getParam('postId');
+            $userName = $request->getParam('userName');
+            $message  = $request->getParam('message');
+
+            if (empty($postId)) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'success' => false, 
+                        'error' => 'Пост не указан.'
+                    ])
+                );
+            }
+            
+            $post = \Models\Post::fetchOne([
+                'id' => $postId,
+                'isDeleted' => [
+                    '$ne' => true
+                ]
+            ]);
+
+            if (empty($post) ) {
+                return $response->withStatus(404)->write(
+                    json_encode([
+                        'error' => 'Пост не найден.'
+                    ])
+                );
+            }
+            
+            if (empty($userName)) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'success' => false, 
+                        'field' => 'userName',
+                        'error' => 'Укажите Ваше имя.'
+                    ])
+                );
+            }
+            
+            if (strlen($userName) > 100) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'success' => false, 
+                        'field' => 'userName',
+                        'error' => 'Ограничение длины имени 100 символов.'
+                    ])
+                );
+            }
+            
+            if (empty($message)) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'success' => false,
+                        'field' => 'message',
+                        'error' => 'Поле комментария не может быть пустым.'
+                    ])
+                );
+            }
+            
+            if (strlen($message) > 1000) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'success' => false,
+                        'field' => 'message',
+                        'error' => 'Ограничение длины комментария 1000 символов.'
+                    ])
+                );
+            }
+            
+            $comment = new \Models\PostComment();
+            $comment->postId = $postId;
+            $comment->userName = $userName;
+            $comment->comment = $message;
+            $comment->dateCreated = time();
+            $comment->isApproved = true;
+            $comment->isDeleted = false;
+            $comment->save();
+            
+            return $response->write(
+                json_encode([
+                    'success' => true, 
+                    'comment' => $comment->toArray(),
+                    'message' => 'Спасибо за Ваш комментарий.'
+                ])
+            );
+        }
     }

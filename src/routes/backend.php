@@ -95,6 +95,12 @@
     $app->post('/blog/remove/{id}', '\Controllers\Backend\BlogController::remove');
     $app->post('/blog/add-picture/{id}', '\Controllers\Backend\BlogController::addPicture');
     $app->post('/blog/delete-picture', '\Controllers\Backend\BlogController');
+    
+    /**
+     * Post comment routes
+     */
+    $app->get('/comments/{postId}', '\Controllers\Backend\CommentController::index');
+    $app->post('/comments/{postId}/set-approved', '\Controllers\Backend\CommentController::setApproved');
 
     /**
      * Orders routes
