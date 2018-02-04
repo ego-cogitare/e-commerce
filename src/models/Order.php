@@ -11,6 +11,8 @@ namespace Models;
  * @property string     $id
  * @property array      $products
  * @property string     $stateId
+ * @property string     $paymentId
+ * @property string     $deliveryId
  * @property string     $userName
  * @property string     $address
  * @property string     $email
@@ -36,7 +38,7 @@ class Order extends \MongoStar\Model
           ]);
 
           return array_merge(
-            $product->expand()->toArray(),
+            $product->apiModel(1, 0, ['brand', 'category', 'relatedProducts', 'pictures', 'reviews']),
             ['count' => (int)$item['count']]
           );
         },

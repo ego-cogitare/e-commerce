@@ -112,7 +112,10 @@
             $products = [];
 
             foreach (\Models\Product::fetchAll($query, $sort) as $product) {
-                $products[] = $product->expand()->toArray();
+                $products[] = $product->apiModel(1, 0, [
+                    'brand', 'category', 'relativeProducts', 
+                    'pictures', 'properties', 'reviews'
+                ]);
             }
 
             return $response->write(

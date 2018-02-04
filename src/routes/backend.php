@@ -16,8 +16,11 @@
     $app->get('/brand/list', '\Controllers\Backend\BrandController::index');
     $app->get('/brand/get/{id}', '\Controllers\Backend\BrandController::get');
     $app->post('/brand/add', '\Controllers\Backend\BrandController::add');
-    $app->post('/brand/add-picture', '\Controllers\Backend\BrandController::addPicture');
-    $app->post('/brand/delete-picture', '\Controllers\Backend\BrandController::deletePicture');
+    $app->get('/brand/bootstrap', '\Controllers\Backend\BrandController::bootstrap');
+    $app->post('/brand/add-picture/{id}', '\Controllers\Backend\BrandController::addPicture');
+    $app->post('/brand/delete-picture/{id}', '\Controllers\Backend\BrandController::deletePicture');
+    $app->post('/brand/add-cover/{id}', '\Controllers\Backend\BrandController::addCover');
+    $app->post('/brand/delete-cover/{id}', '\Controllers\Backend\BrandController::deleteCover');
     $app->post('/brand/update/{id}', '\Controllers\Backend\BrandController::update');
     $app->post('/brand/remove/{id}', '\Controllers\Backend\BrandController::remove');
 

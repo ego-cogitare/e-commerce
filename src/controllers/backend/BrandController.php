@@ -8,20 +8,19 @@
             $limit = $request->getParam('limit');
             $offset = $request->getParam('offset');
 
-            $brands = array_map(
-                function($brand) {
-                    $brand['pictures'] = array_map(
-                        function($pictureId) {
-                            return \Models\Media::fetchOne(['id' => $pictureId])->toArray();
-                        },
-                        $brand['pictures']
-                    );
-                    return $brand;
-                },
-                \Models\Brand::fetchAll([ 'isDeleted' => [ '$ne' => true ] ])->toArray()
-            );
+            $data = \Models\Brand::fetchAll([ 
+                'isDeleted' => [ 
+                    '$ne' => true 
+                ],
+                'type' => 'final'
+            ]);
+            
+            $brands = [];
+            foreach ($data as $item) {
+                $brands[] = $item->apiModel();
+            }
 
-            return $response->withStatus(200)->write(
+            return $response->write(
                 json_encode($brands)
             );
         }
@@ -43,35 +42,27 @@
                 );
             }
 
-            $pictures = $brand->pictures ?? [];
-            $pictures = array_map(function($id) {
-                return \Models\Media::fetchOne([ 'id' => $id ])->toArray();
-            }, $pictures);
-            $brand->pictures = $pictures;
-
             return $response->write(
-                json_encode($brand->toArray())
+                json_encode($brand->apiModel())
             );
         }
-
-        public function add($request, $response)
+        
+        public function bootstrap($request, $response)
         {
-            $params = $request->getParams();
+            $bootstrap = \Models\Brand::fetchOne([
+                'isDeleted' => [
+                    '$ne' => true,
+                ],
+                'type' => 'bootstrap'
+            ]);
 
-            if (empty($params['title']) && empty($params['pictures'])) {
-                return $response->withStatus(400)->write(
-                    json_encode([
-                        'error' => 'Не заполнено одно из обязательных полей'
-                    ])
-                );
+            if (empty($bootstrap)) {
+                $bootstrap = \Models\Brand::getBootstrap();
+                $bootstrap->save();
             }
 
-            $brand = new \Models\Brand();
-            $brand->title = $params['title'];
-            $brand->save();
-
             return $response->write(
-                json_encode($brand->toArray())
+                json_encode($bootstrap->apiModel())
             );
         }
 
@@ -79,10 +70,26 @@
         {
             $params = $request->getParams();
 
-            if (empty($params['title']) || empty($params['pictures'])) {
+            if (empty($params['title'])) {
                 return $response->withStatus(400)->write(
                     json_encode([
-                        'error' => 'Не заполнено одно из обязательных полей'
+                        'error' => 'Не заполнено название брэнда'
+                    ])
+                );
+            }
+
+            if (empty($params['pictures'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не задано превью брэнда'
+                    ])
+                );
+            }
+
+            if (empty($params['covers'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Не задан постер брэнда'
                     ])
                 );
             }
@@ -102,20 +109,17 @@
                 );
             }
 
+            $brand->type = 'final';
             $brand->title = $params['title'];
-            $pictures = $brand->pictures;
-            $brand->pictures = array_map(function($picture) { return $picture['id']; }, $params['pictures']);
+            $brand->pictures = $params['pictures'];
             $brand->pictureId = $params['pictureId'];
+            $brand->covers = $params['covers'];
+            $brand->coverId = $params['coverId'];
             $brand->isDeleted = filter_var($params['isDeleted'], FILTER_VALIDATE_BOOLEAN);
             $brand->save();
 
             return $response->write(
-                json_encode(
-                    array_merge(
-                        $brand->toArray(),
-                        [ 'pictures' => $pictures ]
-                    )
-                )
+                json_encode($brand->apiModel())
             );
         }
 
@@ -170,47 +174,57 @@
             $brand->save();
 
             return $response->write(
-                json_encode([
-                    'success' => true
-                ])
+                json_encode(['success' => true])
             );
         }
 
-        public function addPicture($request, $response)
+        public function addPicture($request, $response, $args)
         {
             $params = $request->getParams();
-
+            
+            if (empty($args['id'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Идентификатор брэнда не может быть пустым'
+                    ])
+                );
+            }
+            
             $brand = \Models\Brand::fetchOne([
-                'id' => $params['brand']['id'],
+                'id' => $args['id'],
                 'isDeleted' => [
                     '$ne' => true
                 ]
             ]);
-
+            
             if (empty($brand)) {
-                $brand = new \Models\Brand();
-            }
-
-            if (empty($params['picture']['id'])) {
                 return $response->withStatus(400)->write(
                     json_encode([
-                        'error' => 'Изображение брэнда не задано'
+                        'error' => 'Брэнд не найден'
+                    ])
+                );
+            }
+            
+            if (empty($params['pictureId'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Превью изображение брэнда не задано'
                     ])
                 );
             }
 
-            $brand->title = $params['brand']['title'];
-            $pictures = $brand->pictures ?? [];
-            $pictures[] = $params['picture']['id'];
+            $pictures = $brand->pictures;
+            if (sizeof($pictures) > 0) {
+                $pictures[] = $params['pictureId'];
+            }
+            else {
+               $pictures = [$params['pictureId']]; 
+            }
             $brand->pictures = $pictures;
             $brand->save();
 
-            $brand->pictures = array_map(function($id) {
-                return \Models\Media::fetchOne([ 'id' => $id ])->toArray();
-            }, $pictures);
-
             return $response->write(
-                json_encode($brand->toArray())
+                json_encode($brand->apiModel())
             );
         }
 
@@ -221,7 +235,7 @@
             $params = $request->getParams();
 
             $brand = \Models\Brand::fetchOne([
-                'id' => $params['brandId'],
+                'id' => $args['id'],
                 'isDeleted' => [
                     '$ne' => true
                 ]
@@ -262,6 +276,128 @@
             if ($brand->pictureId === $picture->id)
             {
                 $brand->pictureId = '';
+            }
+
+            // Update brand settings
+            $brand->save();
+
+            // Get picture path
+            $picturePath = $app->getContainer()->settings['files']['upload']['directory'] . '/'
+              . $picture->path . '/' . $picture->name;
+
+            // Delete picture
+            if (unlink($picturePath))
+            {
+                return $response->write(
+                    json_encode(['success' => true])
+                );
+            }
+            else
+            {
+                return $response->withStatus(400)->write(
+                    json_encode([ 'error' => 'Изображение не найдено' ])
+                );
+            }
+        }
+        
+        public function addCover($request, $response, $args)
+        {
+            $params = $request->getParams();
+            
+            if (empty($args['id'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Идентификатор брэнда не может быть пустым'
+                    ])
+                );
+            }
+            
+            $brand = \Models\Brand::fetchOne([
+                'id' => $args['id'],
+                'isDeleted' => [
+                    '$ne' => true
+                ]
+            ]);
+            
+            if (empty($brand)) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Брэнд не найден'
+                    ])
+                );
+            }
+            
+            if (empty($params['coverId'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Постер изображение брэнда не задано'
+                    ])
+                );
+            }
+
+            $covers = $brand->covers;
+            if (sizeof($covers) > 0 ) {
+                $covers[] = $params['coverId'];
+            }
+            else {
+               $covers = [$params['coverId']]; 
+            }
+            $brand->covers = $covers;
+            $brand->save();
+
+            return $response->write(
+                json_encode($brand->apiModel())
+            );
+        }
+
+        public function deleteCover($request, $response, $args)
+        {
+            global $app;
+
+            $params = $request->getParams();
+
+            $brand = \Models\Brand::fetchOne([
+                'id' => $args['id'],
+                'isDeleted' => [
+                    '$ne' => true
+                ]
+            ]);
+
+            if (empty($brand)) {
+                return $response->withStatus(400)->write(
+                    json_encode([ 'error' => 'Брэнд не найден' ])
+                );
+            }
+
+            $picture = \Models\Media::fetchOne([
+                'id' => $params['id'],
+                /*'isDeleted' => [
+                    '$ne' => true
+                ]*/
+            ]);
+
+            if (empty($picture)) {
+                return $response->withStatus(400)->write(
+                    json_encode([ 'error' => 'Изображение не найдено' ])
+                );
+            }
+
+            // Mark picture as deleted
+            $picture->isDeleted = true;
+            $picture->save();
+
+            // Remove pictureId from brand pictures list
+            $brand->covers = array_values(array_filter(
+                $brand->covers,
+                function($pictureId) use ($picture) {
+                    return $pictureId !== $picture->id;
+                }
+            ));
+
+            // If active brand picture deleted
+            if ($brand->coverId === $picture->id)
+            {
+                $brand->coverId = '';
             }
 
             // Update brand settings

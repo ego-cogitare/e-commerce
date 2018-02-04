@@ -11,10 +11,11 @@
             $orderBy = $request->getParam('orderBy');
             $filter  = $request->getParam('filter');
 
-            $query = [ 
-                'isDeleted' => [ 
-                    '$ne' => true 
-                ], 
+            $query = [
+                'isDeleted' => [
+                    '$ne' => true
+                ],
+                'type' => 'final'
             ];
             
             if (!empty($filter)) {
@@ -32,25 +33,37 @@
                 $order, 
                 $limit, 
                 $offset
-            )->toArray();
-            
-            $brands = array_map(
-                function($brand) {
-                    $picture = \Models\Media::fetchOne([ 
-                        'id' => $brand['pictureId'] 
-                    ]);
-                    if (empty($picture)) {
-                        return $brand;
-                    }
-                    $brand['picture'] = $picture->toArray();
-                    
-                    return $brand;
-                },
-                $data
             );
+            
+            $brands = [];
+            foreach ($data as $item) {
+                $brands[] = $item->apiModel(['pictures']);
+            }
 
             return $response->write(
                 json_encode($brands)
+            );
+        }
+        
+        public function get($request, $response, $args)
+        {
+            $brand = \Models\Brand::fetchOne([
+                'id' => $args['id'],
+                'isDeleted' => [
+                    '$ne' => true
+                ]
+            ]);
+
+            if (empty($brand)) {
+                return $response->withStatus(404)->write(
+                    json_encode([
+                        'error' => 'Бренд не найден'
+                    ])
+                );
+            }
+
+            return $response->write(
+                json_encode($brand->apiModel())
             );
         }
     }

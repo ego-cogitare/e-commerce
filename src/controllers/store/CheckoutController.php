@@ -17,12 +17,12 @@
             }
             
             if (empty($data['email'])) {
-                return $response->withStatus(400)->write(
+                /*return $response->withStatus(400)->write(
                     json_encode([
                         'error' => 'Не заполнен e-mail.',
                         'field' => 'email'
                     ])
-                );
+                );*/
             }
             elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
                 return $response->withStatus(400)->write(
@@ -37,6 +37,15 @@
                 return $response->withStatus(400)->write(
                     json_encode([
                         'error' => 'Не заполнен номер телефона.',
+                        'field' => 'phone'
+                    ])
+                );
+            }
+            
+            if (!preg_match('/^0[1-9][0-9]{8}$/', $data['phone'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Неверный формат номера телефона.',
                         'field' => 'phone'
                     ])
                 );
@@ -114,6 +123,20 @@
                     ])
                 );
             }
+            
+            $order = new \Models\Order();
+            $order->products = $data['order'];
+            $order->stateId = 'new';
+            $order->userName = $data['userName'];
+            $order->address = $data['address'];
+            $order->phone = $data['phone'];
+            $order->email = $data['email'];
+            $order->deliveryId = $data['deliveryId'];
+            $order->paymentId = $data['paymentId'];
+            $order->comment = $data['comments'];
+            $order->dateCreated = time();
+            $order->isDeleted = false;
+            $order->save();
             
             return $response->write(
                 json_encode(['success' => true])
