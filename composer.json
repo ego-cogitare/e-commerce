@@ -9,6 +9,7 @@
         "slim/slim": "3.7",
         "mongostar/php7": "master-dev",
         "oscarotero/psr7-middlewares": "^3.21",
-        "dyorg/slim-token-authentication": "^0.3.3"
+        "dyorg/slim-token-authentication": "^0.3.3",
+        "liqpay/liqpay": "^1.2"
     }
 }

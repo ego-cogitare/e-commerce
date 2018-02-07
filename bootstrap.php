@@ -23,7 +23,7 @@
     }
 
     $config = [
-	     'settings' => [
+        'settings' => [
             'displayErrorDetails' => true,
             'determineRouteBeforeAppMiddleware' => false,
             'mongo' => [
@@ -44,6 +44,13 @@
                     // Destination directory to upload files
                     'directory' => __DIR__ . '/public'
                 ]
+            ],
+            'liqpay' => [
+                'publicKey' => 'i23198048021',
+                'privateKey' => 'M3CrJCvIKtWGRWWEgjJqMPR8omtWTVyaMzzSTC4g',
+                'server_url' => '',
+                'result_url' => '',
+                'sandbox' => '1'
             ]
        ],
     ];

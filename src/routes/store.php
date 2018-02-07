@@ -13,3 +13,5 @@
     $app->get('/store/category/{id}', '\Controllers\Store\CategoryController::get');
     $app->get('/store/categories', '\Controllers\Store\CategoryController::index');
     $app->post('/store/checkout', '\Controllers\Store\CheckoutController::index');
+    $app->map(['GET', 'POST'], '/store/payment', '\Controllers\Store\PaymentController::index');
+    $app->get('/store/payment/form', '\Controllers\Store\PaymentController::form');
