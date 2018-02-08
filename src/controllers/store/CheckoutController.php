@@ -1,5 +1,7 @@
 <?php
     namespace Controllers\Store;
+    
+    use Components\PriceCalculator;
 
     class CheckoutController
     {
@@ -124,6 +126,17 @@
                 );
             }
             
+            $priceCalculator = new PriceCalculator($data['order']);
+            
+            try {
+                $finalPrice = $priceCalculator->getFinalPrice();
+            }
+            catch (\Exception $e) {
+                return $response->withStatus(400)->write(
+                    json_encode(['success' => false, 'error' => $e->getMessage()])
+                );
+            }
+            
             $order = new \Models\Order();
             $order->products = $data['order'];
             $order->stateId = 'new';
@@ -134,12 +147,16 @@
             $order->deliveryId = $data['deliveryId'];
             $order->paymentId = $data['paymentId'];
             $order->comment = $data['comments'];
+            $order->price = $finalPrice;
             $order->dateCreated = time();
             $order->isDeleted = false;
             $order->save();
             
             return $response->write(
-                json_encode(['success' => true])
+                json_encode([
+                    'success' => true, 
+                    'order' => $order->toArray()
+                ])
             );
         }
     }

@@ -19,6 +19,7 @@ namespace Models;
  * @property string     $comment
  * @property string     $phone
  * @property int        $dateCreated
+ * @property float      $price
  * @property boolean    $isDeleted
  *
  * @method void save()
