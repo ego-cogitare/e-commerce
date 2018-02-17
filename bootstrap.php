@@ -10,6 +10,7 @@
      * Include all models, controllers, etc...
      */
     $includes = [
+        __DIR__ . '/src/interfaces/*.php',
         __DIR__ . '/src/models/*.php',
         __DIR__ . '/src/controllers/backend/*.php',
         __DIR__ . '/src/controllers/store/*.php',
