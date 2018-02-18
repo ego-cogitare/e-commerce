@@ -19,7 +19,60 @@
             'briefly' => 3,
             'description' => 4,
             'brand' => '/Sonett|Urtekram/'
-        ]
+        ],
+        'Прайс  бытовая химия Sonett 2018.xlsx' => [
+            'dataRows' => [1, 42],
+            'sku' => 0,
+            'propsColumns' => [1, 2],
+            'title' => 3,
+            'briefly' => 3,
+            'description' => 3,
+            'pricePdv' => 5,
+            'priceNds' => 6,
+            'brand' => '/Sonett/'
+        ],
+        'Презентація Dr.Goerg 2018.xlsx' => [
+            'dataRows' => [1, 11],
+            'sku' => 0,
+            'propsColumns' => [1, 2, 8],
+            'title' => 4,
+            'briefly' => 3,
+            'description' => 3,
+            'pricePdv' => 6,
+            'priceNds' => 7,
+            'brand' => '/Dr\.Goerg/'
+        ],
+        'Описание продуктов питания NEW 2017 Дил.xls' => [
+            'dataRows' => [2, 120],
+            'sku' => 0,
+            'propsColumns' => [1, 2, 5],
+            'title' => 3,
+            'briefly' => 3,
+            'description' => 3,
+            'brand' => '/Ekomil|Le Pain des Fleurs|Ma vie sans Gluten|Bisson|Premial|EOS BIO/'
+        ],
+        'Прайс молоко 2018.xls' => [
+            'dataRows' => [2, 35],
+            'sku' => 0,
+            'propsColumns' => [1, 2, 7, 8],
+            'title' => 3,
+            'briefly' => 3,
+            'description' => 3,
+            'pricePdv' => 5,
+            'priceNds' => 6,
+            'brand' => '/Ekomil/'
+        ],
+        'Прайс продукты питания 2018.xls' => [
+            'dataRows' => [2, 64],
+            'sku' => 0,
+            'propsColumns' => [1, 2, 7, 8],
+            'title' => 3,
+            'briefly' => 3,
+            'description' => 3,
+            'pricePdv' => 5,
+            'priceNds' => 6,
+            'brand' => '/Le Pain des Fleurs|Ma vie sans Gluten|Bisson|Premial/'
+        ],
     ];
     
     $parser = new ParserContainer();
