@@ -115,6 +115,14 @@
     $app->post('/order/remove/{id}', '\Controllers\Backend\OrderController::remove');
 
     /**
+     * Callbacks routes
+     */
+    $app->get('/callback/list', '\Controllers\Backend\CallbackController::index');
+    $app->get('/callback/get/{id}', '\Controllers\Backend\CallbackController::get');
+    $app->post('/callback/update/{id}', '\Controllers\Backend\CallbackController::update');
+    $app->post('/callback/remove/{id}', '\Controllers\Backend\CallbackController::remove');
+
+    /**
      * Tags routes
      */
     $app->get('/tag/list', '\Controllers\Backend\TagsController::index');

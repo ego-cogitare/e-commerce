@@ -21,7 +21,7 @@
             'brand' => '/Sonett|Urtekram/'
         ],
         'Прайс  бытовая химия Sonett 2018.xlsx' => [
-            'dataRows' => [1, 42],
+            'dataRows' => [1, 43],
             'sku' => 0,
             'propsColumns' => [1, 2],
             'title' => 3,
@@ -32,7 +32,7 @@
             'brand' => '/Sonett/'
         ],
         'Презентація Dr.Goerg 2018.xlsx' => [
-            'dataRows' => [1, 11],
+            'dataRows' => [1, 12],
             'sku' => 0,
             'propsColumns' => [1, 2, 8],
             'title' => 4,
@@ -43,7 +43,7 @@
             'brand' => '/Dr\.Goerg/'
         ],
         'Описание продуктов питания NEW 2017 Дил.xls' => [
-            'dataRows' => [2, 120],
+            'dataRows' => [2, 121],
             'sku' => 0,
             'propsColumns' => [1, 2, 5],
             'title' => 3,
@@ -52,7 +52,7 @@
             'brand' => '/Ekomil|Le Pain des Fleurs|Ma vie sans Gluten|Bisson|Premial|EOS BIO/'
         ],
         'Прайс молоко 2018.xls' => [
-            'dataRows' => [2, 35],
+            'dataRows' => [2, 36],
             'sku' => 0,
             'propsColumns' => [1, 2, 7, 8],
             'title' => 3,
@@ -63,7 +63,7 @@
             'brand' => '/Ekomil/'
         ],
         'Прайс продукты питания 2018.xls' => [
-            'dataRows' => [2, 64],
+            'dataRows' => [2, 65],
             'sku' => 0,
             'propsColumns' => [1, 2, 7, 8],
             'title' => 3,
@@ -172,8 +172,12 @@
             }
             else 
             {
-                $product->price = $row[$parser_config['priceNds']];
-                $product->discount = $row[$parser_config['priceNds']] - $row[$parser_config['pricePdv']];
+                // Clear prices
+                $price_nds = (float)preg_replace('/[^\d\.]*/', '', $row[$parser_config['priceNds']]);
+                $price_pdv = (float)preg_replace('/[^\d\.]*/', '', $row[$parser_config['pricePdv']]);
+                
+                $product->price = $price_nds;
+                $product->discount = $price_nds - $price_pdv;
                 $product->discountType = 'const';
             }
             $product->pictures = [];
@@ -204,23 +208,29 @@
                     }
                     
                     // Save product properties
-                    $property_product = ProductProperty::fetchOne([
-                        'key' => $row[$i],
-                        'isDeleted' => [
-                            '$ne' => true
-                        ],
-                        'parentId' => $property_title->id
-                    ]);
-                    if (empty($property_product))
-                    {
-                        $property_product = new ProductProperty;
-                        $property_product->key = $row[$i];
-                        $property_product->isDeleted = false;
-                        $property_product->parentId = $property_title->id;
-                        $property_product->save();
-                    }
+                    $key = (string)trim($row[$i]);
                     
-                    $properties[] = $property_product->id;
+                    if (!empty($key))
+                    {
+                        $property_product = ProductProperty::fetchOne([
+                            'key' => $key,
+                            'isDeleted' => [
+                                '$ne' => true
+                            ],
+                            'parentId' => $property_title->id
+                        ]);
+                        
+                        if (empty($property_product))
+                        {
+                            $property_product = new ProductProperty;
+                            $property_product->key = $row[$i];
+                            $property_product->isDeleted = false;
+                            $property_product->parentId = $property_title->id;
+                            $property_product->save();
+                        }
+                        
+                        $properties[] = $property_product->id;
+                    }
                 }
             }
             $product->properties = $properties;
