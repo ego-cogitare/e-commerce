@@ -13,6 +13,7 @@ namespace Models;
  * @property string     $categoryId
  * @property string     $brandId
  * @property array      $pictures
+ * @property array      $awards
  * @property array      $properties
  * @property string     $pictureId
  * @property string     $briefly
@@ -53,6 +54,7 @@ class Product extends \MongoStar\Model {
         $bootstrap->categoryId = '';
         $bootstrap->relatedProducts = [];
         $bootstrap->pictures = [];
+        $bootstrap->awards = [];
         $bootstrap->properties = [];
         $bootstrap->pictureId = null;
         $bootstrap->price = 0;
@@ -126,6 +128,20 @@ class Product extends \MongoStar\Model {
         }
         if (!in_array('pictures', $skip)) {
             $this->pictures = $pictures;
+        }
+        
+        // Expand with awards pictures
+        $awards = [];
+        if (count($this->awards) > 0) {
+            foreach ($this->awards as $pictureId) {
+                $picture = \Models\Media::fetchOne(['id' => $pictureId]);
+                if ($picture) {
+                    $awards[] = $picture->toArray();
+                }
+            }
+        }
+        if (!in_array('awards', $skip)) {
+            $this->awards = $awards;
         }
         
         // If default picture not set use first available from pictures list
@@ -213,6 +229,17 @@ class Product extends \MongoStar\Model {
             }
         }
         $this->pictures = $pictures;
+        
+        // Expand with awards
+        $awards = [];
+        if (count($this->awards) > 0) {
+            foreach ($this->awards as $pictureId) {
+                $awards[] = \Models\Media::fetchOne([
+                    'id' => $pictureId
+                ])->toArray();
+            }
+        }
+        $this->awards = $awards;
         
         if (empty($this->properties)) {
             $this->properties = [];

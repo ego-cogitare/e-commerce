@@ -16,10 +16,12 @@
 
             // Get controller action
             $path = explode('/', trim($request->getUri()->getPath(), '/'));
+            $action = array_pop($path);
 
-            switch (array_pop($path))
+            switch ($action)
             {
                 case 'delete-picture':
+                case 'delete-award':
                     $product = \Models\Product::fetchOne([
                         'id' => $params['productId'],
                         'isDeleted' => [
@@ -49,19 +51,32 @@
                     // Mark picture as deleted
                     $picture->isDeleted = true;
                     $picture->save();
-
-                    // Remove pictureId from brand pictures list
-                    $product->pictures = array_values(array_filter(
-                        $product->pictures,
-                        function($pictureId) use ($picture) {
-                            return $pictureId !== $picture->id;
-                        }
-                    ));
-
-                    // If active brand picture deleted
-                    if ($product->pictureId === $picture->id)
+                    
+                    if ($action === 'delete-picture')
                     {
-                        $product->pictureId = '';
+                        // Remove pictureId from product pictures list
+                        $product->pictures = array_values(array_filter(
+                            $product->pictures,
+                            function($pictureId) use ($picture) {
+                                return $pictureId !== $picture->id;
+                            }
+                        ));
+
+                        // If active brand picture deleted
+                        if ($product->pictureId === $picture->id)
+                        {
+                            $product->pictureId = '';
+                        }
+                    }
+                    else
+                    {
+                        // Remove pictureId from awards pictures list
+                        $product->awards = array_values(array_filter(
+                            $product->awards,
+                            function($pictureId) use ($picture) {
+                                return $pictureId !== $picture->id;
+                            }
+                        ));
                     }
 
                     // Update brand settings
@@ -277,6 +292,7 @@
             $product->relatedProducts = $params['relatedProducts'] ?? [];
             $product->pictures = $params['pictures'] ?? [];
             $product->pictureId = $params['pictureId'];
+            $product->awards = $params['awards'] ?? [];
             $product->properties = $params['properties'] ?? [];
             $product->price = filter_var($params['price'], FILTER_VALIDATE_FLOAT);
             $product->discount = filter_var($params['discount'], FILTER_VALIDATE_FLOAT);
@@ -350,6 +366,43 @@
             $pictures = $product->pictures ?? [];
             $pictures[] = $params['picture']['id'];
             $product->pictures = $pictures;
+            $product->save();
+
+            return $response->write(
+                json_encode($product->expand()->toArray())
+            );
+        }
+        
+        public function addAward($request, $response, $args)
+        {
+            $params = $request->getParams();
+
+            $product = \Models\Product::fetchOne([
+                'id' => $args['id'],
+                'isDeleted' => [
+                    '$ne' => true
+                ]
+            ]);
+
+            if (empty($product)) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Продукт не найден'
+                    ])
+                );
+            }
+
+            if (empty($params['picture']['id'])) {
+                return $response->withStatus(400)->write(
+                    json_encode([
+                        'error' => 'Изображение не задано'
+                    ])
+                );
+            }
+
+            $pictures = $product->awards ?? [];
+            $pictures[] = $params['picture']['id'];
+            $product->awards = $pictures;
             $product->save();
 
             return $response->write(

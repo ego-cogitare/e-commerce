@@ -65,6 +65,8 @@
     $app->get('/product/get/{id}', '\Controllers\Backend\ProductController::get');
     $app->post('/product/add-picture/{id}', '\Controllers\Backend\ProductController::addPicture');
     $app->post('/product/delete-picture', '\Controllers\Backend\ProductController');
+    $app->post('/product/add-award/{id}', '\Controllers\Backend\ProductController::addAward');
+    $app->post('/product/delete-award', '\Controllers\Backend\ProductController');
     $app->post('/product/update/{id}', '\Controllers\Backend\ProductController::update');
     $app->post('/product/remove/{id}', '\Controllers\Backend\ProductController::remove');
     $app->get('/product/properties', '\Controllers\Backend\ProductController::properties');
