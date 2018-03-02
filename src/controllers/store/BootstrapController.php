@@ -23,6 +23,18 @@
             return $keyVal;
         }
         
+        private static function maxProductPrice()
+        {
+            $product = \Models\Product::fetchOne([
+                'isDeleted' => [
+                    '$ne' => true
+                ],
+                'type' => 'final'
+            ], ['price' => -1], 1);
+            
+            return $product && !empty($product->price) ? $product->price : 0;
+        }
+        
         public function index($request, $response)
         {
             $data = [];
@@ -52,6 +64,10 @@
             ])->toArray();
             
             $data['settings'] = self::convertToKeyVal($settings);
+
+            $data['prices'] = [
+                'maxPrice' => self::maxProductPrice()
+            ];
             
             return $response->write(
                 json_encode($data)
