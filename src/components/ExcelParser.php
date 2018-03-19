@@ -26,11 +26,34 @@
                 print_r($this->config, true)
             );
         }
+        
+        public function extractImage(\PhpOffice\PhpSpreadsheet\Worksheet\Drawing $image) 
+        {
+            static $i = 0;
+            
+            $zipReader = fopen($image->getPath(), 'r');
+            $imageContents = '';
+            while (!feof($zipReader)) {
+                $imageContents .= fread($zipReader,1024);
+            }
+            fclose($zipReader);
+            $extension = $image->getExtension();
+            $myFileName = $this->file_name . '_' . $image->getCoordinates() . '_' . ($i++) . '.' . $extension;
+            file_put_contents($myFileName, $imageContents);
+        }
 
         public function parse()
         {
             $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($this->file_name);
             $worksheet = $spreadsheet->getActiveSheet();
+            
+            // Save all images from excel file
+            foreach ($worksheet->getDrawingCollection() as $image) 
+            {
+                if ($image instanceof \PhpOffice\PhpSpreadsheet\Worksheet\Drawing) {
+                    $this->extractImage($image);
+                }
+            }
             $this->data = $worksheet->toArray();
         }
         
