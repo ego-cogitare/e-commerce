@@ -129,7 +129,7 @@
             foreach (\Models\Product::fetchAll($query, $sort) as $product) {
                 $products[] = $product->apiModel(1, 0, [
                     'brand', 'category', 'relativeProducts', 
-                    'pictures', 'properties', 'reviews'
+                    'pictures', 'properties', 'reviews', 'descriptions'
                 ]);
             }
 
