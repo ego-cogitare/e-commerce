@@ -77,7 +77,10 @@ class Post extends \MongoStar\Model
         $tags = [];
         if (!in_array('tags', $skip) && count($this->tags) > 0) {
             foreach ($this->tags as $tagId) {
-                $tags[] = \Models\Tag::fetchOne(['id' => $tagId])->toArray();
+                $tag = \Models\Tag::fetchOne(['id' => $tagId]);
+                if ($tag) {
+                    $tags[] = $tag->toArray();
+                }
             }
         }
         $this->tags = $tags;
@@ -115,9 +118,10 @@ class Post extends \MongoStar\Model
         $pictures = [];
         if (count($this->pictures) > 0) {
             foreach ($this->pictures as $pictureId) {
-                $pictures[] = \Models\Media::fetchOne([
-                    'id' => $pictureId
-                ])->toArray();
+                $picture = \Models\Media::fetchOne(['id' => $pictureId]);
+                if ($picture) {
+                    $pictures[] = $picture->toArray();
+                }
             }
         }
         $this->pictures = $pictures;
@@ -126,9 +130,10 @@ class Post extends \MongoStar\Model
         $tags = [];
         if (count($this->tags) > 0) {
             foreach ($this->tags as $tagId) {
-                $tags[] = \Models\Tag::fetchOne([
-                    'id' => $tagId
-                ])->toArray();
+                $tag = \Models\Tag::fetchOne(['id' => $tagId]);
+                if ($tag) {
+                    $tags[] = $tag->toArray();
+                }
             }
         }
         $this->tags = $tags;

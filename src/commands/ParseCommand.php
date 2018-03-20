@@ -12,97 +12,97 @@
     require_once '../../bootstrap.php';
     
     $parser_config = [
-//        'Прайс  Medela  2018 ФОТО.xlsx' => [
-//            'dataRows' => [9, 45],
-//            'sku' => 2,
-//            'propsColumns' => [1,],
-//            'title' => 3,
-//            'briefly' => 3,
-//            'description' => 3,
-//            'pricePdv' => 5,
-//            'priceNds' => 6,
-//            'picture' => [
-//                'column' => 'E',
-//                'offset' => 10
-//            ],
-//            'brand' => '/Medela/'
-//        ],
-//        'Презентація Dr.Goerg 2018 (1).xlsx' => [
-//            'dataRows' => [1, 12],
-//            'sku' => 0,
-//            'propsColumns' => [1, 2, 8],
-//            'title' => 4,
-//            'briefly' => 3,
-//            'description' => 3,
-//            'pricePdv' => 6,
-//            'priceNds' => 7,
-//            'picture' => [
-//                'column' => 'F',
-//                'offset' => 2
-//            ],
-//            'awards' => [
-//                'column' => 'J',
-//                'offset' => 2
-//            ],
-//            'brand' => '/Dr\.Goerg/'
-//        ],
-//        'Прайс соки 2018 (1).xlsx' => [
-//            'dataRows' => [2, 23],
-//            'sku' => 0,
-//            'propsColumns' => [1, 2, 7, 8],
-//            'title' => 3,
-//            'briefly' => 3,
-//            'description' => 3,
-//            'pricePdv' => 5,
-//            'priceNds' => 6,
-//            'picture' => [
-//                'column' => 'E',
-//                'offset' => 3
-//            ],
-//            'awards' => [
-//                'column' => 'J',
-//                'offset' => 3
-//            ],
-//            'brand' => '/EOS BIO/'
-//        ],
-//        'Прайс продукты питания 2018 (2).xlsx' => [
-//            'dataRows' => [2, 61],
-//            'sku' => 0,
-//            'propsColumns' => [1, 2, 7, 8],
-//            'title' => 3,
-//            'briefly' => 3,
-//            'description' => 3,
-//            'pricePdv' => 5,
-//            'priceNds' => 6,
-//            'picture' => [
-//                'column' => 'E',
-//                'offset' => 3
-//            ],
-//            'awards' => [
-//                'column' => 'J',
-//                'offset' => 3
-//            ],
-//            'brand' => '/Le Pain des Fleurs|Ma vie sans Gluten|Bisson|Premial/'
-//        ],
-//        'Прайс молоко 2018 хороше фото.xlsx' => [
-//            'dataRows' => [2, 36],
-//            'sku' => 0,
-//            'propsColumns' => [1, 2, 7, 8],
-//            'title' => 3,
-//            'briefly' => 3,
-//            'description' => 3,
-//            'pricePdv' => 5,
-//            'priceNds' => 6,
-//            'picture' => [
-//                'column' => 'E',
-//                'offset' => 3
-//            ],
-//            'awards' => [
-//                'column' => 'J',
-//                'offset' => 3
-//            ],
-//            'brand' => '/Ekomil/'
-//        ],
+        'Прайс  Medela  2018 ФОТО.xlsx' => [
+            'dataRows' => [9, 46],
+            'sku' => 2,
+            'propsColumns' => [1,],
+            'title' => 3,
+            'briefly' => 3,
+            'description' => 3,
+            'pricePdv' => 5,
+            'priceNds' => 6,
+            'picture' => [
+                'column' => 'E',
+                'offset' => 10
+            ],
+            'brand' => '/Medela/'
+        ],
+        'Презентація Dr.Goerg 2018 (1).xlsx' => [
+            'dataRows' => [1, 12],
+            'sku' => 0,
+            'propsColumns' => [1, 2, 8],
+            'title' => 4,
+            'briefly' => 3,
+            'description' => 3,
+            'pricePdv' => 6,
+            'priceNds' => 7,
+            'picture' => [
+                'column' => 'F',
+                'offset' => 2
+            ],
+            'awards' => [
+                'column' => 'J',
+                'offset' => 2
+            ],
+            'brand' => '/Dr\.Goerg/'
+        ],
+        'Прайс соки 2018 (1).xlsx' => [
+            'dataRows' => [2, 23],
+            'sku' => 0,
+            'propsColumns' => [1, 2, 7, 8],
+            'title' => 3,
+            'briefly' => 3,
+            'description' => 3,
+            'pricePdv' => 5,
+            'priceNds' => 6,
+            'picture' => [
+                'column' => 'E',
+                'offset' => 3
+            ],
+            'awards' => [
+                'column' => 'J',
+                'offset' => 3
+            ],
+            'brand' => '/EOS BIO/'
+        ],
+        'Прайс продукты питания 2018 (2).xlsx' => [
+            'dataRows' => [2, 61],
+            'sku' => 0,
+            'propsColumns' => [1, 2, 7, 8],
+            'title' => 3,
+            'briefly' => 3,
+            'description' => 3,
+            'pricePdv' => 5,
+            'priceNds' => 6,
+            'picture' => [
+                'column' => 'E',
+                'offset' => 3
+            ],
+            'awards' => [
+                'column' => 'J',
+                'offset' => 3
+            ],
+            'brand' => '/Le Pain des Fleurs|Ma vie sans Gluten|Bisson|Premial/'
+        ],
+        'Прайс молоко 2018 хороше фото.xlsx' => [
+            'dataRows' => [2, 36],
+            'sku' => 0,
+            'propsColumns' => [1, 2, 7, 8],
+            'title' => 3,
+            'briefly' => 3,
+            'description' => 3,
+            'pricePdv' => 5,
+            'priceNds' => 6,
+            'picture' => [
+                'column' => 'E',
+                'offset' => 3
+            ],
+            'awards' => [
+                'column' => 'J',
+                'offset' => 3
+            ],
+            'brand' => '/Ekomil/'
+        ],
         'Прайс UrtekramФОТО2018.xlsx' => [
             'dataRows' => [1, 51],
             'sku' => 0,
@@ -122,28 +122,40 @@
             ],
             'brand' => '/Urtekram/'
         ],
-//        'Прайс Baby Bjorn 2018 ФОТО КАЧЕСТВО 100.xls' => [
-//            'dataRows' => [2, 67],
-//            'sku' => 2,
-//            'propsColumns' => [1,],
-//            'title' => 3,
-//            'briefly' => 4,
-//            'description' => 4,
-//            'pricePdv' => 7,
-//            'priceNds' => 8,
-//            'brand' => '/Urtekram/'
-//        ],
-//        'Прайс  бытовая химия Sonett 2018 ФОТО.xlsx' => [
-//            'dataRows' => [1, 43],
-//            'sku' => 0,
-//            'propsColumns' => [1, 2,],
-//            'title' => 3,
-//            'briefly' => 3,
-//            'description' => 3,
-//            'pricePdv' => 5,
-//            'priceNds' => 6,
-//            'brand' => '/Sonett/'
-//        ],
+        'Прайс Baby Bjorn 2018 ФОТО КАЧЕСТВО 100-trimmed.xlsx' => [
+            'dataRows' => [3, 66],
+            'sku' => 1,
+            'propsColumns' => [0,],
+            'title' => 2,
+            'briefly' => 3,
+            'description' => 3,
+            'pricePdv' => 5,
+            'priceNds' => 6,
+            'picture' => [
+                'column' => 'E',
+                'offset' => 4
+            ],
+            'brand' => '/BABYBJÖRN/'
+        ],
+        'Прайс  бытовая химия Sonett 2018 ФОТО.xlsx' => [
+            'dataRows' => [1, 43],
+            'sku' => 0,
+            'propsColumns' => [1, 2,],
+            'title' => 3,
+            'briefly' => 3,
+            'description' => 3,
+            'pricePdv' => 5,
+            'priceNds' => 6,
+            'picture' => [
+                'column' => 'E',
+                'offset' => 2
+            ],
+            'awards' => [
+                'column' => 'H',
+                'offset' => 2
+            ],
+            'brand' => '/Sonett/'
+        ],
         
         // Old
 //        'Описание бытовая химия 2017 х описом 9999.xlsx' => [
