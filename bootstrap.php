@@ -46,11 +46,14 @@
                     'directory' => __DIR__ . '/public'
                 ]
             ],
+            /**
+             * @link https://www.liqpay.ua/documentation/api/aquiring/checkout/doc
+             */
             'liqpay' => [
-                'publicKey' => 'i23198048021',
-                'privateKey' => 'M3CrJCvIKtWGRWWEgjJqMPR8omtWTVyaMzzSTC4g',
-                'server_url' => '',
-                'result_url' => '',
+                'publicKey' => 'i66231036957',
+                'privateKey' => 'cDDKNjmczPnvCOuxGM74jIT9aE0xPCYqQCcGHNNP',
+                'server_url' => 'http://api.shop.junimed.ua/store/payment',
+                'result_url' => 'http://shop.junimed.ua/checkout/thanks',
                 'sandbox' => '1'
             ]
        ],
