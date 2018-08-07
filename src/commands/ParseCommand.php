@@ -12,214 +12,222 @@
     require_once '../../bootstrap.php';
     
     $parser_config = [
-        'Прайс  Medela  2018 ФОТО.xlsx' => [
-            'dataRows' => [9, 46],
-            'sku' => 2,
-            'propsColumns' => [1,],
-            'title' => 3,
-            'briefly' => 3,
-            'description' => 3,
-            'pricePdv' => 5,
-            'priceNds' => 6,
-            'picture' => [
-                'column' => 'E',
-                'offset' => 10
-            ],
-            'brand' => '/Medela/'
-        ],
-        'Презентація Dr.Goerg 2018 (1).xlsx' => [
-            'dataRows' => [1, 12],
+        'Dr George.xlsx' => [
+            'dataRows' => [0, 11],
             'sku' => 0,
-            'propsColumns' => [1, 2, 8],
-            'title' => 4,
-            'briefly' => 3,
-            'description' => 3,
+            'propsColumns' => [1, 2, 7],
+            'title' => 3,
+            'briefly' => 4,
+            'description' => 4,
             'pricePdv' => 6,
-            'priceNds' => 7,
+            'priceNds' => 6,
+            'brand' => '/Dr\.Goerg/',
             'picture' => [
                 'column' => 'F',
-                'offset' => 2
+                'offset' => 1
             ],
             'awards' => [
-                'column' => 'J',
-                'offset' => 2
+                'column' => 'I',
+                'offset' => 1
             ],
-            'brand' => '/Dr\.Goerg/'
         ],
-        'Прайс соки 2018 (1).xlsx' => [
-            'dataRows' => [2, 23],
-            'sku' => 0,
-            'propsColumns' => [1, 2, 7, 8],
-            'title' => 3,
-            'briefly' => 3,
-            'description' => 3,
-            'pricePdv' => 5,
-            'priceNds' => 6,
-            'picture' => [
-                'column' => 'E',
-                'offset' => 3
-            ],
-            'awards' => [
-                'column' => 'J',
-                'offset' => 3
-            ],
-            'brand' => '/EOS BIO/'
-        ],
-        'Прайс продукты питания 2018 (2).xlsx' => [
-            'dataRows' => [2, 61],
-            'sku' => 0,
-            'propsColumns' => [1, 2, 7, 8],
-            'title' => 3,
-            'briefly' => 3,
-            'description' => 3,
-            'pricePdv' => 5,
-            'priceNds' => 6,
-            'picture' => [
-                'column' => 'E',
-                'offset' => 3
-            ],
-            'awards' => [
-                'column' => 'J',
-                'offset' => 3
-            ],
-            'brand' => '/Le Pain des Fleurs|Ma vie sans Gluten|Bisson|Premial/'
-        ],
-        'Прайс молоко 2018 хороше фото.xlsx' => [
-            'dataRows' => [2, 36],
-            'sku' => 0,
-            'propsColumns' => [1, 2, 7, 8],
-            'title' => 3,
-            'briefly' => 3,
-            'description' => 3,
-            'pricePdv' => 5,
-            'priceNds' => 6,
-            'picture' => [
-                'column' => 'E',
-                'offset' => 3
-            ],
-            'awards' => [
-                'column' => 'J',
-                'offset' => 3
-            ],
-            'brand' => '/Ekomil/'
-        ],
-        'Прайс UrtekramФОТО2018.xlsx' => [
-            'dataRows' => [1, 51],
-            'sku' => 0,
-            'propsColumns' => [1, 2],
-            'title' => 3,
-            'briefly' => 3,
-            'description' => 3,
-            'pricePdv' => 5,
-            'priceNds' => 6,
-            'picture' => [
-                'column' => 'E',
-                'offset' => 2
-            ],
-            'awards' => [
-                'column' => 'H',
-                'offset' => 2
-            ],
-            'brand' => '/Urtekram/'
-        ],
-        'Прайс Baby Bjorn 2018 ФОТО КАЧЕСТВО 100-trimmed.xlsx' => [
-            'dataRows' => [3, 66],
+        'Прайс Baby Bjorn.xlsx' => [
+            'dataRows' => [0, 60],
             'sku' => 1,
-            'propsColumns' => [0,],
+            'propsColumns' => [0, 2],
+            'title' => 3,
+            'briefly' => 4,
+            'description' => 4,
+            'pricePdv' => 6,
+            'priceNds' => 6,
+            'brand' => '/Baby Bjorn/',
+            'picture' => [
+                'column' => 'F',
+                'offset' => 1
+            ],
+        ],
+        'Прайс соки EOS.xlsx' => [
+            'dataRows' => [0, 18],
+            'sku' => 0,
+            'propsColumns' => [1, 2, 7, 8],
+            'title' => 3,
+            'briefly' => 4,
+            'description' => 4,
+            'pricePdv' => 6,
+            'priceNds' => 6,
+            'brand' => '/EOS BIO/',
+            'picture' => [
+                'column' => 'F',
+                'offset' => 1
+            ],
+            'awards' => [
+                'column' => 'J',
+                'offset' => 1
+            ],
+        ],
+        'Прайс снеки.xlsx' => [
+            'dataRows' => [0, 16],
+            'sku' => 0,
+            'propsColumns' => [1, 2, 7, 8],
+            'title' => 3,
+            'briefly' => 4,
+            'description' => 4,
+            'pricePdv' => 6,
+            'priceNds' => 6,
+            'brand' => '/VitaSnack/',
+            'picture' => [
+                'column' => 'F',
+                'offset' => 1
+            ],
+            'awards' => [
+                'column' => 'J',
+                'offset' => 1
+            ],
+        ],
+        'Прайс продукты питания Primeal, Ma vie sans gluten, bisson.xlsx' => [ //-
+            'dataRows' => [0, 37],
+            'sku' => 0,
+            'propsColumns' => [1, 2, 7],
+            'title' => 3,
+            'briefly' => 4,
+            'description' => 4,
+            'pricePdv' => 6,
+            'priceNds' => 6,
+            'brand' => '/Le Pain des fleurs/',
+            'picture' => [
+                'column' => 'F',
+                'offset' => 1
+            ],
+            'awards' => [
+                'column' => 'I',
+                'offset' => 1
+            ],
+        ],
+        'Прайс органические специи Lebensbaum.xlsx' => [
+            'dataRows' => [0, 25],
+            'sku' => 0,
+            'propsColumns' => [1, 2, 7, 8],
+            'title' => 3,
+            'briefly' => 4,
+            'description' => 4,
+            'pricePdv' => 6,
+            'priceNds' => 6,
+            'brand' => '/Lebensbaum/',
+            'picture' => [
+                'column' => 'F',
+                'offset' => 1
+            ],
+            'awards' => [
+                'column' => 'J',
+                'offset' => 1
+            ],
+        ],
+        'Прайс молоко Ecomil (розширена інформація).xlsx' => [
+            'dataRows' => [0, 40],
+            'sku' => 0,
+            'propsColumns' => [1, 2, 7, 8],
+            'title' => 3,
+            'briefly' => 4,
+            'description' => 4,
+            'pricePdv' => 6,
+            'priceNds' => 6,
+            'brand' => '/Ecomil та NaturGreen/',
+            'picture' => [
+                'column' => 'F',
+                'offset' => 1
+            ],
+            'awards' => [
+                'column' => 'J',
+                'offset' => 1
+            ],
+        ],
+        'Прайс Джордан 2018.xlsx' => [
+            'dataRows' => [0, 31],
+            'sku' => 1,
+            'propsColumns' => [0],
             'title' => 2,
             'briefly' => 3,
             'description' => 3,
-            'pricePdv' => 5,
-            'priceNds' => 6,
+            'pricePdv' => 4,
+            'priceNds' => 4,
+            'brand' => '/TM Jordan/',
             'picture' => [
-                'column' => 'E',
-                'offset' => 4
+                'column' => 'F',
+                'offset' => 1
             ],
-            'brand' => '/BABYBJÖRN/'
         ],
-        'Прайс  бытовая химия Sonett 2018 ФОТО.xlsx' => [
-            'dataRows' => [1, 43],
+        'Прайс гималайская соль 2018.xlsx' => [
+            'dataRows' => [0, 6],
             'sku' => 0,
-            'propsColumns' => [1, 2,],
+            'propsColumns' => [1, 2, 7, 8],
             'title' => 3,
-            'briefly' => 3,
-            'description' => 3,
-            'pricePdv' => 5,
+            'briefly' => 4,
+            'description' => 4,
+            'pricePdv' => 6,
             'priceNds' => 6,
+            'brand' => '/Гималайская соль/',
             'picture' => [
-                'column' => 'E',
-                'offset' => 2
+                'column' => 'F',
+                'offset' => 1
+            ],
+            'awards' => [
+                'column' => 'J',
+                'offset' => 1
+            ],
+        ],
+        'Прайс  бытовая химия Sonett 2018.xlsx' => [
+            'dataRows' => [0, 38],
+            'sku' => 0,
+            'propsColumns' => [1, 2],
+            'title' => 3,
+            'briefly' => 4,
+            'description' => 4,
+            'pricePdv' => 6,
+            'priceNds' => 6,
+            'brand' => '/Sonett/',
+            'picture' => [
+                'column' => 'F',
+                'offset' => 1
             ],
             'awards' => [
                 'column' => 'H',
-                'offset' => 2
+                'offset' => 1
             ],
-            'brand' => '/Sonett/'
         ],
-        
-        // Old
-//        'Описание бытовая химия 2017 х описом 9999.xlsx' => [
-//            'dataRows' => [1, 95],
-//            'sku' => 0,
-//            'propsColumns' => [1, 2],
-//            'title' => 5,
-//            'briefly' => 3,
-//            'description' => 4,
-//            'brand' => '/Sonett|Urtekram/'
-//        ],
-//        'Прайс  бытовая химия Sonett 2018.xlsx' => [
-//            'dataRows' => [1, 43],
-//            'sku' => 0,
-//            'propsColumns' => [1, 2],
-//            'title' => 3,
-//            'briefly' => 3,
-//            'description' => 3,
-//            'pricePdv' => 5,
-//            'priceNds' => 6,
-//            'brand' => '/Sonett/'
-//        ],
-//        'Презентація Dr.Goerg 2018.xlsx' => [
-//            'dataRows' => [1, 12],
-//            'sku' => 0,
-//            'propsColumns' => [1, 2, 8],
-//            'title' => 4,
-//            'briefly' => 3,
-//            'description' => 3,
-//            'pricePdv' => 6,
-//            'priceNds' => 7,
-//            'brand' => '/Dr\.Goerg/'
-//        ],
-//        'Описание продуктов питания NEW 2017 Дил.xls' => [
-//            'dataRows' => [2, 121],
-//            'sku' => 0,
-//            'propsColumns' => [1, 2, 5],
-//            'title' => 3,
-//            'briefly' => 3,
-//            'description' => 3,
-//            'brand' => '/Ekomil|Le Pain des Fleurs|Ma vie sans Gluten|Bisson|Premial|EOS BIO/'
-//        ],
-//        'Прайс молоко 2018.xls' => [
-//            'dataRows' => [2, 36],
-//            'sku' => 0,
-//            'propsColumns' => [1, 2, 7, 8],
-//            'title' => 3,
-//            'briefly' => 3,
-//            'description' => 3,
-//            'pricePdv' => 5,
-//            'priceNds' => 6,
-//            'brand' => '/Ekomil/'
-//        ],
-//        'Прайс продукты питания 2018.xls' => [
-//            'dataRows' => [2, 65],
-//            'sku' => 0,
-//            'propsColumns' => [1, 2, 7, 8],
-//            'title' => 3,
-//            'briefly' => 3,
-//            'description' => 3,
-//            'pricePdv' => 5,
-//            'priceNds' => 6,
-//            'brand' => '/Le Pain des Fleurs|Ma vie sans Gluten|Bisson|Premial/'
-//        ],
+        'Прайс UrtekramФОТО2018.xlsx' => [
+            'dataRows' => [0, 56],
+            'sku' => 0,
+            'propsColumns' => [1, 2],
+            'title' => 3,
+            'briefly' => 4,
+            'description' => 4,
+            'pricePdv' => 6,
+            'priceNds' => 6,
+            'brand' => '/Urtekram/',
+            'picture' => [
+                'column' => 'F',
+                'offset' => 1
+            ],
+            'awards' => [
+                'column' => 'H',
+                'offset' => 1
+            ],
+        ],
+        'Прайс  Medela  2018.xlsx' => [
+            'dataRows' => [0, 33],
+            'sku' => 1,
+            'propsColumns' => [0, 2],
+            'title' => 3,
+            'briefly' => 4,
+            'description' => 4,
+            'pricePdv' => 6,
+            'priceNds' => 6,
+            'brand' => '/Medela/',
+            'picture' => [
+                'column' => 'F',
+                'offset' => 1
+            ],
+        ],
     ];
     
     $parser = new ParserContainer();
@@ -227,13 +235,12 @@
     foreach ($parser_config as $file_name => $parser_config)
     {
         $excel_parser = new ExcelParser(__DIR__ . '/../data/' . $file_name, $parser_config);
-        
         // Create parser instanse
         $parser->setParser($excel_parser);
-        
+
         // Parse results
         $parser->parse();
-        
+
         $brand = null;
         $category = null;
         $data = $parser->getData();
@@ -297,7 +304,7 @@
             {
                 if (isset($parser_config[$pictureType])) 
                 {
-                    // Get product awards            
+                    // Get product awards
                     $picNamePattern = __DIR__ . '/../data/' . $file_name . '_' 
                         . $parser_config[$pictureType]['column'] 
                         . ($parser_config[$pictureType]['offset'] + $key) . '_*.*';
@@ -314,7 +321,7 @@
                         foreach ($pictures as $picturePath)
                         {
                             $destPath = __DIR__ . '/../../public/uploads/';
-                            $destName = $destPath . md5($picturePath) . '.' . pathinfo($picturePath, PATHINFO_EXTENSION);
+                            $destName = $destPath . md5($picturePath) . '.png';// . pathinfo($picturePath, PATHINFO_EXTENSION);
                             $imageSize = getimagesize($picturePath);
 
                             if ($imageSize[0] > 530 || $imageSize[1] > 455) 
@@ -336,23 +343,23 @@
                             {
                                 copy($picturePath, $destName);
                             }
-                        }
 
-                        // Creating database record for the picture
-                        if (file_exists($destName)) 
-                        {
-                            $media = new Media();
-                            $media->name = basename($destName);
-                            $media->path = '/uploads';
-                            $media->size = filesize($destName);
-                            $media->type = mime_content_type($destName);
-                            $media->isDeleted = false;
-                            $media->save();
-                            $pictureIds[$pictureType][] = $media->id;
-                        }
-                        else
-                        {
-                            echo 'File not copied (' . $destName . ')' . PHP_EOL;
+                            // Creating database record for the picture
+                            if (file_exists($destName))
+                            {
+                                $media = new Media();
+                                $media->name = basename($destName);
+                                $media->path = '/uploads';
+                                $media->size = filesize($destName);
+                                $media->type = mime_content_type($destName);
+                                $media->isDeleted = false;
+                                $media->save();
+                                $pictureIds[$pictureType][] = $media->id;
+                            }
+                            else
+                            {
+                                echo 'File not copied (' . $destName . ')' . PHP_EOL;
+                            }
                         }
                     }
                 }
@@ -378,9 +385,9 @@
              * Fields from excel
              */
             $product->sku = $row[$parser_config['sku']];
-            $product->title = $row[$parser_config['title']];
-            $product->briefly = $row[$parser_config['briefly']];
-            $product->description = $row[$parser_config['description']];
+            $product->title = preg_replace('/\s+/', ' ', $row[$parser_config['title']]);
+            $product->briefly = preg_replace('/\s+/', ' ', $row[$parser_config['briefly']]);
+            $product->description = preg_replace('/\s+/', ' ', $row[$parser_config['description']]);
             if (empty($parser_config['priceNds'])) 
             {
                 $product->price = 0.0;
