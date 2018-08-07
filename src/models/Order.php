@@ -26,27 +26,27 @@ namespace Models;
  */
 class Order extends \MongoStar\Model
 {
-  public function expand()
-  {
-    if (count($this->products) > 0) {
-      $this->products = array_map(
-        function($item) {
-          $product = \Models\Product::fetchOne([
-              'id' => $item['id'],
-              'isDeleted' => [
-                  '$ne' => true
-              ]
-          ]);
+    public function expand()
+    {
+        if (count($this->products) > 0) {
+            $this->products = array_map(
+                function($item) {
+                    $product = \Models\Product::fetchOne([
+                        'id' => $item['id'],
+                        'isDeleted' => [
+                            '$ne' => true
+                        ]
+                    ]);
 
-          return array_merge(
-            $product->apiModel(1, 0, ['brand', 'category', 'relatedProducts', 'pictures', 'reviews']),
-            ['count' => (int)$item['count']]
-          );
-        },
-        $this->products
-      );
+                    return array_merge(
+                        $product->apiModel(1, 0, ['brand', 'category', 'relatedProducts', 'pictures', 'reviews']),
+                        ['count' => (int)$item['count']]
+                    );
+                },
+                $this->products
+            );
+        }
+
+        return $this;
     }
-
-    return $this;
-  }
 }

@@ -31,11 +31,11 @@
                 'driver' => 'mongodb',
                 'servers' => [
                     [
-                        'host' => 'mongodb.loc',
+                        'host' => '127.0.0.1',
                         'port' => '27017'
                     ],
                 ],
-                'db' => 'e_commerce',
+                'db' => 'unimed',
             ],
             'files' => [
                 'upload' => [
@@ -50,8 +50,8 @@
              * @link https://www.liqpay.ua/documentation/api/aquiring/checkout/doc
              */
             'liqpay' => [
-                'publicKey' => 'i66231036957',
-                'privateKey' => 'cDDKNjmczPnvCOuxGM74jIT9aE0xPCYqQCcGHNNP',
+                'publicKey' => 'i95189456725',
+                'privateKey' => 'fCFrZ1E988gIR4BKItA0qIEHJzbDRGhPaPjBhfos',
                 'server_url' => 'http://api.shop.junimed.ua/store/payment',
                 'result_url' => 'http://shop.junimed.ua/checkout/thanks',
                 'sandbox' => '1'
