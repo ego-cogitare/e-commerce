@@ -25,6 +25,8 @@
 
     $config = [
         'settings' => [
+            'appName' => 'Junimed',
+            'siteUrl' => 'http://shop.junimed.ua',
             'displayErrorDetails' => true,
             'determineRouteBeforeAppMiddleware' => false,
             'mongo' => [
@@ -35,7 +37,7 @@
                         'port' => '27017'
                     ],
                 ],
-                'db' => 'unimed',
+                'db' => 'e_commerce',
             ],
             'files' => [
                 'upload' => [

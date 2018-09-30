@@ -16,3 +16,4 @@
     $app->post('/store/callback', '\Controllers\Store\CallbackController::index');
     $app->post('/store/payment', '\Controllers\Store\PaymentController::index');
     $app->get('/store/payment/form', '\Controllers\Store\PaymentController::form');
+    $app->get('/store/seo/meta-tags', '\Controllers\Store\SeoController::metaTags');
