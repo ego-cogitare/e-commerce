@@ -10,6 +10,7 @@
             $settings = $app->getContainer()->settings;
 
             $metaTags = <<<META_TAGS
+                <meta name="google-site-verification" content="xUVo9h-ayA7GsJDPmPOi10JpydH-bdXeddGNxwqsFs8" />
                 <meta name="keywords" itemprop="keywords" content="organic food">
                 <meta name="description" itemprop="description" content="Обычные моющие средства насыщают жильё отравляющими веществами. Мы убираем в доме не только для красоты, но и для здоровья. Чтобы не дышать пылью и плесенью">
                 <meta property="og:image" content="http://shop.junimed.ua/images/header-logo.png">
@@ -19,7 +20,7 @@
                 <meta property="og:type" content="article">
                 <meta property="og:url" content="{$settings['siteUrl']}{$request->getParam('path')}">
                 <meta property="og:site_name" content="{$settings['appName']}">
-                <link rel="canonical" href="http://{$settings['siteUrl']}/" />
+                <link rel="canonical" href="{$settings['siteUrl']}/" />
 META_TAGS;
 
             return $response->write($metaTags);
