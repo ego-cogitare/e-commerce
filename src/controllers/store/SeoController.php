@@ -19,6 +19,7 @@
                 <meta property="og:type" content="article">
                 <meta property="og:url" content="{$settings['siteUrl']}{$request->getParam('path')}">
                 <meta property="og:site_name" content="{$settings['appName']}">
+                <link rel="canonical" href="http://{$settings['siteUrl']}/" />
 META_TAGS;
 
             return $response->write($metaTags);
