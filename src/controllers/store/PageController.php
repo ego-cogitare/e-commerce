@@ -6,7 +6,7 @@
         public function get($request, $response, $args)
         {
             $page = \Models\Page::fetchOne([
-                'id' => $args['id'],
+                'slug' => $args['id'],
                 'isDeleted' => [
                     '$ne' => true
                 ]

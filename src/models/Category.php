@@ -11,6 +11,7 @@ namespace Models;
  * @property string     $id
  * @property string     $parrentId
  * @property string     $title
+ * @property string     $slug
  * @property string     $description
  * @property array      $pictures
  * @property string     $pictureId
@@ -31,6 +32,7 @@ class Category extends \MongoStar\Model {
         $bootstrap = new self();
         $bootstrap->parrentId = '';
         $bootstrap->title = '';
+        $bootstrap->slug = '';
         $bootstrap->description = '';
         $bootstrap->pictures = [];
         $bootstrap->pictureId = '';

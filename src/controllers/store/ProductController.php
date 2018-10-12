@@ -57,7 +57,7 @@
         public function get($request, $response, $args)
         {
             $product = \Models\Product::fetchOne([
-                'id' => $args['id'],
+                'slug' => $args['id'],
                 'isDeleted' => [
                     '$ne' => true
                 ]

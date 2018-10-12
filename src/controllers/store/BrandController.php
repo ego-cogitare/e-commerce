@@ -48,7 +48,7 @@
         public function get($request, $response, $args)
         {
             $brand = \Models\Brand::fetchOne([
-                'id' => $args['id'],
+                'slug' => $args['id'],
                 'isDeleted' => [
                     '$ne' => true
                 ]

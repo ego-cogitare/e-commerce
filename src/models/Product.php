@@ -10,6 +10,7 @@ namespace Models;
  *
  * @property string     $id
  * @property string     $title
+ * @property string     $slug
  * @property string     $categoryId
  * @property string     $brandId
  * @property array      $pictures
@@ -48,6 +49,7 @@ class Product extends \MongoStar\Model {
         $bootstrap->isBestseller = false;
         $bootstrap->isNovelty = false;
         $bootstrap->title = '';
+        $bootstrap->slug = '';
         $bootstrap->briefly = '';
         $bootstrap->description = '';
         $bootstrap->brandId = '';

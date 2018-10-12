@@ -10,6 +10,7 @@ namespace Models;
  *
  * @property string     $id       
  * @property string     $title
+ * @property string     $slug
  * @property string     $body
  * @property boolean    $isVisible
  * @property int        $dateCreated

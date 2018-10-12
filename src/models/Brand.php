@@ -10,6 +10,7 @@ namespace Models;
  *
  * @property string     $id       
  * @property string     $title
+ * @property string     $slug
  * @property string     $pictureId
  * @property array      $pictures
  * @property string     $coverId
@@ -29,6 +30,7 @@ class Brand extends \MongoStar\Model
         $bootstrap->type = 'bootstrap';
         $bootstrap->isDeleted = false;
         $bootstrap->title = '';
+        $bootstrap->slug = '';
         $bootstrap->body = '';
         $bootstrap->pictures = [];
         $bootstrap->pictureId = null;

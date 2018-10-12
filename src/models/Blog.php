@@ -10,6 +10,7 @@ namespace Models;
  *
  * @property string     $id
  * @property string     $title
+ * @property string     $slug
  * @property string     $briefly
  * @property string     $body
  * @property string     $video
@@ -34,6 +35,7 @@ class Post extends \MongoStar\Model
         $bootstrap->isVisible = true;
         $bootstrap->showOnHome = false;
         $bootstrap->title = '';
+        $bootstrap->slug = '';
         $bootstrap->briefly = '';
         $bootstrap->body = '';
         $bootstrap->video = '';

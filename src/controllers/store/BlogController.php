@@ -51,7 +51,7 @@
         public function get($request, $response, $args)
         {
             $post = \Models\Post::fetchOne([
-                'id' => $args['id'],
+                'slug' => $args['id'],
                 'isDeleted' => [
                     '$ne' => true
                 ]
