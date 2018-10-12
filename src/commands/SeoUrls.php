@@ -40,6 +40,7 @@
     }
 
     function str2url($str) {
+        $str = str_replace(['ö', 'Ö'], ['o','O'], $str);
         $str = rus2translit($str);
         $str = strtolower($str);
         $str = preg_replace('~\s+~u', '-', $str);
