@@ -57,9 +57,25 @@
             continue;
         }
 
+        $slugs = [];
+
         foreach ($items as $item) {
             $item->slug = str2url($item->title);
             $item->save();
+            $slugs[$item->slug][] = $item->id;
+        }
+
+        foreach ($slugs as $slug => $ids) {
+            if (count($ids) < 2) {
+                continue;
+            }
+            for ($i = 1; $i < count($ids); $i++) {
+                if (($item = $class::fetchOne(['id' => $ids[$i]])) === null) {
+                    continue;
+                }
+                $item->slug = $item->slug . '-' . $i;
+                $item->save();
+            }
         }
     }
 
