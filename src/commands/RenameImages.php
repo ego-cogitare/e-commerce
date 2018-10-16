@@ -31,7 +31,8 @@
 
             do {
                 $imageNum++;
-                $newName = $product->slug . '-' . $imageNum . '.' . end(explode('.', $picture->name));
+                $name = explode('.', $picture->name);
+                $newName = $product->slug . '-' . $imageNum . '.' . end($name);
             }
             while (file_exists($picturesPath . '/' . $newName));
 
